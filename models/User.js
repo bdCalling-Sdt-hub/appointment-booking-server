@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
     dateOfBirth: { type: String, required: false},
     phone: { type: String, required: false },
     address: { type: String, required: false },
-    // city: { type: String, required: false },
     rate:{type:String,required:false},
     gender:{type:String,required:false},
     description:{type:String,required:false},
@@ -35,7 +34,7 @@ const userSchema = new mongoose.Schema({
     isDeleted: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     image: { type: Object, required: false, default: { publicFileURL: "images/users/user.png", path: "public\\images\\users\\user.png" } },
-    role: { type: String, required: false, enum: ["admin", "user", "doctor"],default:"admin"  },
+    role: { type: String, required: false, enum: ["admin", "user", "doctor"], default:"admin"  },
     oneTimeCode: { type: String, required: false, default: null },
    
 }, {

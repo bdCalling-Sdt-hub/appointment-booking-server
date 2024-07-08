@@ -8,7 +8,7 @@ const isValidUser = async (req, res, next) => {
         const { authorization } = req.headers;
 
         if (!authorization) {
-            return res.status(401).json(Response({ message: 'Unauthorized', status: 'Failed', statusCode: 401 }));
+            return res.status(401).json(Response({ message: 'Token is required', status: 'Failed', statusCode: 401 }));
         }
 
         if (!authorization.startsWith('Bearer')) {
@@ -37,9 +37,9 @@ const isValidUser = async (req, res, next) => {
         if (!user) {
             return next(createError(401, 'Unauthorized'));
         }
-
-        req.body.userId = decodedData._id;
-        req.body.userRole = decodedData.role;
+        console.log('User authorized',decodedData._id);
+        req.userId = decodedData._id;
+        req.userRole = decodedData.role;
         req.user = decodedData._id;
 
         next();

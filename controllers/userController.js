@@ -4,6 +4,7 @@ const User = require("../models/User");
 const bcrypt = require('bcryptjs');
 const { createJSONWebToken } = require('../helpers/jsonWebToken');
 const emailWithNodemailer = require("../helpers/email");
+const { deleteImage } = require("../helpers/deleteImage");
 
 //sign up user
 const signUp = async (req, res) => {
@@ -56,7 +57,7 @@ const signUp = async (req, res) => {
 };
 
 // resend otp
-const resendOtp=async(req,res, )=>{
+const resendOtp = async(req,res, )=>{
     try {
         // Extract email from request body
         const { email } = req.body;
@@ -109,9 +110,9 @@ const resendOtp=async(req,res, )=>{
         res.status(200).json(Response({statusCode:200,status:'ok', message: 'OTP has been resent successfully' }));
       } catch (error) {
         console.error('Error resending OTP:', error);
-        res.status(500).json({ error: 'Failed to resend OTP' }
+        res.status(500).json(Response({statusCode:500,status:'Failed', message: 'Failed to resend OTP' })) // { error: 'Failed to resend OTP' }
 
-        );
+        
       }
 }
 
@@ -156,7 +157,7 @@ res.status(401).json(Response({statusCode:401, message:'you are not veryfied',st
 
     } catch (error) {
      
-        next(Response({ statusCode: 500, message: 'Internal server error', status: "Failed" }));
+        next(Response({ statusCode: 500, message: `Internal server error ${error.message}`, status: "Failed" }));
     }
 };
 
@@ -174,7 +175,7 @@ console.log("email", user);
         res.status(200).json(Response({ statusCode: 200, message: 'A verification code is sent to your email', status: "OK" }));
     } catch (error) {
         console.error(error);
-        res.status(500).json(Response({ statusCode: 500, message: 'Internal server error', status: "Failed" }));
+        res.status(500).json(Response({ statusCode: 500, message: `Internal server error ${error.message}`, status: "Failed" }));
     }
 };
 
@@ -206,7 +207,7 @@ if(user.oneTimeCode===code){
        
     } catch (error) {
         console.error(error);
-        res.status(500).json(Response({ statusCode: 500, message: 'Internal server error', status: "Failed" }));
+        res.status(500).json(Response({ statusCode: 500, message: `Internal server error ${error.message}`, status: "Failed" }));
     }
 };
 
@@ -236,7 +237,7 @@ const setPassword = async (req, res) => {
         res.status(200).json(Response({ statusCode: 200, message: 'Password changed successfully', status: "OK" }));
 
     } catch (error) {
-        res.status(500).json(Response({ statusCode: 500, message: 'Internal server error', status: "Failed" }));
+        res.status(500).json(Response({ statusCode: 500, message: `Internal server error ${error.message}`, status: "Failed" }));
     }
 };
 
@@ -279,9 +280,46 @@ const changePassword = async (req, res) => {
         .json(Response({ message: "Password changed successfully" }));
     } catch (error) {
       console.error(error);
-      return res.status(500).json(Response({ message: "Internal server error" }));
+      return res.status(500).json(Response({ message: `Internal server error ${error.message}` }));
     }
 };
+
+const fillUpProfile = async (req, res) => {
+    try {
+        const userId = req.userId;
+        console.log(userId);
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', status: "Failed", statusCode: 404 });
+        }
+
+        let image = {};
+        if(req.file){
+            if(user?.image && user?.image?.publicFileURL){
+                deleteImage(user?.image?.publicFileURL)
+            }
+            image = {
+                publicFileURL:`images/users/${req.file.filename}`,
+                path: `public/images/users/${req.file.filename}`
+            }
+        }
+console.log(image);
+const {gender,dateOfBirth,phone,address} = req.body;
+        user.gender = gender;
+        user.dateOfBirth = dateOfBirth;
+        user.phone = phone;
+        user.address = address;
+        user.image = image;
+        user.isProfileCompleted = true;
+        await user.save();
+        res.status(200).json({ message: 'Profile updated successfully', status: "OK", statusCode: 200 });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `${error?.message}`, status: "Failed", statusCode: 500 });
+        
+    }
+}
+
 
 
 
@@ -292,5 +330,6 @@ module.exports = {
     verifyCode,
     setPassword,
     resendOtp,
-    changePassword
+    changePassword,
+    fillUpProfile
 };

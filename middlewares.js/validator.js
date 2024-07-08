@@ -4,7 +4,6 @@ function validateResponse(req, res, next) {
     if (res.headersSent) {
         return next();
     }
-
     // Assuming res.data is where your response data is stored
     const responseData = res.data;
     // console.log("response data", responseData);

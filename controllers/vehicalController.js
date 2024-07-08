@@ -2,6 +2,9 @@
 const Driver = require("../models/Driver");
 const User = require("../models/User");
 const jwt = require('jsonwebtoken');
+
+
+
 const addVehicle = async (req, res, next) => {
     // Get the token from the request headers
     const tokenWithBearer = req.headers.authorization;

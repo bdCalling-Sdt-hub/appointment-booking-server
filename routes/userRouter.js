@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //import controllers
-const { signUp, verifyCode, signIn, resendOtp, forgotPassword, changePassword, setPassword } = require('../controllers/userController');
+const { signUp, verifyCode, signIn, resendOtp, forgotPassword, changePassword, setPassword, updateProfile, fillUpProfile } = require('../controllers/userController');
 const upload = require('../middlewares.js/fileUpload');
 const { isValidUser} = require('../middlewares.js/auth');
 // const { addVehicle } = require('../controllers/vehicalController');
@@ -19,6 +19,7 @@ router.post('/resendOtp', resendOtp);
 router.post('/forgot-Password',forgotPassword)
 router.post('/set-Password',setPassword)
 router.post('/change-password', isValidUser, changePassword);
+router.post('/fill-Up-update', isValidUser, [upload.single("image")], fillUpProfile);
 // router.post('/changePasswordUsingOldPassword',changePasswordUsingOldPassword)
 // router.post('/forgot-password', forgotPassword);
 // router.post('/verify-code', verifyCode);

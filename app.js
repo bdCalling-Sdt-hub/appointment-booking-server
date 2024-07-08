@@ -23,6 +23,8 @@ app.use(morgan('combined', { stream }));
 
 //import routes
 const userRouter = require('./routes/userRouter');
+const categoryRouter = require('./routes/categoryRouter');
+const doctorRouter = require('./routes/doctorRouter');
 const { connectToDatabase } = require('./helpers/connection');
 // const validateResponse = require('./middlewares.js/validator');
 
@@ -49,7 +51,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Routes
 app.use('/api/v1/user', userRouter);
-// app.use('/api/v1/user', locationRouter);
+app.use('/api/v1/category', categoryRouter);
+app.use('/api/v1/doctor', doctorRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
 
