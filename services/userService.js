@@ -164,6 +164,4 @@ module.exports = {
     forgotPasswordService,
     verifyCodeService,
     changePasswordService,
-   
-
 };

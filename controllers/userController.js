@@ -5,6 +5,10 @@ const bcrypt = require('bcryptjs');
 const { createJSONWebToken } = require('../helpers/jsonWebToken');
 const emailWithNodemailer = require("../helpers/email");
 const { deleteImage } = require("../helpers/deleteImage");
+const ReviewModel = require("../models/Review.model");
+const PatientDetailsModel = require("../models/PatientDetails.model");
+
+
 
 //sign up user
 const signUp = async (req, res) => {
@@ -211,7 +215,6 @@ if(user.oneTimeCode===code){
     }
 };
 
-
 // change password
 
 const setPassword = async (req, res) => {
@@ -240,7 +243,6 @@ const setPassword = async (req, res) => {
         res.status(500).json(Response({ statusCode: 500, message: `Internal server error ${error.message}`, status: "Failed" }));
     }
 };
-
 
 const changePassword = async (req, res) => {
     try {
@@ -320,7 +322,84 @@ const {gender,dateOfBirth,phone,address} = req.body;
     }
 }
 
+const postReview = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json(Response({ message: 'User not found', status: "Failed", statusCode: 404 }));
+        }
+        console.log(user?.role);
+        if(user?.role !== "user"){
+            return res.status(404).json(Response({ message: "You are not authorized to perform this action", status: "Failed", statusCode: 403 })); 
+        }
 
+        const { doctorId, rating, comment } = req.body;
+
+        if(!doctorId){
+            return res.status(404).json(Response({ message: "Doctor Id is required", status: "Failed", statusCode: 404 }));
+        }
+
+        if(!rating){
+            return res.status(404).json(Response({ message: "Rating is required", status: "Failed", statusCode: 404 }));
+        }
+
+        if(!comment){
+            return res.status(404).json(Response({ message: "Comment is required", status: "Failed", statusCode: 404 }));
+        }
+
+        const newReview = await ReviewModel.create({
+            doctorId,
+            rating,
+            comment
+        });
+
+        res.status(200).json(Response({ message: "Review created successfully", data: newReview, status: "OK", statusCode: 200 }));
+
+     } catch (error) {
+        res.status(500).json(Response({ message: `Internal server error ${error.message}`, status: "Failed", statusCode: 500 }));
+    }
+}
+
+const patientDetails = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json(Response({ message: 'User not found', status: "Failed", statusCode: 404 }));
+        }
+
+        if(user?.role !== "user"){
+            return res.status(404).json(Response({ message: "You are not authorized to perform this action", status: "Failed", statusCode: 403 }));
+        }
+
+        const { fullName,gender, age, description, doctorId } = req.body;
+        if(!fullName){
+            return res.status(404).json(Response({ message: "Full Name is required", status: "Failed", statusCode: 404 }));
+        }
+
+        if(!gender){
+            return res.status(404).json(Response({ message: "Gender is required", status: "Failed", statusCode: 404 }));
+        }
+
+        if(!age){
+            return res.status(404).json(Response({ message: "Age is required", status: "Failed", statusCode: 404 }));
+        }
+        if(!doctorId){
+            return res.status(404).json(Response({ message: "Doctor Id is required", status: "Failed", statusCode: 404 }));
+        }
+        if(!description){
+            return res.status(404).json(Response({ message: "Description is required", status: "Failed", statusCode: 404 }));
+        }
+        const patientDetails = await PatientDetailsModel.create({
+            fullName, gender, age, description, doctorId, patientId: userId
+        })
+
+        res.status(200).json(Response({ message: "Patient Details created successfully", data: patientDetails, status: "OK", statusCode: 200 }));
+    } catch (error) {
+        res.status(500).json(Response({ message: `Internal server error ${error.message}`, status: "Failed", statusCode: 500 }));
+    }
+}
 
 
 module.exports = {
@@ -331,5 +410,7 @@ module.exports = {
     setPassword,
     resendOtp,
     changePassword,
-    fillUpProfile
+    fillUpProfile,
+    postReview,
+    patientDetails
 };
