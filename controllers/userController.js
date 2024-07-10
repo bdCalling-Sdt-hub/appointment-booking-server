@@ -50,9 +50,10 @@ const signUp = async (req, res) => {
        
 
         // Call service function to register user
-        await userRegister(userDetails);
+       const userResponse = await userRegister(userDetails);
+       console.log(userResponse);
 
-        res.status(200).json(Response({statusCode:200,status:"sign up successfully", message: "A verification email is sent to your email" }));
+        res.status(200).json(Response({statusCode:200,status:"sign up successfully", message: "A verification email is sent to your email", data:{userId:userResponse?._id} }));
 
     } catch (error) {
         console.error("Error in signUp controller:", error);
@@ -288,7 +289,7 @@ const changePassword = async (req, res) => {
 
 const fillUpProfile = async (req, res) => {
     try {
-        const userId = req.userId;
+        const {userId} = req.body;
         console.log(userId);
         const user = await User.findById(userId);
         if (!user) {
@@ -296,15 +297,37 @@ const fillUpProfile = async (req, res) => {
         }
 
         let image = {};
-        if(req.file){
+        let insurance = {};
+        console.log("======>",req.file);
+        if(req.file && req.file.image){
             if(user?.image && user?.image?.publicFileURL){
                 deleteImage(user?.image?.publicFileURL)
             }
+            const imageFile = req.file.image[0];
             image = {
-                publicFileURL:`images/users/${req.file.filename}`,
-                path: `public/images/users/${req.file.filename}`
+                publicFileURL:`images/users/${imageFile.filename}`,
+                path: `public/images/users/${imageFile.filename}`
             }
         }
+
+        if (req.files && req.files.insurance) {
+            // Delete old insurance if any
+            if (user?.insurance && user.insurance.publicFileURL) {
+                deleteImage(user.insurance.publicFileURL);
+            }
+            // Add new insurance
+            const insuranceFile = req.files.insurance[0];
+            insurance = {
+                publicFileURL: `images/users/${insuranceFile.filename}`,
+                path: `public/images/users/${insuranceFile.filename}`
+            };
+            user.isProfileCompleted = true;
+            user.insurance = insurance;
+            await user.save();
+        }
+        
+
+
 console.log(image);
 const {gender,dateOfBirth,phone,address} = req.body;
         user.gender = gender;

@@ -26,6 +26,7 @@ const userRouter = require('./routes/userRouter');
 const categoryRouter = require('./routes/categoryRouter');
 const doctorRouter = require('./routes/doctorRouter');
 const paymentRouter = require('./routes/paymentRouter');
+const appointmentsRouter = require('./routes/appointmentsRouter');
 const { connectToDatabase } = require('./helpers/connection');
 // const validateResponse = require('./middlewares.js/validator');
 
@@ -55,6 +56,7 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/category', categoryRouter);
 app.use('/api/v1/doctor', doctorRouter);
 app.use('/api/v1/payment', paymentRouter);
+app.use('/api/v1/appointments', appointmentsRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
 

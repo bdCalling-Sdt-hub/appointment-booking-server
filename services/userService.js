@@ -48,7 +48,9 @@ console.log(oneTimeCode);
             } catch (error) {
                 console.error('Error updating oneTimeCode:', error);
             }
-        }, 180000); // 3 minutes in milliseconds
+        }, 180000);
+        
+        return user; // 3 minutes in milliseconds
     } catch (error) {
         console.error("Error in userRegister service:", error);
         throw new Error("Error occurred while registering user");
@@ -102,7 +104,7 @@ const forgotPasswordService = async (email, user) => {
 
         const expiresInOneHour = 36000; // seconds in 1 hour
         const accessToken = createJSONWebToken({ _id: user._id, email: user.email}, process.env.JWT_SECRET_KEY, expiresInOneHour);
-       
+       console.log(oneTimeCode);
         return accessToken;
     } catch (error) {
         console.error("Error in forgotPassword service:", error);

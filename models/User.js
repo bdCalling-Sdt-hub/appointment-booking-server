@@ -34,6 +34,8 @@ const userSchema = new mongoose.Schema({
     isDeleted: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     image: { type: Object, required: false, default: { publicFileURL: "images/users/user.png", path: "public\\images\\users\\user.png" } },
+    insurance: { type: Object, required: false, default: null },
+    isInsurance: { type: Boolean, default: false }, // true if user has insurance
     role: { type: String, required: false, enum: ["admin", "user", "doctor"], default:"admin"  },
     oneTimeCode: { type: String, required: false, default: null },
    

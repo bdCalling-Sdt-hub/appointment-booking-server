@@ -37,6 +37,9 @@ const paymentCreate = async (req, res) => {
       patientDetailsId,
       doctorId,
       paymentData,
+      patientId,
+      status,
+      isCompleted,
     } = req.body;
     if (!transactionId) {
       return res
@@ -116,6 +119,18 @@ const paymentCreate = async (req, res) => {
         );
     }
 
+    if (!patientId) {
+      return res
+        .status(404)
+        .json(
+          Response({
+            message: "Patient Id is required",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
+    }
+
     const newPayment = await PaymentModel.create({
       transactionId,
       price,
@@ -124,6 +139,7 @@ const paymentCreate = async (req, res) => {
       patientDetailsId,
       doctorId,
       paymentData,
+      patientId,
     });
 
     res
