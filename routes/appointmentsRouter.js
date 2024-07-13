@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { isValidUser} = require('../middlewares.js/auth');
-const { getAppointment } = require('../controllers/appoinmentController');
+const { getAppointment, getSingleAppointment } = require('../controllers/appoinmentController');
 
 
-router.get('/get-appointments', isValidUser, getAppointment);
+router.get('/user-get-appointments', isValidUser, getAppointment);
+router.get('/user-get-single-appointment/:appointmentId',isValidUser, getSingleAppointment);
 
 
 

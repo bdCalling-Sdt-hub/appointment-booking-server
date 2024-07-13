@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-    firstName: { type: String, required: [ true, "First Name is required"], minlength: 3, maxlength: 30, },
+    firstName: { type: String, required: [ true, "First Name is required"], minlength: 2, maxlength: 30, },
     lastName: { type: String, required: [ true, "Last Name is required"], minlength: 3, maxlength: 30, },
     email: {
         type: String, required: [true, "Email is required"], minlength: 3, maxlength: 30, trim: true,
@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
     dateOfBirth: { type: String, required: false},
     phone: { type: String, required: false },
     address: { type: String, required: false },
-    rate:{type:String,required:false},
+    rating:{type:String,required:false,default:0},
+    reviewCount:{type:Number,required:false,default:0},
     gender:{type:String,required:false},
     description:{type:String,required:false},
     state: { type: String, required: false},

@@ -6,7 +6,7 @@ const { createDoctorDetails, getDoctor, singleDoctor } = require('../controllers
 
 
 
-router.post('/create-details', isValidUser, createDoctorDetails);
+router.post('/create-details', createDoctorDetails);
 router.get('/get-doctors', isValidUser, getDoctor);
 router.get('/get-single-doctor', isValidUser, singleDoctor);
 

@@ -12,6 +12,7 @@ const doctorDetailsSchema = new mongoose.Schema({
     onlineConsultationPrice: { type: String, required: [ true, "Online Consultation is required"] },
     emergencyPrice: { type: String, required: [ true, "Emergency is required"] },
     schedule: { type: Array, required: [ true, "Schedule is required"] },
+    packages: { type: Array, required: [ true, "Packages is required"] },
 },{ timestamps: true },);
 
 
