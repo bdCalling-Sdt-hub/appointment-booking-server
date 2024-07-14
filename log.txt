@@ -1255,3 +1255,263 @@
 2024-07-13T12:44:04.859Z [info]: ::ffff:103.43.151.253 - - [13/Jul/2024:12:44:04 +0000] "POST /api/v1/user/update-profile HTTP/1.1" 500 9 "-" "Dart/3.4 (dart:io)"
 2024-07-13T12:44:32.360Z [error]: Not Found
 2024-07-13T12:44:32.363Z [info]: ::ffff:103.43.151.253 - - [13/Jul/2024:12:44:32 +0000] "POST /api/v1/user/update-profile HTTP/1.1" 500 9 "-" "Dart/3.4 (dart:io)"
+2024-07-14T04:29:38.205Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668a7ed80837f84d97a20368\user.jpg'
+2024-07-14T04:29:38.211Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:04:29:38 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 176 "-" "PostmanRuntime/7.40.0"
+2024-07-14T04:34:03.143Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:04:34:03 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 803 "-" "PostmanRuntime/7.40.0"
+2024-07-14T04:35:13.639Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:04:35:13 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 803 "-" "PostmanRuntime/7.40.0"
+2024-07-14T04:52:25.826Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:04:52:25 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 853 "-" "PostmanRuntime/7.40.0"
+2024-07-14T04:57:55.466Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:04:57:55 +0000] "GET /images/users/668a7ed80837f84d97a20368/user.jpg HTTP/1.1" 200 78488 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T04:57:55.493Z [error]: Not Found
+2024-07-14T04:57:55.497Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:04:57:55 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668a7ed80837f84d97a20368/user.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:03:18.306Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:03:18 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 853 "-" "PostmanRuntime/7.40.0"
+2024-07-14T05:03:41.673Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:03:41 +0000] "GET /images/users/668a7ed80837f84d97a20368/user.png HTTP/1.1" 200 125332 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:03:41.694Z [error]: Not Found
+2024-07-14T05:03:41.695Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:03:41 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668a7ed80837f84d97a20368/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:10:05.048Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:05:10:05 +0000] "GET /images/users/668a7ed80837f84d97a20368/user.png HTTP/1.1" 200 125332 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:10:05.114Z [error]: Not Found
+2024-07-14T05:10:05.115Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:05:10:05 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668a7ed80837f84d97a20368/user.png" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:28:31.659Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:28:31 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 853 "-" "PostmanRuntime/7.40.0"
+2024-07-14T05:28:59.059Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:28:59 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 853 "-" "PostmanRuntime/7.40.0"
+2024-07-14T05:29:28.926Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:29:28 +0000] "GET /images/users/668a7ed80837f84d97a20368/user.png HTTP/1.1" 200 1075 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:29:28.954Z [error]: Not Found
+2024-07-14T05:29:28.955Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:29:28 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668a7ed80837f84d97a20368/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:29:55.378Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:05:29:55 +0000] "GET /images/users/668a7ed80837f84d97a20368/user.png HTTP/1.1" 200 1075 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:29:55.427Z [error]: Not Found
+2024-07-14T05:29:55.428Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:05:29:55 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668a7ed80837f84d97a20368/user.png" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:30:16.275Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:05:30:16 +0000] "GET /images/users/668a7ed80837f84d97a20368/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:30:16.300Z [error]: Not Found
+2024-07-14T05:30:16.301Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:05:30:16 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668a7ed80837f84d97a20368/user.png" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T05:40:38.458Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:40:38 +0000] "POST /api/v1/user/sign-in HTTP/1.1" 200 1108 "-" "PostmanRuntime/7.40.0"
+2024-07-14T05:42:01.073Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:42:01 +0000] "POST /api/v1/user/sign-in HTTP/1.1" 401 95 "-" "PostmanRuntime/7.40.0"
+2024-07-14T05:42:01.078Z [error]: undefined
+2024-07-14T05:42:20.931Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:42:20 +0000] "POST /api/v1/user/sign-in HTTP/1.1" 200 824 "-" "PostmanRuntime/7.40.0"
+2024-07-14T05:54:35.857Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.png'
+2024-07-14T05:54:35.858Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:05:54:35 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 176 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:04:18.851Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\668e2ecce9c7ae5e4cba09bc\user.png'
+2024-07-14T06:04:18.857Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:04:18 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 201 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:05:41.955Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:05:41 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 642 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:07:45.012Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\668e2ecce9c7ae5e4cba09bc\user.png'
+2024-07-14T06:07:45.018Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:07:45 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 201 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:08:23.367Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:08:23 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 644 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:09:44.696Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\668e2ecce9c7ae5e4cba09bc\user.png'
+2024-07-14T06:09:44.703Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:09:44 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 201 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:09:47.508Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\668e2ecce9c7ae5e4cba09bc\user.png'
+2024-07-14T06:09:47.509Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:09:47 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 201 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:10:15.697Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:10:15 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 642 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:10:18.352Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:10:18 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 642 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:11:32.400Z [error]: ENOENT: no such file or directory, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\668e2ecce9c7ae5e4cba09bc\user.png'
+2024-07-14T06:11:32.406Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:11:32 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 201 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:13:41.713Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:13:41 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 642 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:19:02.580Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:19:02 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:19:20.876Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:19:20 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 8254 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:19:20.898Z [error]: Not Found
+2024-07-14T06:19:20.900Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:19:20 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:20:58.373Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:20:58 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:21:19.991Z [error]: Not Found
+2024-07-14T06:21:19.992Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:21:19 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 500 9 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:21:20.013Z [error]: Not Found
+2024-07-14T06:21:20.014Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:21:20 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:21:25.798Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:21:25 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.jpg HTTP/1.1" 200 3659 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:21:25.811Z [error]: Not Found
+2024-07-14T06:21:25.813Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:21:25 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:21:46.500Z [error]: File too large
+2024-07-14T06:21:46.502Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:21:46 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 14 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:22:33.494Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:22:33 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:22:52.690Z [error]: Not Found
+2024-07-14T06:22:52.691Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:22:52 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.jpg HTTP/1.1" 500 9 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:22:52.704Z [error]: Not Found
+2024-07-14T06:22:52.705Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:22:52 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:23:01.048Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:23:01 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 915 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:23:01.062Z [error]: Not Found
+2024-07-14T06:23:01.063Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:23:01 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T06:24:07.339Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:24:07 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T06:59:27.515Z [error]: Error converting image
+2024-07-14T06:59:27.522Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:06:59:27 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 22 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:00:28.182Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720940428171-61pHAEJ4NML._AC_UX679_.jpg
+2024-07-14T07:00:28.188Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:00:28 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 132 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:02:57.333Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720940577327-61pHAEJ4NML._AC_UX679_.jpg
+2024-07-14T07:02:57.340Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:02:57 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 132 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:05:52.882Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720940752876-61pHAEJ4NML._AC_UX679_.jpg
+2024-07-14T07:05:52.889Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:05:52 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 132 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:30:57.510Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720942257494-1714296763991.jpg
+2024-07-14T07:30:57.517Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:30:57 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 123 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:31:47.587Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720942307567-1714296763991.jpg
+2024-07-14T07:31:47.593Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:31:47 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 123 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:33:17.802Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720942397783-1714296763991.jpg
+2024-07-14T07:33:17.813Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:33:17 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 123 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:34:34.938Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720942474921-1714296763991.jpg
+2024-07-14T07:34:34.944Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:34:34 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 123 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:35:40.258Z [error]: Error converting image: Input file is missing: public\images\users\668e2ecce9c7ae5e4cba09bc\1720942540232-1714296763991.jpg
+2024-07-14T07:35:40.265Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:35:40 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 123 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:40:12.427Z [error]: Error converting image: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:40:12.432Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:40:12 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 199 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:42:18.678Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:42:18.680Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:42:18 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:44:31.849Z [error]: Error removing original file: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:44:31.854Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:44:31 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 205 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:44:42.740Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:44:42.742Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:44:42 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:45:05.567Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:45:05.568Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:45:05 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:45:50.929Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:45:50.930Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:45:50 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:50:46.445Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:50:46.446Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:50:46 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:51:24.645Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:51:24.646Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:51:24 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:52:59.500Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:52:59 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:54:05.146Z [error]: File type not supported
+2024-07-14T07:54:05.147Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:54:05 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 23 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:54:35.700Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:54:35.701Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:54:35 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:56:03.095Z [error]: File too large
+2024-07-14T07:56:03.101Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:56:03 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 14 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:57:29.382Z [error]: Error removing original file: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:57:29.389Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:57:29 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 205 "-" "PostmanRuntime/7.40.0"
+2024-07-14T07:58:56.146Z [error]: Error removing original file: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T07:58:56.152Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:07:58:56 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 205 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:00:53.662Z [error]: Error removing original file: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:00:53.668Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:00:53 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 205 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:01:43.274Z [error]: Error removing original file after retries: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:01:43.280Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:01:43 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 219 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:01:47.446Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:01:47.447Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:01:47 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:12:02.302Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:12:02 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 554 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:12:22.133Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:12:22.134Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:12:22 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:13:04.472Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:13:04 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:13:17.807Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:13:17 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.jpg HTTP/1.1" 200 234176 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:13:17.825Z [error]: Not Found
+2024-07-14T08:13:17.826Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:13:17 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:16:20.271Z [error]: Error removing original file after retries: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:16:20.291Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:16:20 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 219 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:18:48.684Z [error]: Error removing original file after retries: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:18:48.689Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:18:48 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 219 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:20:16.808Z [error]: Error removing original file after retries: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T08:20:16.814Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:20:16 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 219 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:21:25.290Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:21:25 +0000] "GET /public/images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 1777970 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:21:25.305Z [error]: Not Found
+2024-07-14T08:21:25.306Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:21:25 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/public/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:23:12.191Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:23:12 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" - - "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:23:30.827Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:23:30 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:32:24.284Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:32:24 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:32:42.921Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:32:42 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 1777970 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:32:42.936Z [error]: Not Found
+2024-07-14T08:32:42.937Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:32:42 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:36:07.712Z [error]: Error converting image: public\images\users\668e2ecce9c7ae5e4cba09bc\user.heic: bad seek to 42992
+heif: Unsupported feature: Unsupported codec (4.3000)
+2024-07-14T08:36:07.718Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:36:07 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 151 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:45:03.708Z [error]: Error converting image: public\images\users\668e2ecce9c7ae5e4cba09bc\user.heic: bad seek to 42992
+heif: Unsupported feature: Unsupported codec (4.3000)
+2024-07-14T08:45:03.709Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:45:03 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 151 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:46:46.031Z [error]: Error converting HEIC/HEIF image. Ensure libvips is installed and properly configured.
+2024-07-14T08:46:46.037Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:46:46 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 86 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:53:56.329Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:53:56 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:54:24.684Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:54:24 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 3943186 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:54:24.694Z [error]: Not Found
+2024-07-14T08:54:24.695Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:54:24 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:55:21.451Z [error]: Error converting HEIC/HEIF image. Ensure libvips is installed and properly configured.
+2024-07-14T08:55:21.452Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:55:21 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 86 "-" "PostmanRuntime/7.40.0"
+2024-07-14T08:55:35.223Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:55:35 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:55:35.235Z [error]: Not Found
+2024-07-14T08:55:35.236Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:08:55:35 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:57:38.278Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:08:57:38 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T08:57:38.289Z [error]: Not Found
+2024-07-14T08:57:38.290Z [info]: ::ffff:103.43.151.253 - - [14/Jul/2024:08:57:38 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T09:08:12.444Z [error]: Error removing original file after retries: EPERM: operation not permitted, unlink 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T09:08:12.448Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:08:12 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 219 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:08:57.859Z [error]: UNKNOWN: unknown error, open 'D:\ahad_hossain_aiman\office\appoinment-booking-server\appoinment-booking-server\public\images\users\668e2ecce9c7ae5e4cba09bc\user.jpg'
+2024-07-14T09:08:57.860Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:08:57 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 500 165 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:09:28.535Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:09:28 +0000] "PATCH /api/v1/user/update-profile HTTP/1.1" 200 692 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:09:45.222Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:09:45 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 38781 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T09:09:45.237Z [error]: Not Found
+2024-07-14T09:09:45.238Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:09:45 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T09:14:07.387Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:14:07 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 162 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:14:39.686Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:14:39 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:15:32.892Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:15:32 +0000] "GET /api/v1/doctor/get-single-doctor?id=668e2ecce9c7ae5e4cba09bc HTTP/1.1" 404 120 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:15:39.580Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:15:39 +0000] "GET /api/v1/doctor/get-single-doctor?id=668b79b7f77a99724c00197c HTTP/1.1" 200 1837 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:20:21.250Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:20:21 +0000] "GET /api/v1/user/all-user HTTP/1.1" 200 5112 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:20:54.465Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:20:54 +0000] "POST /api/v1/user/sign-in HTTP/1.1" 200 932 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:21:12.003Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:21:12 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T09:21:12.017Z [error]: Not Found
+2024-07-14T09:21:12.018Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:21:12 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T09:25:17.052Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:25:17 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:26:13.255Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:26:13 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:27:57.911Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:27:57 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:48:31.008Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:48:31 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:48:49.223Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:48:49 +0000] "GET /api/v1/user/all-user HTTP/1.1" 200 5112 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:51:20.817Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:51:20 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:54:11.870Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:54:11 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T09:55:03.217Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:09:55:03 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 400 97 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:01:39.892Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:01:39 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 400 97 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:02:18.704Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:02:18 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 400 97 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:02:49.049Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:02:49 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 400 97 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:03:58.976Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:03:58 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:04:26.780Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:04:26 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:05:39.638Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:05:39 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 128 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:06:44.618Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:06:44 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:08:38.308Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:08:38 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:10:16.021Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:10:16 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:11:00.805Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:11:00 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:14:31.867Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:14:31 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:15:29.858Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:15:29 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:17:38.754Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:17:38 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:19:19.357Z [error]: Not Found
+2024-07-14T10:19:19.364Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:19:19 +0000] "GET /images/users/user.jpg HTTP/1.1" 500 9 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:19:19.386Z [error]: Not Found
+2024-07-14T10:19:19.387Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:19:19 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/user.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:41:50.179Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:41:50 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:42:23.365Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:42:23 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.jpg HTTP/1.1" 200 60345 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:42:23.379Z [error]: Not Found
+2024-07-14T10:42:23.381Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:42:23 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:43:24.636Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:43:24 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.pdf HTTP/1.1" 200 172361 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:43:24.663Z [error]: Not Found
+2024-07-14T10:43:24.664Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:43:24 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.pdf" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:45:19.537Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:45:19 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:45:37.366Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:45:37 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:45:38.286Z [error]: Not Found
+2024-07-14T10:45:38.288Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:45:38 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:45:54.608Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:45:54 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:45:59.447Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:45:59 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:45:59.460Z [error]: Not Found
+2024-07-14T10:45:59.461Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:45:59 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:46:02.168Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:46:02 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:46:02.181Z [error]: Not Found
+2024-07-14T10:46:02.182Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:46:02 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T10:54:05.407Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:54:05 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:55:25.334Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:55:25 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T10:57:21.569Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:10:57:21 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:03:12.562Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:03:12 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:03:35.758Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:03:35 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:03:35.776Z [error]: Not Found
+2024-07-14T11:03:35.777Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:03:35 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:03:38.181Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:03:38 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:03:38.195Z [error]: Not Found
+2024-07-14T11:03:38.195Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:03:38 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:04:18.049Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:04:18 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:05:23.073Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:05:23 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:07:35.718Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:07:35 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:07:50.256Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:07:50 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:07:52.374Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:07:52 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:10:54.863Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:10:54 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:12:18.290Z [error]: Cannot read properties of undefined (reading 'filename')
+2024-07-14T11:12:18.297Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:12:18 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 56 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:12:51.729Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:12:51 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:13:16.052Z [error]: Cannot read properties of undefined (reading 'filename')
+2024-07-14T11:13:16.058Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:13:16 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 56 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:13:37.673Z [error]: Cannot read properties of undefined (reading 'filename')
+2024-07-14T11:13:37.679Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:13:37 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 56 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:14:40.489Z [error]: The "path" argument must be of type string. Received undefined
+2024-07-14T11:14:40.494Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:14:40 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 62 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:16:52.632Z [error]: Error converting image: sharp is not defined
+2024-07-14T11:16:52.638Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:16:52 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 500 44 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:17:23.396Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:17:23 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:17:47.582Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:17:47 +0000] "GET /images/users/668e2ecce9c7ae5e4cba09bc/user.png HTTP/1.1" 200 413070 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:17:47.594Z [error]: Not Found
+2024-07-14T11:17:47.595Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:17:47 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668e2ecce9c7ae5e4cba09bc/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:30:48.420Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:30:48 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 129 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:31:12.867Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:31:12 +0000] "GET /images/users/668b79b7f77a99724c00197c/user.png HTTP/1.1" 200 89401 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:31:12.892Z [error]: Not Found
+2024-07-14T11:31:12.893Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:31:12 +0000] "GET /favicon.ico HTTP/1.1" 500 9 "http://192.168.10.46:3000/images/users/668b79b7f77a99724c00197c/user.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+2024-07-14T11:32:30.210Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:32:30 +0000] "GET /api/v1/user/all-user HTTP/1.1" 200 5464 "-" "PostmanRuntime/7.40.0"
+2024-07-14T11:33:38.984Z [info]: ::ffff:192.168.10.46 - - [14/Jul/2024:11:33:38 +0000] "POST /api/v1/user/fill-Up-update HTTP/1.1" 200 127 "-" "PostmanRuntime/7.40.0"

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../middlewares.js/fileUpload');
+const {upload} = require('../middlewares.js/fileUpload');
 const { isValidUser} = require('../middlewares.js/auth');
 const { createCategory, getAllCategories, deleteCategory } = require('../controllers/categotyController');
 

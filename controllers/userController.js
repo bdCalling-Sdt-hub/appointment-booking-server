@@ -483,16 +483,23 @@ const fillUpProfile = async (req, res) => {
 
     let image = {};
     let insurance = {};
-    console.log("======>", req.file);
-    if (req.file && req.file.image) {
+    // console.log("======>==========>", req.files.image);
+    if(!req.files) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
+
+    if (req.files && req.files.image) {
       if (user?.image && user?.image?.publicFileURL) {
+        // console.log("======>aiman", user?.image?.publicFileURL);
         deleteImage(user?.image?.publicFileURL);
       }
-      const imageFile = req.file.image[0];
+      const imageFile = req.files.image[0];
+      // console.log("======>", imageFile);
+      if(!imageFile) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
+      // console.log("======>", imageFile);
       image = {
-        publicFileURL: `images/users/${imageFile.filename}`,
-        path: `public/images/users/${imageFile.filename}`,
+        publicFileURL: `images/users/${userId}/user.png`,
+        path: `public/images/users/${userId}/${imageFile.filename}`,
       };
+    
     }
 
     if (req.files && req.files.insurance) {
@@ -502,16 +509,18 @@ const fillUpProfile = async (req, res) => {
       }
       // Add new insurance
       const insuranceFile = req.files.insurance[0];
+      if(!insuranceFile) return res.status(400).json(Response({ message: "Insurance file is required", status: "Failed", statusCode: 400 }));
       insurance = {
-        publicFileURL: `images/users/${insuranceFile.filename}`,
-        path: `public/images/users/${insuranceFile.filename}`,
+        publicFileURL: `images/users/${userId}/${insuranceFile.filename}`,
+        path: `public/images/users/${userId}/${insuranceFile.filename}`,
       };
+
       user.isProfileCompleted = true;
       user.insurance = insurance;
       await user.save();
     }
 
-    console.log(image);
+    console.log("aiman========>",image);
     const { gender, dateOfBirth, phone, address } = req.body;
     user.gender = gender;
     user.dateOfBirth = dateOfBirth;
@@ -520,6 +529,7 @@ const fillUpProfile = async (req, res) => {
     user.image = image;
     user.isProfileCompleted = true;
     await user.save();
+    console.log(user);
     res.status(200).json(
       Response({
         message: "Profile updated successfully",
@@ -882,13 +892,13 @@ const updateProfile = async (req, res) => {
     let image = {};
  
     if (req.file && req.file) {
-      if (user?.image && user?.image?.publicFileURL) {
-        deleteImage(user?.image?.publicFileURL);
-      }
+      // if (user?.image && user?.image?.publicFileURL) {
+      //   deleteImage(user?.image?.publicFileURL);
+      // }
       const imageFile = req.file;
       image = {
-        publicFileURL: `images/users/${imageFile.filename}`,
-        path: `public/images/users/${imageFile.filename}`,
+        publicFileURL: `images/users/${userId}/user.png`,
+        path: `public/images/users/${userId}/${imageFile.filename}`,
       };
     }
     user.image = image;
