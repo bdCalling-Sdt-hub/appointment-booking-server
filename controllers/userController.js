@@ -800,6 +800,7 @@ const getLoginUser = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.userId;
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -812,6 +813,8 @@ const updateProfile = async (req, res) => {
     }
 
     const { firstName, lastName, gender, dateOfBirth,phone, address} = req.body;
+console.log(req.body);
+
   
     if (!firstName) {
       return res.status(404).json(

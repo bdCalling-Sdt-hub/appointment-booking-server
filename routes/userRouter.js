@@ -29,7 +29,7 @@ router.post('/post-review', isValidUser, postReview);
 router.post('/patient-details-for-doctor', isValidUser, patientDetails);
 router.get('/login-user', isValidUser, getLoginUser);
 // router.patch('/update-profile', isValidUser, upload.single('image'), updateProfile);
-router.patch('/update-profile', isValidUser, uploadUserId.single('image'),convertImage, updateProfile);
+router.put('/update-profile', isValidUser, uploadUserId.single('image'),convertImage, updateProfile);
 
 
 // router.post('/changePasswordUsingOldPassword',changePasswordUsingOldPassword)

@@ -27,6 +27,10 @@ const messageSchema = new mongoose.Schema(
           ref: "User",
           required: false,
         },
+        file: {
+            type: Object,
+            default: { publicFileURL: "/images/users/1720412579491-user.png", path: "null" },
+        },
         // replyTo: {
         //   type: mongoose.Schema.Types.ObjectId,
         //   ref: "Message",

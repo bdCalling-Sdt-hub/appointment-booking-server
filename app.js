@@ -27,6 +27,8 @@ const categoryRouter = require('./routes/categoryRouter');
 const doctorRouter = require('./routes/doctorRouter');
 const paymentRouter = require('./routes/paymentRouter');
 const appointmentsRouter = require('./routes/appointmentsRouter');
+const chatRouter = require('./routes/chatRouter');
+const messageRouter = require('./routes/messageRouter');
 const { connectToDatabase } = require('./helpers/connection');
 // const validateResponse = require('./middlewares.js/validator');
 
@@ -57,6 +59,8 @@ app.use('/api/v1/category', categoryRouter);
 app.use('/api/v1/doctor', doctorRouter);
 app.use('/api/v1/payment', paymentRouter);
 app.use('/api/v1/appointments', appointmentsRouter);
+app.use('/api/v1/chat', chatRouter);
+app.use('/api/v1/message', messageRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
 
@@ -80,11 +84,13 @@ app.use((error, req, res, next) => {
     // If headers have already been sent, do nothing further
     return next("Something went wrong"); // You can choose the message you want to send.
   }
-
+// console.log(error)
+console.log(req?.url)
+log
   if (error.message) {
     winstonLogger.error(error.message); // Log the error using winston
     console.error("Error:", error.message);
-    return res.status(500).send(error.message);
+    return res.status(500).send(Response({ statusCode: 500, status: "error", message:` Endpoint ${error.message}`, data:req?.url}));
   } else {
     error.statusCode = error.statusCode || 500;
     error.status = error.status || "error";
@@ -129,6 +135,8 @@ const io = socketIo(server, {
 });
 
 const socketIO = require("./utils/socketIO");
+const Response = require('./helpers/response');
+const { log } = require('console');
 socketIO(io);
 
 global.io = io;

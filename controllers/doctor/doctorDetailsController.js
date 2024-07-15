@@ -265,18 +265,19 @@ const getDoctor = async (req, res) => {
 
     // const details = await DoctorDetailsModel.find().populate("doctorId").lean();
     // console.log("=======>",details);
+    console.log("aiman====================>",doctorDetails);
 
     // Filter based on search query
     const filteredDoctors = doctorDetails.filter((doctor) => {
-      const { firstName, lastName, email } = doctor.doctorId;
+      const { firstName, lastName, email } = doctor?.doctorId;
       const searchLower = search ? search.toLowerCase() : "";
       return (
-        doctor.specialist.toLowerCase().includes(searchLower) ||
-        doctor.clinicAddress.toLowerCase().includes(searchLower) ||
-        doctor.about.toLowerCase().includes(searchLower) ||
-        firstName.toLowerCase().includes(searchLower) ||
-        lastName.toLowerCase().includes(searchLower) ||
-        email.toLowerCase().includes(searchLower)
+        doctor?.specialist.toLowerCase().includes(searchLower) ||
+        doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
+        doctor?.about.toLowerCase().includes(searchLower) ||
+        firstName?.toLowerCase().includes(searchLower) ||
+        lastName?.toLowerCase().includes(searchLower) ||
+        email?.toLowerCase().includes(searchLower)
       );
     });
 
