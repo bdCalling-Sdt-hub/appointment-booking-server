@@ -29,6 +29,7 @@ const paymentRouter = require('./routes/paymentRouter');
 const appointmentsRouter = require('./routes/appointmentsRouter');
 const chatRouter = require('./routes/chatRouter');
 const messageRouter = require('./routes/messageRouter');
+const adminRouter = require('./routes/admin/adminRouter');
 const { connectToDatabase } = require('./helpers/connection');
 // const validateResponse = require('./middlewares.js/validator');
 
@@ -63,6 +64,9 @@ app.use('/api/v1/chat', chatRouter);
 app.use('/api/v1/message', messageRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
+
+// Admin route
+app.use('/api/v1/admin', adminRouter);
 
 
 

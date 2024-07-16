@@ -1,3 +1,7 @@
+const Response = require("../helpers/response");
+const ChatModel = require("../models/Chat.model");
+const MessageModel = require("../models/Message.model");
+
 const socketIO = (io) => {
     io.on("connection", (socket) => {
       console.log(`ID: ${socket.id} just connected`);
@@ -29,10 +33,12 @@ const socketIO = (io) => {
             chatId = newChat._id;
           }
           messageBody.chatId = chatId;
+          console.log("chatId=====>",chatId);
           const messageCreate = await MessageModel.create(messageBody);
           const messageEvent = `lastMessage::${chatId}`;
           io.emit(messageEvent, messageCreate);
-          const chat = await ChatModel.findByIdAndDelete(chatId, {
+
+          const chat = await ChatModel.findByIdAndUpdate(chatId, {
             lastMessage: messageCreate?._id,
           });
           const newChatEvent = `chat::${receiverId}`;
@@ -98,6 +104,7 @@ const socketIO = (io) => {
           socket.leave("room" + data.roomId);
         }
       });
+      
   
       socket.on("disconnect", () => {
         console.log(`ID: ${socket.id} disconnected`);

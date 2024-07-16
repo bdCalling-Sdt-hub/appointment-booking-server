@@ -11,4 +11,5 @@ router.get('/get-doctors', isValidUser, getDoctor);
 router.get('/get-single-doctor', isValidUser, singleDoctor);
 
 
+
 module.exports = router;

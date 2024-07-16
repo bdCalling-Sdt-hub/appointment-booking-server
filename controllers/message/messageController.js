@@ -1,3 +1,4 @@
+const pagination = require("../../helpers/pagination");
 const Response = require("../../helpers/response");
 const ChatModel = require("../../models/Chat.model");
 const MessageModel = require("../../models/Message.model");
@@ -47,14 +48,13 @@ const createMessage = async (req, res) => {
       );
     }
     let image = {};
+    console.log("=======>",req.file);
     if (messageType === "image" || messageType === "video" || messageType === "audio" || messageType === "application" && req.file) {
         image = {
-          publicFileURL: `/image/users/${req.file.filename}`,
-          path:  `public/image/users/${req.file.filename}`,
+          publicFileURL: `/image/users/${req.file?.filename}`,
+          path:  `public/image/users/${req.file?.filename}`,
         }
     }
-
-   
 
     const messageBody = {
       content: {
@@ -90,7 +90,7 @@ const createMessage = async (req, res) => {
     const messageEvent = `lastMessage::${chatId}`;
     io.emit(messageEvent, messageCreate);
 
-    const chat = await ChatModel.findByIdAndDelete(chatId, {
+    const chat = await ChatModel.findByIdAndUpdate(chatId, {
       lastMessage: messageCreate?._id,
     });
     const newChatEvent = `chat::${receiverId}`;
@@ -115,23 +115,46 @@ const createMessage = async (req, res) => {
 const getMessageByChatId = async (req, res) => {
   try {
     const chatId = req.params.chatId;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.pageSize) || 10;
+
+    if (!chatId) {
+      return res.status(400).json(Response({
+        message: "Chat Id is required",
+        status: "Failed",
+        statusCode: 400,
+      }));
+    }
+
+    const totalItems = await MessageModel.countDocuments({ chatId });
+
     const messages = await MessageModel.find({ chatId }).populate(
       "senderId receiverId"
-    );
+    ).skip((page - 1) * limit).limit(limit);
+
     console.log(messages);
-    res.status(200).json({
+    res.status(200).json(Response({
       data: messages,
       status: "OK",
       statusCode: 200,
       message: "Messages fetched successfully",
-    });
+      pagination: {
+        totalPages: Math.ceil(totalItems / limit),
+        currentPage: page,
+        prevPage: page > 1 ? page - 1 : null,
+        nextPage: page < Math.ceil(totalItems / limit) ? page + 1 : null,
+        totalUsers: totalItems,
+      },
+    }
+  ));
   } catch (error) {
     console.log(error?.message);
-    res.status(500).json({
+    res.status(500).json(Response({
       message: `Internal server error ${error.message}`,
       status: "Failed",
       statusCode: 500,
-    });
+    }));
   }
 };
 
