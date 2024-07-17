@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     isInsurance: { type: Boolean, default: false }, // true if user has insurance
     role: { type: String, required: false, enum: ["admin", "user", "doctor"], default:"admin"  },
     oneTimeCode: { type: String, required: false, default: null },
-   
+    earningAmount: { type: Number, required: false, default: 0 },
 }, {
     toJSON: {
         transform(doc, ret) {

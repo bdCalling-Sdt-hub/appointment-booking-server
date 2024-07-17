@@ -219,8 +219,6 @@ const getSingleAppointment = async (req, res) => {
     }
 };
 
-
-
 const getAppointmentForDoctor = async (req, res) => {
     try {
         const {status} = req.query;
@@ -228,6 +226,7 @@ const getAppointmentForDoctor = async (req, res) => {
         try {
             const userId = req.userId;
             const user = await User.findById(userId);
+            console.log("userId", user);
             if (!user) {
                 return res.status(404).json({
                     statusCode: 404, 
@@ -283,7 +282,7 @@ const getAppointmentForDoctor = async (req, res) => {
                 }));
             }
             
-            if(user.role !== "user"){
+            if(user.role !== "doctor"){
                 return res.status(403).json(Response({   
                     message: "You are not authorized to perform this action",
                     status: "Failed",

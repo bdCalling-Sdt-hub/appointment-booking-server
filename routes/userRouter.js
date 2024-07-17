@@ -3,6 +3,7 @@ const router = express.Router();
 
 //import controllers
 const { signUp, verifyCode, signIn, resendOtp, forgotPassword, changePassword, setPassword, updateProfile, fillUpProfile, postReview, patientDetails, allUser, getLoginUser } = require('../controllers/userController');
+// const {upload,convertImageWithId} = require('../middlewares.js/fileUpload');
 const {upload,convertImageWithId} = require('../middlewares.js/fileUpload');
 const { isValidUser} = require('../middlewares.js/auth');
 const { uploadUserId,convertImage } = require('../middlewares.js/fileUploadUserId');
