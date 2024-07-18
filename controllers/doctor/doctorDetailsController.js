@@ -742,9 +742,19 @@ const doctorEarnings = async (req, res) => {
         return earningDate.getMonth() === currentMonth && earningDate.getFullYear() === currentYear;
       })
       .reduce((acc, earning) => acc + earning.price, 0);
-      
 
-      user.earningAmount = totalEarn;
+
+      const withdrawAmounts = await withdrawalModel.find({doctorId: userId, status: "Pending" || "Completed"})
+
+      let totalWithdraw = withdrawAmounts.reduce((acc, earning) => acc + earning?.withdrawAmount, 0);
+
+     console.log("withdrawAmount",totalWithdraw);
+
+     let requiredAmount = totalEarn - totalWithdraw;
+
+      console.log("requiredAmount",requiredAmount);
+
+      user.earningAmount = requiredAmount;
 
     await user.save();
 
@@ -752,7 +762,8 @@ const doctorEarnings = async (req, res) => {
       Response({
         data: {
           earnThisMonth,
-          totalEarn
+          totalEarn,
+          requiredAmount
         },
         message: "Doctor Earnings fetched successfully",
         status: "OK",
