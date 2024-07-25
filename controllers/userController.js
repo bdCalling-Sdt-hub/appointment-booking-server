@@ -636,6 +636,7 @@ const postReview = async (req, res) => {
 const patientDetails = async (req, res) => {
   try {
     const userId = req.userId;
+    console.log(req?.header);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -813,7 +814,7 @@ const updateProfile = async (req, res) => {
     }
 
     const { firstName, lastName, gender, dateOfBirth,phone, address} = req.body;
-console.log(req.body);
+console.log("aaaaaaaaapppppppppppppppppppp",req.body);
 
   
     if (!firstName) {

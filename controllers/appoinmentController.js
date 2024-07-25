@@ -3,6 +3,7 @@ const PaymentModel = require("../models/Payment.model");
 
 const User = require("../models/User");
 
+
 const getAppointment = async (req, res) => {
     try {
         const {status} = req.query;
@@ -203,9 +204,9 @@ const getSingleAppointment = async (req, res) => {
         if (!user) {
             return res.status(404).json(Response({ message: 'User not found', status: "Failed", statusCode: 404 }));
         }
-        if(user?.role !== "user"){
-            return res.status(404).json(Response({ message: "You are not authorized to perform this action", status: "Failed", statusCode: 403 }));
-        }
+        // if(user?.role !== "doctor"){
+        //     return res.status(404).json(Response({ message: "You are not authorized to perform this action", status: "Failed", statusCode: 403 }));
+        // }
         const appointmentId = req.params.appointmentId;
         console.log("appointmentId", appointmentId);
         const appointment = await PaymentModel.findById(appointmentId).populate("patientDetailsId doctorId patientId");
@@ -242,10 +243,14 @@ const getAppointmentForDoctor = async (req, res) => {
                     statusCode: 403,
                 });
             }   
+
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+
     
             const currentDate = new Date();
             const appointments = await PaymentModel.find({ date: { $gte: currentDate },doctorId: user._id })
-                .populate("patientDetailsId doctorId patientId");
+                .populate("patientDetailsId doctorId patientId").skip((page - 1) * limit).limit(limit);
             
             if (!appointments || appointments.length === 0) {
                 return res.status(404).json({
@@ -258,7 +263,14 @@ const getAppointmentForDoctor = async (req, res) => {
             res.status(200).json({
                 data: appointments, 
                 status: "OK", 
-                statusCode: 200
+                statusCode: 200,
+                pagination: {
+                    totalPages: Math.ceil(appointments.length / limit),
+                    currentPage: page,
+                    prevPage: page > 1 ? page - 1 : null,
+                    nextPage: page < Math.ceil(appointments.length / limit) ? page + 1 : null,
+                    totalUsers: appointments.length,
+                  },
             });
     
         } catch (error) {
@@ -273,6 +285,8 @@ const getAppointmentForDoctor = async (req, res) => {
         try {
             const userId = req.userId;
             const user = await User.findById(userId);
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
             // console.log("=======>",user);
             if (!user) {
                 return res.status(404).json(Response({
@@ -331,7 +345,14 @@ const getAppointmentForDoctor = async (req, res) => {
             res.status(200).json(Response({
                 data: result, 
                 status: "OK", 
-                statusCode: 200
+                statusCode: 200,
+                pagination: {
+                    totalPages: Math.ceil(result.length / limit),
+                    currentPage: page,
+                    prevPage: page > 1 ? page - 1 : null,
+                    nextPage: page < Math.ceil(result.length / limit) ? page + 1 : null,
+                    totalUsers: result.length,
+                  },
             }  
             ));
     
@@ -346,6 +367,8 @@ const getAppointmentForDoctor = async (req, res) => {
     }else if(status==="completed"){
         try {
             const userId = req.userId;
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json(Response({
@@ -393,7 +416,14 @@ const result = appointments.filter(appointment => appointment.status === "comple
             res.status(200).json(Response({
                 data: result, 
                 status: "OK", 
-                statusCode: 200
+                statusCode: 200,
+                pagination: {
+                    totalPages: Math.ceil(result.length / limit),
+                    currentPage: page,
+                    prevPage: page > 1 ? page - 1 : null,
+                    nextPage: page < Math.ceil(result.length / limit) ? page + 1 : null,
+                    totalUsers: result.length,
+                  },
             }));
     
         } catch (error) {

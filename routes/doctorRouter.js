@@ -3,7 +3,7 @@ const router = express.Router();
 // const { upload } = require('../middlewares.js/fileUpload');
 const upload = require('../middlewares.js/fileUploadNormal');
 const { isValidUser} = require('../middlewares.js/auth');
-const { createDoctorDetails, getDoctor, singleDoctor, sendPrescription, getDoctorDetails, editDoctorDetails, doctorEarnings, withdrawalRequest } = require('../controllers/doctor/doctorDetailsController');
+const { createDoctorDetails, getDoctor, singleDoctor, sendPrescription, getDoctorDetails, editDoctorDetails, doctorEarnings, withdrawalRequest, lastWithDrawList, getLogInUserReview, emergencyConsultation, loginDoctorStatus } = require('../controllers/doctor/doctorDetailsController');
 
 
 
@@ -15,6 +15,10 @@ router.get('/doctor-details', isValidUser, getDoctorDetails);
 router.patch('/edit-details', isValidUser, editDoctorDetails);
 router.get('/doctor-earnings', isValidUser, doctorEarnings);
 router.post('/withdrawal-request', isValidUser, withdrawalRequest);
+router.get('/last-withdraw-list', isValidUser, lastWithDrawList);
+router.get('/get-doctor-review', isValidUser, getLogInUserReview);
+router.post('/emergency',isValidUser, emergencyConsultation);
+router.get('/login-doctor-status', isValidUser, loginDoctorStatus);
 
 
 module.exports = router;

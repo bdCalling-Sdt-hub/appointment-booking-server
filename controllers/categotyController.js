@@ -68,19 +68,19 @@ const createCategory = async (req, res) => {
 
 const getAllCategories = async (req, res) => {
   try {
-    const userId = req.userId;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res
-        .status(404)
-        .json(
-          Response({
-            message: "User not found",
-            status: "Failed",
-            statusCode: 404,
-          })
-        );
-    }
+    // const userId = req.userId;
+    // const user = await User.findById(userId);
+    // if (!user) {
+    //   return res
+    //     .status(404)
+    //     .json(
+    //       Response({
+    //         message: "User not found",
+    //         status: "Failed",
+    //         statusCode: 404,
+    //       })
+    //     );
+    // }
 
     const categories = await CategoryModel.find({ isDeleted: false });
 
@@ -188,4 +188,82 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-module.exports = { createCategory, getAllCategories, deleteCategory };
+const getSingleCategory = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json(
+          Response({
+            message: "User not found",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
+    }
+    if(user?.role !== "admin"){
+      return res
+        .status(403)
+        .json(
+          Response({
+            message: "You are not authorized to perform this action",
+            status: "Failed",
+            statusCode: 403,
+          })
+        );
+    }
+
+    const { categoryId } = req.params;
+    console.log(categoryId);
+    if (!categoryId) {
+      return res
+        .status(400)
+        .json(
+          Response({
+            message: "Category ID is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
+    }
+
+    const category = await CategoryModel.findOne(categoryId);
+    if (!category) {
+      return res
+        .status(404)
+        .json(
+          Response({
+            message: "Category not found",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
+    }
+
+    res
+      .status(200)
+      .json(
+        Response({
+          message: "Category fetched successfully",
+          data: category,
+          status: "Success",
+          statusCode: 200,
+        })
+      );
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json(
+        Response({
+          message: `Internal server error ${error.message}`,
+          status: "Failed",
+          statusCode: 500,
+        })
+      );
+  }
+};
+
+module.exports = { createCategory, getAllCategories, deleteCategory,getSingleCategory };

@@ -6,19 +6,17 @@ const ReviewModel = require("../../models/Review.model");
 const User = require("../../models/User");
 const moment = require("moment");
 const withdrawalModel = require("../../models/withdraw.model");
-
+const PaymentModel = require("../../models/Payment.model");
 
 function calculateAverageRating(reviews) {
   if (reviews.length === 0) return 0;
 
   const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
   const averageRating = totalRating / reviews.length;
-  console.log("=======================>review",averageRating);
+  console.log("=======================>review", averageRating);
 
   return averageRating;
 }
-
-
 
 // Function to generate time slots array between startTime and endTime
 // function generateTimeSlots(startTime, endTime) {
@@ -39,23 +37,41 @@ function calculateAverageRating(reviews) {
 
 function generateTimeSlots(startTime, endTime) {
   const timeSlots = [];
-  let [startHours, startMinutes] = startTime.split(':').map(Number);
-  let [endHours, endMinutes] = endTime.split(':').map(Number);
+  let [startHours, startMinutes] = startTime.split(":").map(Number);
+  let [endHours, endMinutes] = endTime.split(":").map(Number);
+
+  console.log(startHours, startMinutes, endHours, endMinutes);
 
   // Convert times to minutes since midnight
   let currentMinutes = startHours * 60 + startMinutes;
-  const endTotalMinutes = endHours * 60 + endMinutes;
+  let endTotalMinutes = endHours * 60 + endMinutes;
+
+  console.log("======>", currentMinutes, endTotalMinutes);
 
   // Generate time slots in 30-minute intervals
   while (currentMinutes < endTotalMinutes) {
     const hours = Math.floor(currentMinutes / 60);
     const minutes = currentMinutes % 60;
-    const timeSlot = new Date(2024, 0, 1, hours, minutes)
-      .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    const timeSlot = new Date(2024, 0, 1, hours, minutes).toLocaleTimeString(
+      [],
+      { hour: "2-digit", minute: "2-digit", hour12: true }
+    );
 
     timeSlots.push(timeSlot);
     currentMinutes += 30;
   }
+
+  //    while (currentMinutes && endTotalMinutes) {
+  //     const hours = Math.floor(currentMinutes / 60);
+  //     const minutes = currentMinutes % 60;
+  //     const timeSlot = new Date(2024, 0, 1, hours, minutes).toLocaleTimeString(
+  //       [],
+  //       { hour: "2-digit", minute: "2-digit", hour12: true }
+  //     );
+
+  //     timeSlots.push(timeSlot);
+  //     currentMinutes += 30;
+  //   }
 
   return timeSlots;
 }
@@ -64,7 +80,6 @@ function generateTimeSlots(startTime, endTime) {
 // const startTime = '01:00';
 // const endTime = '19:00';
 // console.log(generateTimeSlots(startTime, endTime));
-
 
 const createDoctorDetails = async (req, res) => {
   try {
@@ -299,7 +314,7 @@ const getDoctor = async (req, res) => {
 
     // const details = await DoctorDetailsModel.find().populate("doctorId").lean();
     // console.log("=======>",details);
-    console.log("aiman====================>",doctorDetails);
+    console.log("aiman====================>", doctorDetails);
 
     // Filter based on search query
     const filteredDoctors = doctorDetails.filter((doctor) => {
@@ -343,7 +358,6 @@ const getDoctor = async (req, res) => {
         })
       );
     }
-   
 
     res.status(200).json(
       Response({
@@ -364,16 +378,18 @@ const getDoctor = async (req, res) => {
   }
 };
 
-
-
 const singleDoctor = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
-      return res
-        .status(404)
-        .json(Response({ message: "User not found", status: "Failed", statusCode: 404 }));
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
     }
 
     if (user.role !== "user") {
@@ -427,77 +443,84 @@ const singleDoctor = async (req, res) => {
       );
     });
 
-    const doctorReview =  await ReviewModel.find({doctorId:id}).sort({createdAt:-1}).populate({
-      path: "patientId",
-      select: "firstName lastName email image",
-    }).select("comment rating patientId").lean();
+    const doctorReview = await ReviewModel.find({ doctorId: id })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "patientId",
+        select: "firstName lastName email image",
+      })
+      // .select("comment rating patientId")
+      .lean();
 
     const averageRating = calculateAverageRating(doctorReview);
-    console.log("averageRating=====================>",averageRating); 
+    console.log("averageRating=====================>", averageRating);
     // console.log("doctorReview",doctorReview);
-    const doctor = await User.findById(id)
-    console.log("doctor",doctor);
+    const doctor = await User.findById(id);
+    console.log("doctor", doctor);
 
     if (!doctor) {
-      return res.status(404).json(Response({
-        message: "Doctor not found",
-        status: "Failed",
-        statusCode: 404,
-      }));
+      return res.status(404).json(
+        Response({
+          message: "Doctor not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
     }
 
     if (doctor?.role !== "doctor") {
-      return res.status(404).json(Response({
-        message: "You are not authorized to perform this action",
-        status: "Failed",
-        statusCode: 403,
-      }));
+      return res.status(404).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
     }
     doctor.rating = averageRating;
     doctor.reviewCount = doctorReview.length;
-    console.log("doctor",doctor);
+    console.log("doctor", doctor);
     await doctor.save();
-
-
-
-    
 
     // Filter schedule to get only the schedule for the specified day
     filteredDoctors.forEach((doctor) => {
-      filteredDoctors[0].allSchedule = doctor?.schedule;   
+      filteredDoctors[0].allSchedule = doctor?.schedule;
       filteredDoctors[0].topReviews = doctorReview.slice(0, 3);
-    
+
       doctor.schedule = doctor.schedule.filter(
         (slot) => slot.day.toLowerCase() === dayName.toLowerCase()
       );
+      console.log("doctor.schedule==============>", doctor.schedule);
       if (doctor.schedule.length > 0) {
-       console.log("doctor.schedule==============>",doctor.schedule);
-       
+        console.log("doctor.schedule==============>", doctor.schedule);
+
         const todaySchedule = doctor.schedule[0];
         const startTime = todaySchedule.startTime;
         const endTime = todaySchedule.endTime;
-        console.log("startTime",startTime,"endTime",endTime);
+        console.log("startTime", startTime, "endTime", endTime);
         doctor.timeSlots = generateTimeSlots(startTime, endTime);
-        console.log("aim",generateTimeSlots(startTime, endTime));
+        console.log("aim", generateTimeSlots(startTime, endTime));
       } else {
         doctor.timeSlots = []; // No schedule found for the specified day
       }
     });
 
-   
-
-    res.status(200).json(Response({
-      message: "Doctor Details fetched successfully",
-      data: filteredDoctors[0],
-      status: "OK",
-      statusCode: 200,
-    }));
+    res.status(200).json(
+      Response({
+        message: "Doctor Details fetched successfully",
+        data: filteredDoctors[0],
+        status: "OK",
+        statusCode: 200,
+      })
+    );
   } catch (error) {
-    res.status(500).json(Response({
-      message: `Internal server error ${error.message}`,
-      status: "Failed",
-      statusCode: 500,
-    }));
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
   }
 };
 
@@ -506,36 +529,42 @@ const sendPrescription = async (req, res) => {
     const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json(Response({
-        statusCode: 404, 
-        message: 'User not found', 
-        status: "Failed"
-      }));
+      return res.status(404).json(
+        Response({
+          statusCode: 404,
+          message: "User not found",
+          status: "Failed",
+        })
+      );
     }
 
-    if(user.role !== "doctor"){
-      return res.status(403).json(Response({   
-        message: "You are not authorized to perform this action",
-        status: "Failed",
-        statusCode: 403,
-      }));
+    if (user.role !== "doctor") {
+      return res.status(403).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
     }
     const { patientId } = req.body;
     console.log("patientId", patientId);
     const file = req.file;
 
     if (!file) {
-      return res.status(400).json(Response({
-        statusCode: 400, 
-        message: 'File not found', 
-        status: "Failed"
-      }));
+      return res.status(400).json(
+        Response({
+          statusCode: 400,
+          message: "File not found",
+          status: "Failed",
+        })
+      );
     }
 
     console.log("file", file);
     console.log("patientId", patientId);
 
-    let filePrescription = {}
+    let filePrescription = {};
     if (req.file) {
       filePrescription = {
         publicFileURL: `images/users/${req.file.filename}`,
@@ -546,69 +575,97 @@ const sendPrescription = async (req, res) => {
     const prescription = new DoctorPrescriptionModel({
       doctorId: userId,
       patientId,
-      file:filePrescription
+      file: filePrescription,
     });
 
     await prescription.save();
-    if(!prescription){
-      return res.status(400).json(Response({
-        statusCode: 400, 
-        message: 'Prescription not found', 
-        status: "Failed"
-      }));
+    if (!prescription) {
+      return res.status(400).json(
+        Response({
+          statusCode: 400,
+          message: "Prescription not found",
+          status: "Failed",
+        })
+      );
     }
 
-    res.status(200).json(Response({data: prescription,message: "Prescription sent successfully", status: "OK", statusCode: 200}));
-  
+    res.status(200).json(
+      Response({
+        data: prescription,
+        message: "Prescription sent successfully",
+        status: "OK",
+        statusCode: 200,
+      })
+    );
   } catch (error) {
-    console.log("error-send-prescription",error?.message);
-    res.status(500).json(Response({message: error?.message, status: "Failed", statusCode: 500}));
+    console.log("error-send-prescription", error?.message);
+    res
+      .status(500)
+      .json(
+        Response({ message: error?.message, status: "Failed", statusCode: 500 })
+      );
   }
-}
-  
+};
+
 const getDoctorDetails = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json(Response({
-        statusCode: 404, 
-        message: 'User not found', 
-        status: "Failed"
-      }));
+      return res.status(404).json(
+        Response({
+          statusCode: 404,
+          message: "User not found",
+          status: "Failed",
+        })
+      );
     }
-    if(user.role !== "doctor"){
-      return res.status(403).json(Response({   
-        message: "You are not authorized to perform this action",
-        status: "Failed",
-        statusCode: 403,
-      }));
+    if (user.role !== "doctor") {
+      return res.status(403).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
     }
 
-    const doctor = await DoctorDetailsModel.findOne({doctorId:userId}).populate('doctorId');
+    const doctor = await DoctorDetailsModel.findOne({
+      doctorId: userId,
+    }).populate("doctorId");
 
-    if(!doctor){
-      return res.status(400).json(Response({
-        statusCode: 400, 
-        message: 'Doctor not found', 
-        status: "Failed"
-      }));
+    if (!doctor) {
+      return res.status(400).json(
+        Response({
+          statusCode: 400,
+          message: "Doctor not found",
+          status: "Failed",
+        })
+      );
     }
-    res.status(200).json(Response({data: doctor,message: "Doctor Details fetched successfully", status: "OK", statusCode: 200}));
-
-    
+    res.status(200).json(
+      Response({
+        data: doctor,
+        message: "Doctor Details fetched successfully",
+        status: "OK",
+        statusCode: 200,
+      })
+    );
   } catch (error) {
-    console.log("get-login-doctor-details",error?.message);
-    res.status(500).json(Response({message: error?.message, status: "Failed", statusCode: 500}));
+    console.log("get-login-doctor-details", error?.message);
+    res
+      .status(500)
+      .json(
+        Response({ message: error?.message, status: "Failed", statusCode: 500 })
+      );
   }
-}
-
+};
 
 const editDoctorDetails = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
-    
+
     if (!user) {
       return res.status(404).json(
         Response({
@@ -699,8 +756,6 @@ const editDoctorDetails = async (req, res) => {
   }
 };
 
-
-
 const doctorEarnings = async (req, res) => {
   try {
     const userId = req.userId;
@@ -729,7 +784,10 @@ const doctorEarnings = async (req, res) => {
     const doctorEarnings = await doctorEarningModel.find({ doctorId: userId });
 
     // Calculate total earnings
-    const totalEarn = doctorEarnings.reduce((acc, earning) => acc + earning.price, 0);
+    const totalEarn = doctorEarnings.reduce(
+      (acc, earning) => acc + earning.price,
+      0
+    );
 
     // Get current month and year
     const currentMonth = new Date().getMonth();
@@ -739,22 +797,30 @@ const doctorEarnings = async (req, res) => {
     const earnThisMonth = doctorEarnings
       .filter((earning) => {
         const earningDate = new Date(earning.createdAt);
-        return earningDate.getMonth() === currentMonth && earningDate.getFullYear() === currentYear;
+        return (
+          earningDate.getMonth() === currentMonth &&
+          earningDate.getFullYear() === currentYear
+        );
       })
       .reduce((acc, earning) => acc + earning.price, 0);
 
+    const withdrawAmounts = await withdrawalModel.find({
+      doctorId: userId,
+      status: "Pending" || "Completed",
+    });
 
-      const withdrawAmounts = await withdrawalModel.find({doctorId: userId, status: "Pending" || "Completed"})
+    let totalWithdraw = withdrawAmounts.reduce(
+      (acc, earning) => acc + earning?.withdrawAmount,
+      0
+    );
 
-      let totalWithdraw = withdrawAmounts.reduce((acc, earning) => acc + earning?.withdrawAmount, 0);
+    console.log("withdrawAmount", totalWithdraw);
 
-     console.log("withdrawAmount",totalWithdraw);
+    let requiredAmount = totalEarn - totalWithdraw;
 
-     let requiredAmount = totalEarn - totalWithdraw;
+    console.log("requiredAmount", requiredAmount);
 
-      console.log("requiredAmount",requiredAmount);
-
-      user.earningAmount = requiredAmount;
+    user.earningAmount = requiredAmount;
 
     await user.save();
 
@@ -763,11 +829,11 @@ const doctorEarnings = async (req, res) => {
         data: {
           earnThisMonth,
           totalEarn,
-          requiredAmount
+          requiredAmount,
         },
         message: "Doctor Earnings fetched successfully",
         status: "OK",
-        statusCode: 200
+        statusCode: 200,
       })
     );
   } catch (error) {
@@ -776,12 +842,11 @@ const doctorEarnings = async (req, res) => {
       Response({
         message: error?.message,
         status: "Failed",
-        statusCode: 500
+        statusCode: 500,
       })
     );
   }
 };
-
 
 const withdrawalRequest = async (req, res) => {
   try {
@@ -819,8 +884,6 @@ const withdrawalRequest = async (req, res) => {
       );
     }
 
-   
-
     // Check if withdrawAmount is less than or equal to total earnings
     if (withdrawAmount > user?.earningAmount) {
       return res.status(400).json(
@@ -839,7 +902,7 @@ const withdrawalRequest = async (req, res) => {
       accountType,
       accountNumber,
       withdrawAmount: withdrawAmount,
-      status: "Pending"
+      status: "Pending",
     });
 
     await withdrawal.save();
@@ -851,30 +914,309 @@ const withdrawalRequest = async (req, res) => {
     // Create a new withdrawal request
     // await withdrawal.save();
 
-
     // Respond with success
     res.status(200).json(
       Response({
         message: "Withdrawal request created successfully",
         data: withdrawal,
         status: "OK",
-        statusCode: 200
+        statusCode: 200,
       })
     );
-
   } catch (error) {
     console.log("withdrawal-request", error?.message);
     res.status(500).json(
       Response({
         message: error?.message,
         status: "Failed",
-        statusCode: 500
+        statusCode: 500,
       })
     );
   }
 };
 
+const lastWithDrawList = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    if (user.role !== "doctor") {
+      return res.status(403).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
+    }
+
+    const page = req.query.page;
+    const limit = req.query.limit || 10;
+    const skip = (page - 1) * limit;
+    const totalWithdraws = await withdrawalModel.countDocuments({
+      doctorId: userId,
+    });
+
+    const withdrawals = await withdrawalModel
+      .find({ doctorId: userId })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip);
+
+    if (!withdrawals) {
+      return res.status(404).json(
+        Response({
+          message: "No withdrawals found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    res.status(200).json(
+      Response({
+        data: withdrawals,
+        message: "Withdrawals fetched successfully",
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalWithdraws / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage: page < Math.ceil(totalWithdraws / limit) ? page + 1 : null,
+          totalUsers: totalWithdraws,
+        },
+      })
+    );
+  } catch (error) {
+    console.log("last-withdraw-list", error?.message);
+    res.status(500).json(
+      Response({
+        message: error?.message,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+};
+
+const getLogInUserReview = async (req, res) => {
+  try {
+    const doctorId = req.userId;
+    const user = await User.findById(doctorId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    if (user.role !== "doctor") {
+      return res.status(403).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
+    }
+
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const skip = (page - 1) * limit;
+    const totalItems = await ReviewModel.countDocuments({ doctorId: doctorId });
+
+    const reviews = await ReviewModel.find({ doctorId: doctorId })
+      .populate("patientId")
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip);
+
+    const response = {
+      avgRating: user?.rating,
+      reviews: reviews,
+      reviewsCount: user?.reviewCount,
+    };
+    if (!reviews) {
+      return res.status(404).json(
+        Response({
+          message: "No reviews found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    res.status(200).json(
+      Response({
+        data: response,
+        message: "Reviews fetched successfully",
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalItems / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage: page < Math.ceil(totalItems / limit) ? page + 1 : null,
+          totalUsers: totalItems,
+        },
+      })
+    );
+  } catch (error) {
+    res.status(500).json(
+      Response({
+        message: error?.message,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+};
+
+const emergencyConsultation = async (req, res) => {
+  try {
+    const doctorId = req.userId;
+    const user = await User.findById(doctorId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    if (user.role !== "doctor") {
+      return res.status(403).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
+    }
+    const { isEmergency } = req.body;
+
+    if (!isEmergency) {
+      return res.status(400).json(
+        Response({
+          message: "isEmergency status is required",
+          status: "Failed",
+          statusCode: 400,
+        })
+      );
+    }
+
+    user.isEmergency = isEmergency;
+    await user.save();
+
+    res.status(200).json(
+      Response({
+        data: user,
+        message: "isEmergency status updated successfully",
+        status: "OK",
+        statusCode: 200,
+      })
+    );
+  } catch (error) {
+    console.log("emergency-consultation", error?.message);
+    res.status(500).json(
+      Response({
+        message: error?.message,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+};
+
+const loginDoctorStatus = async (req, res) => {
+  try {
+    const doctorId = req.userId;
+    const user = await User.findById(doctorId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+
+    }
+
+    if (user.role !== "doctor") {
+      return res.status(403).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
+    }
+
+      // Count total appointments for the doctor
+      const totalAppointments = await PaymentModel.countDocuments({ doctorId });
+
+      // Count active appointments for the doctor
+      const activeAppointments = await PaymentModel.countDocuments({ doctorId, status: "active" });
+  
+      // Count completed appointments for the doctor
+      const completedAppointments = await PaymentModel.countDocuments({ doctorId, status: "completed" });
+
+    res.status(200).json(
+      Response({
+        data: {
+          totalAppointments,
+          activeAppointments,
+          completedAppointments
+        },
+        message: "Login status fetched successfully",
+        status: "OK",
+        statusCode: 200,
+      })
+    )
+
+  } catch (error) {
+    console.log("doctor-status", error?.message);
+    res.status(500).json(
+      Response({
+        message: error?.message,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+}
 
 
 
-module.exports = { createDoctorDetails, getDoctor, singleDoctor ,sendPrescription,getDoctorDetails,editDoctorDetails,doctorEarnings,withdrawalRequest};
+
+
+module.exports = {
+  createDoctorDetails,
+  getLogInUserReview,
+  getDoctor,
+  lastWithDrawList,
+  singleDoctor,
+  sendPrescription,
+  getDoctorDetails,
+  editDoctorDetails,
+  doctorEarnings,
+  withdrawalRequest,
+  emergencyConsultation,
+  loginDoctorStatus
+};
