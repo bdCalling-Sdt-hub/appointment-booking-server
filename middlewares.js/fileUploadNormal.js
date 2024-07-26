@@ -9,7 +9,7 @@ const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) || 20971520; // 20 MB
 
 const ALLOWED_FILE_TYPES = [
   "jpg", "jpeg", "png", "xlsx", "xls", "csv", "pdf", "doc", "docx",
-  "mp3", "wav", "ogg", "mp4", "avi", "mov", "mkv", "webm"
+  "mp3", "wav", "ogg", "mp4", "avi", "mov", "mkv", "webm","svg"
 ];
 
 const storage = multer.diskStorage({

@@ -137,6 +137,7 @@ const deleteCategory = async (req, res) => {
     }
 
     const { categoryId } = req.body;
+    console.log("categoryId", categoryId);
     if (!categoryId) {
       return res
         .status(400)
@@ -229,7 +230,7 @@ const getSingleCategory = async (req, res) => {
         );
     }
 
-    const category = await CategoryModel.findOne(categoryId);
+    const category = await CategoryModel.findById(categoryId);
     if (!category) {
       return res
         .status(404)
@@ -266,4 +267,104 @@ const getSingleCategory = async (req, res) => {
   }
 };
 
-module.exports = { createCategory, getAllCategories, deleteCategory,getSingleCategory };
+const updateCategory = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const roll = req.userRole;
+    if (roll !== "admin")
+      return res
+        .status(403)
+        .json(
+          Response({
+            message: "You are not authorized to perform this action",
+            status: "Failed",
+            statusCode: 403,
+          })
+        );
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json(
+          Response({
+            message: "User not found",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
+    }
+
+    const { categoryId } = req.params;
+    console.log(categoryId);
+    if (!categoryId) {
+      return res
+        .status(400)
+        .json(
+          Response({
+            message: "Category ID is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
+    }
+
+    const category = await CategoryModel.findById(categoryId);
+    console.log(category);
+    if (!category) {
+      return res
+        .status(404)
+        .json(
+          Response({
+            message: "Category not found",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
+    }
+
+    const { name } = req.body;
+    let image = {};
+
+    if (req.file) {
+      image = {
+        publicFileURL:`images/users/${req.file.filename}`,
+        path: `public/images/users/${req.file.filename}`,
+      };
+    }
+
+if(name){
+  category.name = name;
+  await category.save();
+}
+   
+  if(image){
+
+    category.image = image;
+    await category.save();
+  }
+    res
+      .status(200)
+      .json(
+        Response({
+          message: "Category updated successfully",
+          status: "Success",
+          statusCode: 200,
+          data: category,
+        })
+      );
+  } catch (error) {
+    console.error("updateCategory",error?.message);
+    return res
+      .status(500)
+      .json(
+        Response({
+          message: `Internal server error ${error.message}`,
+          status: "Failed",
+          statusCode: 500,
+        })
+      );
+  }
+};
+
+module.exports = { createCategory, getAllCategories, deleteCategory,getSingleCategory,updateCategory };

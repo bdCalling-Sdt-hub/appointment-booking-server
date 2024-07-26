@@ -43,6 +43,21 @@ const paymentCreate = async (req, res) => {
     });
 
     const { date, timeSlot, doctorId, package } = req.body;
+    console.log("date==========>", date);
+
+    if (!date) {
+      return res.status(404).json(
+        Response({
+          message: "Date is required",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+
+    console.log("formattedDate===>", formattedDate);
+
 
     if (!timeSlot) {
       return res.status(404).json(
@@ -84,7 +99,7 @@ const paymentCreate = async (req, res) => {
         amount: charge.amount / 100,
         patientId: userId,
         transactionId: charge.id,
-        date: date,
+        date: formattedDate,
         timeSlot: timeSlot,
         doctorId: doctorId,
         package: package,

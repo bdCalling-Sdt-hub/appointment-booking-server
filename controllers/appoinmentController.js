@@ -26,10 +26,16 @@ const getAppointment = async (req, res) => {
                     statusCode: 403,
                 });
             }   
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+
+           
     
-            const currentDate = new Date();
-            const appointments = await PaymentModel.find({ date: { $gte: currentDate },patientId: user._id })
-                .populate("patientDetailsId doctorId patientId");
+            const currentDate = new Date().toISOString().split('T')[0];
+            console.log("currentDate===>",currentDate);
+            const totalDocument = await PaymentModel.countDocuments({ date: { $gt: currentDate },patientId: user._id });
+            const appointments = await PaymentModel.find({ date: { $gt: currentDate },patientId: user._id })
+                .populate("patientDetailsId doctorId patientId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
             
             if (!appointments || appointments.length === 0) {
                 return res.status(404).json({
@@ -39,19 +45,26 @@ const getAppointment = async (req, res) => {
                 });
             }
     
-            res.status(200).json({
+            res.status(200).json(Response({
                 data: appointments, 
                 status: "OK", 
-                statusCode: 200
-            });
+                statusCode: 200,
+                pagination: {
+                    totalPages: Math.ceil(totalDocument / limit),
+                    currentPage: page,
+                    prevPage: page > 1 ? page - 1 : null,
+                    nextPage: page < Math.ceil(totalDocument / limit) ? page + 1 : null,
+                    totalUsers: totalDocument,
+                  },
+            }));
     
         } catch (error) {
             console.error(error);
-            res.status(500).json({
+            res.status(500).json(Response({
                 message: `Internal server error ${error.message}`,
                 status: "Failed",
                 statusCode: 500,
-            });
+            }));
         }
     }else if(status==="active"){
         try {
@@ -73,18 +86,23 @@ const getAppointment = async (req, res) => {
                     statusCode: 403,
                 }));
             }   
+
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
     
             const currentDate = new Date();
             const currentDateString = currentDate.toISOString().split('T')[0];
             const currentTimeString = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            console.log(currentDateString, currentTimeString);
+            console.log("currentDate============>",currentDateString);
+            // console.log("currentDate===>",currentDate);
+            const totalDocument = await PaymentModel.countDocuments({ date: { $lte: currentDateString }, patientId: user._id });
             const appointments = await PaymentModel.find({
 
-                date: { $lte: new Date(currentDateString) },
+                date: { $lte: currentDateString },
                 // timeSlot: { $lte: currentTimeString },
                 patientId: user._id
 
-            }).populate("patientDetailsId doctorId patientId");
+            }).populate("patientDetailsId doctorId patientId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
             
             if (!appointments || appointments.length === 0) {
                 return res.status(404).json(Response({
@@ -115,7 +133,14 @@ const getAppointment = async (req, res) => {
             res.status(200).json(Response({
                 data: result, 
                 status: "OK", 
-                statusCode: 200
+                statusCode: 200,
+                pagination: {
+                    totalPages: Math.ceil(totalDocument / limit),
+                    currentPage: page,
+                    prevPage: page > 1 ? page - 1 : null,
+                    nextPage: page < Math.ceil(totalDocument / limit) ? page + 1 : null,
+                    totalUsers: totalDocument,
+                  },
             }  
             ));
     
@@ -146,10 +171,13 @@ const getAppointment = async (req, res) => {
                     statusCode: 403,
                 }));
             }   
-    
-            const currentDate = new Date();
-            const appointments = await PaymentModel.find({ date: { $gte: currentDate } ,patientId: user._id })
-                .populate("patientDetailsId doctorId patientId");
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+
+            const currentDate = new Date().toDateString().split('T')[0];
+            const totalDocument = await PaymentModel.countDocuments({ date: { $gte: currentDate }, patientId: user._id });
+            const appointments = await PaymentModel.find({ date: { $gte: currentDate } ,patientId: user._id }).sort({ createdAt: -1 })
+                .populate("patientDetailsId doctorId patientId").skip((page - 1) * limit).limit(limit);;
             
 
 
@@ -177,7 +205,14 @@ const result = appointments.filter(appointment => appointment.status === "comple
             res.status(200).json(Response({
                 data: result, 
                 status: "OK", 
-                statusCode: 200
+                statusCode: 200,
+                pagination: {
+                    totalPages: Math.ceil(result.length / limit),
+                    currentPage: page,
+                    prevPage: page > 1 ? page - 1 : null,
+                    nextPage: page < Math.ceil(result.length / limit) ? page + 1 : null,
+                    totalUsers: result.length,
+                  },
             }));
     
         } catch (error) {
@@ -248,9 +283,10 @@ const getAppointmentForDoctor = async (req, res) => {
             const limit = parseInt(req.query.limit) || 10;
 
     
-            const currentDate = new Date();
-            const appointments = await PaymentModel.find({ date: { $gte: currentDate },doctorId: user._id })
-                .populate("patientDetailsId doctorId patientId").skip((page - 1) * limit).limit(limit);
+            const currentDate = new Date().toISOString().split('T')[0];
+            const totalDocument = await PaymentModel.countDocuments({ date: { $gt: currentDate }, doctorId: user._id });
+            const appointments = await PaymentModel.find({ date: { $gt: currentDate },doctorId: user._id })
+                .populate("patientDetailsId doctorId patientId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
             
             if (!appointments || appointments.length === 0) {
                 return res.status(404).json({
@@ -260,18 +296,18 @@ const getAppointmentForDoctor = async (req, res) => {
                 });
             }
     
-            res.status(200).json({
+            res.status(200).json(Response({
                 data: appointments, 
                 status: "OK", 
                 statusCode: 200,
                 pagination: {
-                    totalPages: Math.ceil(appointments.length / limit),
+                    totalPages: Math.ceil(totalDocument / limit),
                     currentPage: page,
                     prevPage: page > 1 ? page - 1 : null,
-                    nextPage: page < Math.ceil(appointments.length / limit) ? page + 1 : null,
-                    totalUsers: appointments.length,
+                    nextPage: page < Math.ceil(totalDocument / limit) ? page + 1 : null,
+                    totalUsers: totalDocument,
                   },
-            });
+            }));
     
         } catch (error) {
             console.error(error);
@@ -308,13 +344,14 @@ const getAppointmentForDoctor = async (req, res) => {
             const currentDateString = currentDate.toISOString().split('T')[0];
             const currentTimeString = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             console.log(currentDateString, currentTimeString);
+            const totalDocument = await PaymentModel.countDocuments({ date: { $lte: currentDateString }, doctorId: user._id });
             const appointments = await PaymentModel.find({
 
-                date: { $lte: new Date(currentDateString) },
+                date: { $lte: currentDateString },
                 // timeSlot: { $lte: currentTimeString },
                 doctorId: user._id
 
-            }).populate("patientDetailsId doctorId patientId");
+            }).populate("patientDetailsId doctorId patientId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);;
             
             if (!appointments || appointments.length === 0) {
                 return res.status(404).json(Response({
@@ -347,11 +384,11 @@ const getAppointmentForDoctor = async (req, res) => {
                 status: "OK", 
                 statusCode: 200,
                 pagination: {
-                    totalPages: Math.ceil(result.length / limit),
+                    totalPages: Math.ceil(totalDocument / limit),
                     currentPage: page,
                     prevPage: page > 1 ? page - 1 : null,
-                    nextPage: page < Math.ceil(result.length / limit) ? page + 1 : null,
-                    totalUsers: result.length,
+                    nextPage: page < Math.ceil(totalDocument / limit) ? page + 1 : null,
+                    totalUsers: totalDocument,
                   },
             }  
             ));
@@ -386,7 +423,8 @@ const getAppointmentForDoctor = async (req, res) => {
                 }));
             }   
     
-            const currentDate = new Date();
+            const currentDate = new Date().toISOString().split('T')[0];
+            const totalDocument = await PaymentModel.countDocuments({ date: { $gte: currentDate }, doctorId: user._id });
             const appointments = await PaymentModel.find({ date: { $gte: currentDate } ,doctorId: user._id })
                 .populate("patientDetailsId doctorId patientId");
             
@@ -421,7 +459,7 @@ const result = appointments.filter(appointment => appointment.status === "comple
                     totalPages: Math.ceil(result.length / limit),
                     currentPage: page,
                     prevPage: page > 1 ? page - 1 : null,
-                    nextPage: page < Math.ceil(result.length / limit) ? page + 1 : null,
+                    nextPage: page < Math.ceil(result.length/ limit) ? page + 1 : null,
                     totalUsers: result.length,
                   },
             }));
