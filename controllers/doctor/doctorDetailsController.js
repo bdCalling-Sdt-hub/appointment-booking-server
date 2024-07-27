@@ -561,8 +561,8 @@ const sendPrescription = async (req, res) => {
       );
     }
 
-    console.log("file", file);
-    console.log("patientId", patientId);
+    console.log("file==============>",req.file);
+    console.log("patientId==============>", patientId);
 
     let filePrescription = {};
     if (req.file) {

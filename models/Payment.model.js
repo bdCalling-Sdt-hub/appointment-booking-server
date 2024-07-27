@@ -11,8 +11,9 @@ const paymentSchema = new mongoose.Schema({
     patientDetailsId: { type:mongoose.Schema.ObjectId, ref:'PatientDetails', required: [ true, "Patient Details is required"] },
     doctorId: { type: mongoose.Schema.ObjectId, ref: 'User', required: [ true, "doctor is required"], default: false },
     paymentData: { type: Object, required: [ false, "Payment Data is required"] },
-    status: { type: String, enum: [ "completed", "active"], required: [ false, "Status is required"], default: null },
+    status: { type: String, enum: [ "completed", "active","upcomming"], required: [ false, "Status is required"], default: null },
     isCompleted: { type: Boolean, default: false , required: [ true, "isCompleted is required"] },
+    // doctorDetailsId: { type:mongoose.Schema.ObjectId, ref:'DoctorDetails', required: [ true, "Doctor Details is required"] },
 },{ timestamps: true },)
 
 
