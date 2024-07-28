@@ -15,6 +15,12 @@ const doctorPrescriptionSchema = new mongoose.Schema(
       required: [true, "doctorId is required"],
       default: false,
     },
+    patientDetailsId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "PatientDetails",
+      required: [true, "patientDetailsId is required"],
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -5,6 +5,8 @@ const PaymentModel = require("../models/Payment.model");
 
 const User = require("../models/User");
 const app = require("../app");
+const PatientDetailsModel = require("../models/PatientDetails.model");
+const DoctorPrescriptionModel = require("../models/DoctorPrescription.model");
 
 const getAppointment = async (req, res) => {
   try {
@@ -189,6 +191,8 @@ const getAppointment = async (req, res) => {
           );
         }
 
+        
+
         res.status(200).json(
           Response({
             data: result,
@@ -366,14 +370,21 @@ const getSingleAppointment = async (req, res) => {
       doctorId: appointment.doctorId._id,
     }).lean();
 
-    console.log(
-      "doctorDetails=========================>",
-      doctorDetails?.specialist
-    );
+    // console.log(
+    //   "doctorDetails=========================>",
+    //   doctorDetails?.specialist
+    // );
+    const getPatientDetails = await DoctorPrescriptionModel.findOne({
+      patientDetailsId: appointment.patientDetailsId._id,
 
-    let result = { ...appointment._doc, specialist: doctorDetails?.specialist };
+    })
 
-    console.log("result=========================>", result);
+
+    console.log("getPatientDetails=========================>", getPatientDetails);
+
+    let result = { ...appointment._doc, specialist: doctorDetails?.specialist, prescription:getPatientDetails?.file };
+
+    // console.log("result=========================>", result);
     if (!appointment) {
       return res
         .status(404)

@@ -4,6 +4,7 @@ const User = require("../../models/User");
 const withdrawModel = require("../../models/withdraw.model");
 const AdminEarningModel = require("../../models/withdraw.model");
 const AppointmentModel = require("../../models/Payment.model");
+const DoctorDetailsModel = require("../../models/DoctorDetails.model");
 
 const createPercentage = async (req, res) => {
   try {
@@ -203,7 +204,7 @@ const getAllAppointments = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    const appointments = await AppointmentModel.find({}).populate("doctorId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const appointments = await AppointmentModel.find({}).populate("doctorId patientId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
     const totalAppointments = await AppointmentModel.countDocuments({});
     res.status(200).json(
       Response({
@@ -232,7 +233,114 @@ const getAllAppointments = async (req, res) => {
   }
 }
 
+const getAllDoctors = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+    if(!user.role === "admin"){
+      return res.status(403).json(Response({
+        message: "You are not authorized to perform this action",
+        status: "Failed",
+        statusCode: 403,
+      }))
+    }
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const doctors = await DoctorDetailsModel.find({}).populate("doctorId").sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const totalUsers = await DoctorDetailsModel.countDocuments({ });
+
+    res.status(200).json(
+      Response({
+        message: "Users fetched successfully",
+        data: doctors,
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalUsers / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage: page < Math.ceil(totalUsers / limit) ? page + 1 : null,
+          totalUsers: totalUsers,
+        },
+      })
+    );
+  } catch (error) {
+    console.log(error?.message);
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error?.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    )
+  }
+} 
+
+const getAllUser = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+    if(!user.role === "admin"){
+      return res.status(403).json(Response({
+        message: "You are not authorized to perform this action",
+        status: "Failed",
+        statusCode: 403,
+      }))
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const users = await User.find({}).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const totalUsers = await User.countDocuments({});
+
+    res.status(200).json(
+      Response({
+        message: "Users fetched successfully",
+        data: users,
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalUsers / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage: page < Math.ceil(totalUsers / limit) ? page + 1 : null,
+          totalUsers: totalUsers,
+        },
+      })
+    );
+  } catch (error) {
+    console.log(error?.message);
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error?.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    )
+  }
+}
 
 
 
-module.exports = { createPercentage,getAllWithdrawals,updateWithdrawalRequest,getAllAppointments };
+
+module.exports = { createPercentage,getAllWithdrawals,updateWithdrawalRequest,getAllAppointments,getAllDoctors,getAllUser};

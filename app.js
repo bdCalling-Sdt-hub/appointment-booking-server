@@ -90,7 +90,6 @@ app.use((error, req, res, next) => {
   }
 // console.log(error)
 console.log(req?.url)
-log
   if (error.message) {
     winstonLogger.error(error.message); // Log the error using winston
     console.error("Error:", error.message);
