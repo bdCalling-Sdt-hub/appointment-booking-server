@@ -429,13 +429,14 @@ const setPassword = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
+    const userId = req.userId;
     console.log(oldPassword, newPassword);
-    const loggedInUser = await User.findOne({ _id: req.body.userId });
+    const loggedInUser = await User.findOne({ _id:userId });
     console.log("loggedInUser", loggedInUser);
     if (!loggedInUser) {
       return res
         .status(400)
-        .json(Response({ message: "Old password is required" }));
+        .json(Response({ message: "User not found" }));
     }
     if (!oldPassword) {
       return res

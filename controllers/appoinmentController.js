@@ -250,7 +250,7 @@ const getAppointment = async (req, res) => {
           patientId: user._id,
         });
         const appointments = await PaymentModel.find({
-          date: { $gte: currentDate },
+          date: { $lte: currentDate },
           patientId: user._id,
         })
           .sort({ createdAt: -1 })
@@ -638,7 +638,7 @@ const getAppointmentForDoctor = async (req, res) => {
           doctorId: user._id,
         });
         const appointments = await PaymentModel.find({
-          date: { $gte: currentDate },
+          date: { $lte: currentDate },
           doctorId: user._id,
         }).populate("patientDetailsId doctorId patientId");
 

@@ -7,9 +7,63 @@ const socketIO = (io) => {
       console.log(`ID: ${socket.id} just connected`);
 
 
-      socket.on("send-message", async (data, callback) => {
+      // socket.on("send-message", async (data, callback) => {
+      //   try {
+      //     const { message, receiverId, senderId} =  data;
+      //     const messageBody = {
+      //       content: {
+      //         messageType:"text",
+      //         message,
+      //       },
+      //       senderId,
+      //       receiverId,
+      //     };
+      //     const participants = [senderId, receiverId];
+      //     const existingChat = await ChatModel.findOne({
+      //       participants: { $all: participants },
+      //     });
+
+
+          
+      //     let chatId;
+      //     if(existingChat){
+      //       chatId = existingChat._id;
+      //     }else{
+      //       const chatBody = {
+      //         participants,
+      //       };
+      //       const newChat = await ChatModel.create(chatBody);
+      //       chatId = newChat._id;
+      //     }
+      //     messageBody.chatId = chatId;
+      //     console.log("chatId=====>",chatId);
+      //     const messageCreate = await MessageModel.create(messageBody);
+      //     const messageEvent = `lastMessage::${chatId}`;
+      //     io.emit(messageEvent, messageCreate);
+
+      //     const chat = await ChatModel.findByIdAndUpdate(chatId, {
+      //       lastMessage: messageCreate?._id,
+      //     });
+      //     const newChatEvent = `chat::${receiverId}`;
+      //     io.emit(newChatEvent, chat);
+      //     callback(Response({
+      //       data: messageCreate,
+      //       status: "OK",
+      //       statusCode: 200,
+      //       message: "Message created successfully",
+      //     }));
+      //   } catch (error) {
+      //     callback(Response({
+      //       message: `Internal server error ${error.message}`,
+      //       status: "Failed",
+      //       statusCode: 500,
+      //     }))
+      //   }
+      // })
+
+     socket.on("send-message", async (data, callback) => {
         try {
-          const { message, receiverId, senderId} =  data;
+          const { message, receiverId, senderId, chatId} =  data;
           const messageBody = {
             content: {
               messageType:"text",
@@ -17,23 +71,35 @@ const socketIO = (io) => {
             },
             senderId,
             receiverId,
+            chatId
           };
-          const participants = [senderId, receiverId];
+          // const participants = [senderId, receiverId];
           const existingChat = await ChatModel.findOne({
-            participants: { $all: participants },
+            _id: chatId
           });
-          let chatId;
-          if(existingChat){
-            chatId = existingChat._id;
-          }else{
-            const chatBody = {
-              participants,
-            };
-            const newChat = await ChatModel.create(chatBody);
-            chatId = newChat._id;
+
+          if(!existingChat){
+            return callback(Response({
+              message: "Chat not found",
+              status: "Failed",
+              statusCode: 404,
+            }))
           }
-          messageBody.chatId = chatId;
-          console.log("chatId=====>",chatId);
+          
+
+          
+          // let chatId;
+          // if(existingChat){
+          //   chatId = existingChat._id;
+          // }else{
+          //   const chatBody = {
+          //     participants,
+          //   };
+          //   const newChat = await ChatModel.create(chatBody);
+          //   chatId = newChat._id;
+          // }
+          // messageBody.chatId = chatId;
+          // console.log("chatId=====>",chatId);
           const messageCreate = await MessageModel.create(messageBody);
           const messageEvent = `lastMessage::${chatId}`;
           io.emit(messageEvent, messageCreate);
@@ -57,6 +123,7 @@ const socketIO = (io) => {
           }))
         }
       })
+
 
       socket.on("delete-message", async (data, callback) => {
         try {

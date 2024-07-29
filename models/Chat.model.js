@@ -12,7 +12,13 @@ const chatSchema = new mongoose.Schema({
           ref: "Message",
           required: false,
         },
+        appointmentId:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Payment",
+          required: true,
+        },
       },
+      
       {
         timestamps: true,
       }

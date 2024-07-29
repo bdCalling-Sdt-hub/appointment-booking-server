@@ -15,7 +15,7 @@ const createChat = async (req, res) => {
         })
       );
     }
-    const { receiverId } = req.body;
+    const { receiverId, appointmentId } = req.body;
 
     if (!receiverId) {
       return res.status(400).json(
@@ -31,6 +31,7 @@ const createChat = async (req, res) => {
 
     const existingChat = await ChatModel.findOne({
       participants: { $all: participants },
+      appointmentId: appointmentId,
     });
 
     if (existingChat) {
@@ -45,15 +46,18 @@ const createChat = async (req, res) => {
 
     const chatBody = {
       participants,
+      appointmentId: appointmentId,
     };
     const chat = await ChatModel.create(chatBody);
 
-    res.status(200).json(Response({
-      data: chat,
-      status: "OK",
-      statusCode: 200,
-      message: "Chat created successfully",
-    }));
+    res.status(200).json(
+      Response({
+        data: chat,
+        status: "OK",
+        statusCode: 200,
+        message: "Chat created successfully",
+      })
+    );
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -64,41 +68,100 @@ const createChat = async (req, res) => {
   }
 };
 
-
 const getAllChatForUser = async (req, res) => {
-try {
+  try {
     const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
-        return res.status(404).json(
-            Response({
-                message: "User not found",
-                status: "Failed",
-                statusCode: 404,
-            })
-        );
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
     }
+    // const chats = await ChatModel.find({
+    //   participants: { $in: [userId] },
+    // }).populate("lastMessage participants appointmentId");
+
     const chats = await ChatModel.find({
-        participants: { $in: [userId] },
-    }).populate("lastMessage participants");
-    if(!chats){
-        return res.status(404).json(
-            Response({
-                message: "Chat not found",
-                status: "Failed",
-                statusCode: 404,
-            })
-        );
+      participants: { $in: [userId] }
+    })
+    .populate([
+      {
+        path: 'lastMessage',
+        // You can further populate fields within lastMessage if needed
+        // populate: { path: 'someNestedField' }
+      },
+      {
+        path: 'participants',
+        // You can further populate fields within participants if needed
+        // populate: { path: 'anotherNestedField' }
+      },
+      {
+        path: 'appointmentId',
+        // You can further populate fields within appointmentId if needed
+        populate: { path: 'patientDetailsId' }
+      },
+      // {
+      //   path: 'patientDetailsId',
+      //   // You can further populate fields within patientDetailsId if needed
+      //   // populate: { path: 'someOtherNestedField' }
+      // }
+    ])
+    .exec();
+    
+
+
+
+
+
+
+    if (!chats) {
+      return res.status(404).json(
+        Response({
+          message: "Chat not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
     }
 
-    res.status(200).json(Response({ data: chats, status: "OK", statusCode: 200, message: "Chats fetched successfully" }));
-} catch (error) {
-    console.log(error?.message);
-    res.status(500).json(Response({ message: `Internal server error ${error?.message}`, status: "Failed", statusCode: 500 }));
-}
+    const incompleteAppointments = chats.filter(chat => chat.appointmentId.isCompleted === false);
 
+    if (!incompleteAppointments) {
+      return res.status(404).json(
+        Response({
+          message: "Chat not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    res
+      .status(200)
+      .json(
+        Response({
+          data: incompleteAppointments,
+          status: "OK",
+          statusCode: 200,
+          message: "Chats fetched successfully",
+        })
+      );
+  } catch (error) {
+    console.log(error?.message);
+    res
+      .status(500)
+      .json(
+        Response({
+          message: `Internal server error ${error?.message}`,
+          status: "Failed",
+          statusCode: 500,
+        })
+      );
+  }
 };
 
-
-
-module.exports = { createChat,getAllChatForUser };
+module.exports = { createChat, getAllChatForUser };

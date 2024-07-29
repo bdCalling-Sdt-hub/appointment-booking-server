@@ -1119,24 +1119,42 @@ const emergencyConsultation = async (req, res) => {
     if (!isEmergency) {
       return res.status(400).json(
         Response({
-          message: "isEmergency status is required",
+          message: "Emergency status is required",
           status: "Failed",
           statusCode: 400,
         })
       );
     }
+    console.log("================>",isEmergency);
+      
+      if(isEmergency==="true"){
+        user.isEmergency = isEmergency;
+        await user.save();
+    
+        res.status(200).json(
+          Response({
+            data: user,
+            message: "Emergency status enable successfully",
+            status: "OK",
+            statusCode: 200,
+          })
+        );
 
-    user.isEmergency = isEmergency;
-    await user.save();
+      }else{
+        user.isEmergency = isEmergency;
+        await user.save();
+    
+        res.status(200).json(
+          Response({
+            data: user,
+            message: "Emergency status disable successfully",
+            status: "OK",
+            statusCode: 200,
+          })
+        );
+      }
 
-    res.status(200).json(
-      Response({
-        data: user,
-        message: "isEmergency status updated successfully",
-        status: "OK",
-        statusCode: 200,
-      })
-    );
+   
   } catch (error) {
     console.log("emergency-consultation", error?.message);
     res.status(500).json(
@@ -1213,60 +1231,57 @@ const completedAppointments = async (req, res) => {
   try {
     const doctorId = req.userId;
     const user = await User.findById(doctorId);
-    if (!user) {
-      return res.status(404).json(
-        Response({
-          message: "User not found",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
 
+    if (!user) {
+      return res.status(404).json(Response({
+        message: "User not found",
+        status: "Failed",
+        statusCode: 404,
+      }));
     }
 
     if (user.role !== "doctor") {
-      return res.status(403).json(
-        Response({
-          message: "You are not authorized to perform this action",
-          status: "Failed",
-          statusCode: 403,
-        })
-      );
-    }
-    const {id} = req.body;
-    const completedAppointments = await PaymentModel.findById({ id });
-    console.log("completedAppointments===============>", completedAppointments);
-    if(!completedAppointments){
-      return res.status(404).json(
-        Response({
-          message: "Appointments not found",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
-    }
-    completedAppointments.isCompleted = true;
-    await completedAppointments.save();
-
-    res.status(200).json(
-      Response({
-        data: completedAppointments,
-        message: "Appointments completed successfully",
-        status: "OK",
-        statusCode: 200,
-      })
-    )
-  } catch (error) {
-    console.log("doctor-status", error?.message);
-    res.status(500).json(
-      Response({
-        message: error?.message,
+      return res.status(403).json(Response({
+        message: "You are not authorized to perform this action",
         status: "Failed",
-        statusCode: 500,
-      })
+        statusCode: 403,
+      }));
+    }
+
+    const { id } = req.body;
+
+    const completedAppointment = await PaymentModel.findByIdAndUpdate(
+      id,
+      { isCompleted: true, status: "completed" },
+      { new: true }
     );
+
+    
+
+    if (!completedAppointment) {
+      return res.status(404).json(Response({
+        message: "Appointment not found",
+        status: "Failed",
+        statusCode: 404,
+      }));
+    }
+
+    res.status(200).json(Response({
+      data: completedAppointment,
+      message: "Appointment completed successfully",
+      status: "OK",
+      statusCode: 200,
+    }));
+  } catch (error) {
+    console.log("doctor-status", error.message);
+    res.status(500).json(Response({
+      message: error.message,
+      status: "Failed",
+      statusCode: 500,
+    }));
   }
-}
+};
+
 
 
 

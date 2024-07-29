@@ -34,6 +34,7 @@ const paymentCreate = async (req, res) => {
     const customer = await stripe.customers.create({
       source: req.body.stripeToken,
     });
+    console.log("customer===>", customer);
 
     const charge = await stripe.charges.create({
       amount: req.body.amount * 100,
@@ -42,8 +43,11 @@ const paymentCreate = async (req, res) => {
       description: "Thank you For Your Payment for appointment",
     });
 
-    const { date, timeSlot, doctorId, package } = req.body;
-    console.log("date==========>", date);
+    console.log("============================>",charge);
+
+    const { date, timeSlot, doctorId, package,patientDetailsId } = req.body;
+    // console.log("==============>>>>>>>>>>>>>>>>>>",req.body);
+    // console.log("date==========>", date);
 
     if (!date) {
       return res.status(404).json(
@@ -54,9 +58,18 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
+    if(!patientDetailsId){
+      return res.status(404).json(
+        Response({
+          message: "Patient Details Id is required",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
     const formattedDate = new Date(date).toISOString().split('T')[0];
 
-    console.log("formattedDate===>", formattedDate);
+    // console.log("formattedDate===>", formattedDate);
 
 
     if (!timeSlot) {
@@ -77,11 +90,8 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
-    const patientDetails = await PatientDetailsModel.findOne({
-      patientId: userId,
-      doctorId: doctorId,
-    });
-    console.log(patientDetails);
+    const patientDetails = await PatientDetailsModel.findOne({_id:patientDetailsId});
+    // console.log("======================>>>>>>>details",patientDetails);
 
     if (!patientDetails) {
       return res.status(404).json(
