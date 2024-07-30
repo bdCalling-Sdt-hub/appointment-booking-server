@@ -737,11 +737,46 @@ const patientDetails = async (req, res) => {
 
 const allUser = async (req, res) => {
   try {
-    const users = await User.find();
-    console.log(users);
+    const userId = req.userId;
+    console.log(userId);
+    const user = await User.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+    if(user?.role !== "admin"){
+      return res.status(404).json(
+        Response({
+          message: "You are not authorized to perform this action",
+          status: "Failed",
+          statusCode: 403,
+        })
+      );
+    }
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const users = await User.find({}).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const totalDocument = await User.countDocuments();
+    console.log("===================>",users);
     res
       .status(200)
-      .json(Response({ data: users, status: "OK", statusCode: 200 }));
+      .json(Response({ data: users, status: "OK", statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalDocument / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage:
+            page < Math.ceil(totalDocument / limit) ? page + 1 : null,
+          totalUsers: totalDocument,
+        },
+      }
+       ));
   } catch (error) {
     res.status(500).json(
       Response({

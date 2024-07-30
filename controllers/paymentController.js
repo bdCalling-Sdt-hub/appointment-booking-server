@@ -41,6 +41,7 @@ const paymentCreate = async (req, res) => {
       currency: "usd",
       customer: customer.id,
       description: "Thank you For Your Payment for appointment",
+      
     });
 
     console.log("============================>",charge);

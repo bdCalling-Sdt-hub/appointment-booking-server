@@ -17,7 +17,7 @@ const UPLOADS_FOLDER_USERS = "../public/images/users";
 // const convertImageToPng = convertImageToPngMiddleware(UPLOADS_FOLDER_USERS);
 
 // // routes
-router.get('/all-user', allUser);
+router.get('/all-user',isValidUser, allUser);
 router.post('/sign-up', signUp);
 router.post('/verify-code', verifyCode);
 router.post('/sign-in', signIn);

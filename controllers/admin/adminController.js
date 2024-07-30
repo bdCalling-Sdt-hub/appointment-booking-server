@@ -5,6 +5,7 @@ const withdrawModel = require("../../models/withdraw.model");
 const AdminEarningModel = require("../../models/withdraw.model");
 const AppointmentModel = require("../../models/Payment.model");
 const DoctorDetailsModel = require("../../models/DoctorDetails.model");
+// const PercentageModel = require("../../models/Percentage.model");
 
 const createPercentage = async (req, res) => {
   try {
@@ -340,7 +341,68 @@ const getAllUser = async (req, res) => {
   }
 }
 
+const createPercentageAmount = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    const { percentageAmount } = req.body;
+
+    if (!percentageAmount) {
+      return res.status(400).json({
+        message: "Percentage amount is required",
+        status: "Failed",
+        statusCode: 400,
+      });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        status: "Failed",
+        statusCode: 404,
+      });
+    }
+
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        message: "You are not authorized to perform this action",
+        status: "Failed",
+        statusCode: 403,
+      });
+    }
+
+    let percentage = await AdminPercentageModel.findOne();
+    console.log("==================>",percentage);
+    if (percentage) {
+      percentage.percentage = percentageAmount;
+      await percentage.save();
+      return res.status(200).json({
+        message: "Percentage amount updated successfully",
+        data: percentage,
+        status: "OK",
+        statusCode: 200,
+      });
+    } else {
+      percentage = new AdminPercentageModel({ amount: percentageAmount });
+      await percentage.save();
+      return res.status(201).json({
+        message: "Percentage amount created successfully",
+        data: percentage,
+        status: "OK",
+        statusCode: 201,
+      });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      message: `Internal server error ${error.message}`,
+      status: "Failed",
+      statusCode: 500,
+    });
+  }
+};
 
 
 
-module.exports = { createPercentage,getAllWithdrawals,updateWithdrawalRequest,getAllAppointments,getAllDoctors,getAllUser};
+
+module.exports = { createPercentage,getAllWithdrawals,updateWithdrawalRequest,getAllAppointments,getAllDoctors,getAllUser,createPercentageAmount};

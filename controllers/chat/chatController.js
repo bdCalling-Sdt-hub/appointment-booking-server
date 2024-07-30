@@ -116,7 +116,7 @@ const getAllChatForUser = async (req, res) => {
 
 
 
-
+console.log("chats==============>",chats);
 
     if (!chats) {
       return res.status(404).json(
@@ -128,7 +128,7 @@ const getAllChatForUser = async (req, res) => {
       );
     }
 
-    const incompleteAppointments = chats.filter(chat => chat.appointmentId.isCompleted === false);
+    const incompleteAppointments = chats.filter(chat => chat.appointmentId.isCompleted === true);
 
     if (!incompleteAppointments) {
       return res.status(404).json(
@@ -139,6 +139,8 @@ const getAllChatForUser = async (req, res) => {
         })
       );
     }
+
+    console.log("incompleteAppointments", incompleteAppointments);
 
     res
       .status(200)
