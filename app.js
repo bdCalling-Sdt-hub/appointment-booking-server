@@ -1,99 +1,101 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
 const cors = require("cors");
-var cookieParser = require('cookie-parser');
-require('dotenv').config();
+var cookieParser = require("cookie-parser");
+require("dotenv").config();
 var morgan = require("morgan");
 
+const PORT = require("./utils/constant");
+
 // Import the winston logger
-const winstonLogger = require('./utils/logger');
+const winstonLogger = require("./utils/logger");
 
 // Create a stream object with a 'write' function that will be used by `morgan`
 const stream = {
-  write: (message) => winstonLogger.info(message.trim())
+  write: (message) => winstonLogger.info(message.trim()),
 };
 
 // Initialize express app
 var app = express();
 
 // Setup morgan to use the stream with winston
-app.use(morgan('combined', { stream }));
-
+app.use(morgan("combined", { stream }));
 
 //import routes
-const userRouter = require('./routes/userRouter');
-const categoryRouter = require('./routes/categoryRouter');
-const doctorRouter = require('./routes/doctorRouter');
-const paymentRouter = require('./routes/paymentRouter');
-const appointmentsRouter = require('./routes/appointmentsRouter');
-const chatRouter = require('./routes/chatRouter');
-const messageRouter = require('./routes/messageRouter');
-const adminRouter = require('./routes/admin/adminRouter');
-const { connectToDatabase } = require('./helpers/connection');
+const userRouter = require("./routes/userRouter");
+const categoryRouter = require("./routes/categoryRouter");
+const doctorRouter = require("./routes/doctorRouter");
+const paymentRouter = require("./routes/paymentRouter");
+const appointmentsRouter = require("./routes/appointmentsRouter");
+const chatRouter = require("./routes/chatRouter");
+const messageRouter = require("./routes/messageRouter");
+const adminRouter = require("./routes/admin/adminRouter");
+const { connectToDatabase } = require("./helpers/connection");
 // const validateResponse = require('./middlewares.js/validator');
 
-
-
 app.use(cors());
-
 
 //DB connection
 connectToDatabase();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
 // app.use(validateResponse);
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-
+app.use(express.static(path.join(__dirname, "public")));
 
 //Routes
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/category', categoryRouter);
-app.use('/api/v1/doctor', doctorRouter);
-app.use('/api/v1/payment', paymentRouter);
-app.use('/api/v1/appointments', appointmentsRouter);
-app.use('/api/v1/chat', chatRouter);
-app.use('/api/v1/message', messageRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/doctor", doctorRouter);
+app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/appointments", appointmentsRouter);
+app.use("/api/v1/chat", chatRouter);
+app.use("/api/v1/message", messageRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
 
 // Admin route
-app.use('/api/v1/admin', adminRouter);
-
-
+app.use("/api/v1/admin", adminRouter);
 
 // test route
-app.get('/api/test', (req, res) => {
-  res.send('I am responding!');
+app.get("/api/test", (req, res) => {
+  res.send("I am responding!");
 });
 
-app.use('/public', express.static(__dirname + '/public'));
+app.use("/public", express.static(__dirname + "/public"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-
 app.use((error, req, res, next) => {
   if (res.headersSent) {
     // If headers have already been sent, do nothing further
     return next("Something went wrong"); // You can choose the message you want to send.
   }
-// console.log(error)
-console.log(req?.url)
+  // console.log(error)
+  console.log(req?.url);
   if (error.message) {
     winstonLogger.error(error.message); // Log the error using winston
     console.error("Error:", error.message);
-    return res.status(500).send(Response({ statusCode: 500, status: "error", message:` Endpoint ${error.message}`, data:req?.url}));
+    return res
+      .status(500)
+      .send(
+        Response({
+          statusCode: 500,
+          status: "error",
+          message: ` Endpoint ${error.message}`,
+          data: req?.url,
+        })
+      );
   } else {
     error.statusCode = error.statusCode || 500;
     error.status = error.status || "error";
@@ -103,7 +105,6 @@ console.log(req?.url)
     });
   }
 });
-
 
 app.use((err, req, res, next) => {
   //console.error("error tushar",err.message);
@@ -123,10 +124,10 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-
+console.log("PORT", PORT);
 // Initialize server
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server listening on port ${process.env.PORT || 3000}`);
+const server = app.listen(PORT || 3000, () => {
+  console.log(`Server listening on port ${PORT || 3000}`);
 });
 
 // Initialize Socket.IO
@@ -138,8 +139,8 @@ const io = socketIo(server, {
 });
 
 const socketIO = require("./utils/socketIO");
-const Response = require('./helpers/response');
-const { log } = require('console');
+const Response = require("./helpers/response");
+const { log } = require("console");
 socketIO(io);
 
 global.io = io;

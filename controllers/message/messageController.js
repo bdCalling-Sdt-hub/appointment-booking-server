@@ -131,8 +131,7 @@ const getMessageByChatId = async (req, res) => {
 
     const messages = await MessageModel.find({ chatId }).populate(
       "senderId receiverId"
-    ).skip((page - 1) * limit).limit(limit);
-
+    ).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
     console.log(messages);
     res.status(200).json(Response({
       data: messages,
