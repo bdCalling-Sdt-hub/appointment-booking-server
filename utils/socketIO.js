@@ -101,8 +101,14 @@ const socketIO = (io) => {
         // messageBody.chatId = chatId;
         // console.log("chatId=====>",chatId);
         const messageCreate = await MessageModel.create(messageBody);
+        console.log("messageCreate=====>", messageCreate);
+        const lastMessageEvent = await MessageModel.findOne({
+          _id: messageCreate?._id
+        }).populate("senderId receiverId")
+        console.log("lastMessageEvent=====>", lastMessageEvent);
         const messageEvent = `lastMessage::${chatId}`;
-        io.emit(messageEvent, messageCreate);
+        console.log("================>>>>>>>>>",messageCreate);
+        io.emit(messageEvent, lastMessageEvent);
 
         const chat = await ChatModel.findByIdAndUpdate(chatId, {
           lastMessage: messageCreate?._id,
