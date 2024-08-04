@@ -4,6 +4,7 @@ const AdminPercentageModel = require("../models/AdminPercentage.model");
 const doctorEarningModel = require("../models/doctorEarning.model");
 const PatientDetailsModel = require("../models/PatientDetails.model");
 const PaymentModel = require("../models/Payment.model");
+// const AdminPercentageModel = require("../models/Percentage.model");
 
 const User = require("../models/User");
 
@@ -41,12 +42,11 @@ const paymentCreate = async (req, res) => {
       currency: "usd",
       customer: customer.id,
       description: "Thank you For Your Payment for appointment",
-      
     });
 
-    console.log("============================>",charge);
+    console.log("============================>", charge);
 
-    const { date, timeSlot, doctorId, package,patientDetailsId } = req.body;
+    const { date, timeSlot, doctorId, package, patientDetailsId } = req.body;
     // console.log("==============>>>>>>>>>>>>>>>>>>",req.body);
     // console.log("date==========>", date);
 
@@ -59,7 +59,7 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
-    if(!patientDetailsId){
+    if (!patientDetailsId) {
       return res.status(404).json(
         Response({
           message: "Patient Details Id is required",
@@ -68,10 +68,9 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
-    const formattedDate = new Date(date).toISOString().split('T')[0];
+    const formattedDate = new Date(date).toISOString().split("T")[0];
 
     // console.log("formattedDate===>", formattedDate);
-
 
     if (!timeSlot) {
       return res.status(404).json(
@@ -91,7 +90,9 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
-    const patientDetails = await PatientDetailsModel.findOne({_id:patientDetailsId});
+    const patientDetails = await PatientDetailsModel.findOne({
+      _id: patientDetailsId,
+    });
     // console.log("======================>>>>>>>details",patientDetails);
 
     if (!patientDetails) {
@@ -103,6 +104,19 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
+    const adminPercentage = await AdminPercentageModel.find();
+    if (!adminPercentage) {
+      return res.status(404).json(
+        Response({
+          message: "Admin Percentage not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+    console.log(adminPercentage?.percentage);
+    const adminIncome =
+      (charge.amount / 100) * (adminPercentage[0].percentage / 100) || 0;
 
     // Check if payment was successful
     if (charge.status === "succeeded") {
@@ -114,6 +128,7 @@ const paymentCreate = async (req, res) => {
         timeSlot: timeSlot,
         doctorId: doctorId,
         package: package,
+        adminAmount: adminIncome,
         // paymentData:charge,
         patientDetailsId: patientDetails._id,
       };
@@ -122,6 +137,16 @@ const paymentCreate = async (req, res) => {
 
       const getPercentages = await AdminPercentageModel.find();
       console.log(getPercentages[0].percentage);
+
+      if (!getPercentages) {
+        return res.status(404).json(
+          Response({
+            message: "Admin Percentage not found",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
+      }
 
       await doctorEarningModel.create({
         patientId: userId,

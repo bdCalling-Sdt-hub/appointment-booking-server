@@ -13,6 +13,7 @@ const paymentSchema = new mongoose.Schema({
     paymentData: { type: Object, required: [ false, "Payment Data is required"] },
     status: { type: String, enum: [ "completed", "active","upcomming"], required: [ false, "Status is required"], default: null },
     isCompleted: { type: Boolean, default: false , required: [ true, "isCompleted is required"] },
+    adminAmount: { type: Number, default: 0 },
     // doctorDetailsId: { type:mongoose.Schema.ObjectId, ref:'DoctorDetails', required: [ true, "Doctor Details is required"] },
 },{ timestamps: true },)
 

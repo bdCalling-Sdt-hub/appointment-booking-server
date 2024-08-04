@@ -13,6 +13,8 @@ const emailWithNodemailer = require("../helpers/email");
 const { deleteImage } = require("../helpers/deleteImage");
 const ReviewModel = require("../models/Review.model");
 const PatientDetailsModel = require("../models/PatientDetails.model");
+const DoctorPrescriptionModel = require("../models/DoctorPrescription.model");
+const pagination = require("../helpers/pagination");
 
 //sign up user
 const signUp = async (req, res) => {
@@ -965,7 +967,156 @@ console.log("aaaaaaaaapppppppppppppppppppp",req.body);
   }
 };
 
+const getPrescriptions =  async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const doctorPrescription = await DoctorPrescriptionModel.find({
+      patientId: userId,
+    }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).populate("patientDetailsId doctorId patientId");
+    const totalPrescriptions = await DoctorPrescriptionModel.countDocuments({
+      patientId: userId,
+    });
+    
+
+    res.status(200).json(
+      Response({
+        message: "Prescriptions fetched successfully",
+        data: doctorPrescription,
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalPrescriptions / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage:
+            page < Math.ceil(totalPrescriptions / limit) ? page + 1 : null,
+          totalUsers: totalPrescriptions,
+        },
+      })
+    );
+  } catch (error) {
+    console.log(error?.message);
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+}
+
+
+const getSinglePrescription =  async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+  
+    
+    const doctorPrescription = await DoctorPrescriptionModel.findById(req.params.id).populate("patientDetailsId doctorId patientId")
+   
+
+    res.status(200).json(
+      Response({
+        message: "Prescription fetched successfully",
+        data: doctorPrescription,
+        status: "OK",
+        statusCode: 200,
+       
+      })
+    );
+  } catch (error) {
+    console.log(error?.message);
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+}
+
+
+const emergencyDoctor = async (req, res) => {
+  try {
+    const userId = req.userId;
+    console.log("userId", userId);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const getEmergencyDoctor = await User.findOne({ role: "doctor", isEmergency: true }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const totalEmergencyDoctor = await User.countDocuments({ role: "doctor", isEmergency: true });
+    if(!getEmergencyDoctor){
+      return res.status(404).json(
+        Response({
+          message: "Emergency doctor not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
+    }
+
+    res.status(200).json(
+      Response({
+        message: "Emergency doctor fetched successfully",
+        data: getEmergencyDoctor,
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalEmergencyDoctor / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage:
+            page < Math.ceil(totalEmergencyDoctor / limit) ? page + 1 : null,
+          totalUsers: totalEmergencyDoctor,
+        },
+      })
+    );
+  } catch (error) {
+    console.log(error?.message);
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
+  }
+}
 
 
 
@@ -983,4 +1134,7 @@ module.exports = {
   allUser,
   getLoginUser,
   updateProfile,
+  getPrescriptions,
+  getSinglePrescription,
+  emergencyDoctor
 };

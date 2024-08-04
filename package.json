@@ -13,6 +13,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fs": "^0.0.1-security",
     "heic-convert": "^2.1.0",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
@@ -26,6 +27,7 @@
     "sharp": "^0.33.4",
     "socket.io": "^4.7.5",
     "stripe": "^16.2.0",
-    "winston": "^3.13.0"
+    "winston": "^3.13.0",
+    "xlsx": "^0.18.5"
   }
 }

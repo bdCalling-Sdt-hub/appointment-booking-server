@@ -31,6 +31,7 @@ const appointmentsRouter = require("./routes/appointmentsRouter");
 const chatRouter = require("./routes/chatRouter");
 const messageRouter = require("./routes/messageRouter");
 const adminRouter = require("./routes/admin/adminRouter");
+const settingsRouter = require("./routes/settingsRouter");
 const { connectToDatabase } = require("./helpers/connection");
 // const validateResponse = require('./middlewares.js/validator');
 
@@ -58,6 +59,7 @@ app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/appointments", appointmentsRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/message", messageRouter);
+app.use("/api/v1/settings", settingsRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
 
@@ -108,7 +110,8 @@ app.use((error, req, res, next) => {
 
 app.use((err, req, res, next) => {
   //console.error("error tushar",err.message);
-  winstonLogger.error(err.message); // Log the error using winston
+  winstonLogger.error(err.message);
+   // Log the error using winston
   res.status(500).json({ message: err.message });
 });
 
