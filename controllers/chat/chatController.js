@@ -50,6 +50,19 @@ const createChat = async (req, res) => {
     };
     const chat = await ChatModel.create(chatBody);
 
+
+    const receiverDetails = await User.findById(receiverId);
+
+
+    const notificationForPatient = await NotificationModel.create(
+      {
+        message: `New Chat Created from ${receiverDetails?.firstName} ${receiverDetails?.lastName}`,
+        role: "user",
+        recipientId: receiverId,
+      }
+    );
+    io.emit(`notification::${receiverId}`, notificationForPatient);
+
     res.status(200).json(
       Response({
         data: chat,

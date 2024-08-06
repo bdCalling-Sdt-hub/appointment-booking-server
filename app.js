@@ -33,6 +33,7 @@ const messageRouter = require("./routes/messageRouter");
 const adminRouter = require("./routes/admin/adminRouter");
 const settingsRouter = require("./routes/settingsRouter");
 const { connectToDatabase } = require("./helpers/connection");
+const notificationRouter = require("./routes/notificationRouter");
 // const validateResponse = require('./middlewares.js/validator');
 
 app.use(cors());
@@ -60,6 +61,7 @@ app.use("/api/v1/appointments", appointmentsRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/settings", settingsRouter);
+app.use("/api/v1/notification", notificationRouter);
 // driver route
 // app.use('/api/v1/user', userRouter);
 

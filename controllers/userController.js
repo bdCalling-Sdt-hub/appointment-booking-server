@@ -15,12 +15,13 @@ const ReviewModel = require("../models/Review.model");
 const PatientDetailsModel = require("../models/PatientDetails.model");
 const DoctorPrescriptionModel = require("../models/DoctorPrescription.model");
 const pagination = require("../helpers/pagination");
+const NotificationModel = require("../models/Notification.model");
 
 //sign up user
 const signUp = async (req, res) => {
   try {
     const { firstName, lastName, email, password, role } = req.body;
-    console.log("aiman============>", req.body);
+    console.log("============>", req.body);
     console.log(email);
     // const {image} = req.files;
     // Validate request body
@@ -97,6 +98,16 @@ const signUp = async (req, res) => {
     const userResponse = await userRegister(userDetails);
     console.log(userResponse);
 
+   const notification = await NotificationModel.create({
+      message: `Welcome, ${userResponse?.firstName + " " + userResponse?.lastName} Your account has been created successfully.`,
+      recipientId: userResponse?._id,
+      role: userResponse?.role,
+      read: false,
+    })
+
+    io.emit(`notification::${userResponse?._id}`, notification);
+
+
     res.status(200).json(
       Response({
         statusCode: 200,
@@ -106,6 +117,7 @@ const signUp = async (req, res) => {
         role: userResponse?.role,
       })
     );
+
   } catch (error) {
     console.error("Error in signUp controller:", error);
     res.status(500).json({ error: "Server error" });
@@ -188,6 +200,8 @@ const resendOtp = async (req, res) => {
     ); // { error: 'Failed to resend OTP' }
   }
 };
+
+
 
 //Sign in user
 const signIn = async (req, res, next) => {
@@ -541,6 +555,13 @@ const fillUpProfile = async (req, res) => {
         data: { role: user?.role },
       })
     );
+    const notification = NotificationModel.create({
+      message: "Profile updated successfully",
+      role: user?.role,
+      recipientId: user?._id,
+    });
+    io.emit(`notification::${user?._id}`, notification);
+  
   } catch (error) {
     console.error(error?.message);
     res.status(500).json(
@@ -615,6 +636,15 @@ const postReview = async (req, res) => {
       comment,
       patientId: userId,
     });
+
+    const notification = NotificationModel.create({
+      message: `${user?.filename} ${user?.lastName} has given a review on your profile`,
+      role: user?.role,
+      recipientId: doctorId,
+    })
+
+    io.emit(`notification::${doctorId}`, notification);
+
 
     res.status(200).json(
       Response({
@@ -967,6 +997,7 @@ console.log("aaaaaaaaapppppppppppppppppppp",req.body);
   }
 };
 
+
 const getPrescriptions =  async (req, res) => {
   try {
     const userId = req.userId;
@@ -1079,6 +1110,9 @@ const emergencyDoctor = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
 
     const getEmergencyDoctor = await User.findOne({ role: "doctor", isEmergency: true }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+
+    
+
     const totalEmergencyDoctor = await User.countDocuments({ role: "doctor", isEmergency: true });
     if(!getEmergencyDoctor){
       return res.status(404).json(

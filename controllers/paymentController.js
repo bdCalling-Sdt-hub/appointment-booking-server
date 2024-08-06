@@ -156,6 +156,38 @@ const paymentCreate = async (req, res) => {
         doctorId: doctorId,
       });
 
+      const findDoctor = await DoctorDetailsModel.findOne({
+        _id: doctorId,
+      })
+      const notificationForUser = await NotificationModel.create({
+        message:`Payment done successfully for Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`, 
+        recipientId: userId,
+        role: "user",
+        read: false,
+      })
+
+      io.emit(`notification::${userId}`, notificationForUser);
+
+      const notificationForDoctor = await NotificationModel.create({
+        message:`Payment done successfully for Patient ${patientDetails?.firstName} ${patientDetails?.lastName}`, 
+        recipientId: doctorId,
+        role: "doctor",
+        read: false,
+      })
+
+      io.emit(`notification::${doctorId}`, notificationForDoctor);
+
+      const notificationForAdmin = await NotificationModel.create({
+        message:`Payment done successfully for ${patientDetails?.firstName} ${patientDetails?.lastName} and Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`, 
+        recipientId: "admin",
+        role: "admin",
+        read: false,
+      })
+
+      // io.emit(`notification::admin`, notificationForAdmin);
+
+
+
       return res.status(200).json(
         Response({
           message: "Payment created successfully",
@@ -164,6 +196,9 @@ const paymentCreate = async (req, res) => {
           statusCode: 200,
         })
       );
+
+     
+
     } else {
       return res.status(400).json(
         Response({

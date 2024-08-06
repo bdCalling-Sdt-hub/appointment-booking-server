@@ -5,6 +5,7 @@ const withdrawModel = require("../../models/withdraw.model");
 const AdminEarningModel = require("../../models/withdraw.model");
 const AppointmentModel = require("../../models/Payment.model");
 const DoctorDetailsModel = require("../../models/DoctorDetails.model");
+const NotificationModel = require("../../models/Notification.model");
 // const Percentage = require("../../models/Percentage.model");
 // const PercentageModel = require("../../models/Percentage.model");
 
@@ -171,6 +172,15 @@ const updateWithdrawalRequest = async (req, res) => {
         })
       );
     }
+
+    // Return the updated document
+    const notification = await NotificationModel.create({
+      message: `Withdrawal request ${status}`,
+      role: "doctor",
+      recipientId: withdrawalRequest.doctorId,
+    })
+
+    io.emit(`notification::${withdrawalRequest.doctorId}`, notification);
 
     res.status(200).json(
       Response({
@@ -553,7 +563,6 @@ const getEarningStatus = async (req, res) => {
   }
 }
 
-
 const getChartData = async (req, res) => {
   try {
 
@@ -645,6 +654,7 @@ const getChartData = async (req, res) => {
 
 
 
+
 module.exports = {
   getAllWithdrawals,
   updateWithdrawalRequest,
@@ -656,3 +666,5 @@ module.exports = {
   getEarningStatus,
   getChartData
 };
+
+

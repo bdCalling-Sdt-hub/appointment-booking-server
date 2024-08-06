@@ -7,6 +7,7 @@ const User = require("../../models/User");
 const moment = require("moment");
 const withdrawalModel = require("../../models/withdraw.model");
 const PaymentModel = require("../../models/Payment.model");
+const NotificationModel = require("../../models/Notification.model");
 
 function calculateAverageRating(reviews) {
   if (reviews.length === 0) return 0;
@@ -595,6 +596,17 @@ const sendPrescription = async (req, res) => {
       );
     }
 
+    const notification = NotificationModel.create(
+      {
+        message: `${user?.firstName} ${user?.lastName} sent a prescription.`,
+        role: "user",
+        recipientId: patientId,
+      }
+    )
+
+    io.emit(`notification::${patientId}`, notification);
+
+
     res.status(200).json(
       Response({
         data: prescription,
@@ -920,6 +932,17 @@ const withdrawalRequest = async (req, res) => {
     // Create a new withdrawal request
     // await withdrawal.save();
 
+    const notification = NotificationModel.create({
+      message: `Withdrawal request created by ${user?.firstName} ${user?.lastName}`,
+      role: "admin",
+      recipientId: userId,
+    })
+
+    // Emit notification
+
+    io.emit(`notification::${userId}`, notification);
+
+
     // Respond with success
     res.status(200).json(
       Response({
@@ -1126,10 +1149,13 @@ const emergencyConsultation = async (req, res) => {
       );
     }
     console.log("================>",isEmergency);
+
+
       
       if(isEmergency==="true"){
         user.isEmergency = isEmergency;
         await user.save();
+
     
         res.status(200).json(
           Response({
@@ -1265,6 +1291,15 @@ const completedAppointments = async (req, res) => {
         statusCode: 404,
       }));
     }
+
+    const notification = new NotificationModel({
+      message: `Doctor ${user.firstName } ${user.lastName} has completed an appointment with you.`,
+      role: "user",
+      recipientId:completedAppointment?.patientId,
+    });
+
+    io.emit(`notification::${completedAppointment?.patientId}`, notification);
+
 
     res.status(200).json(Response({
       data: completedAppointment,

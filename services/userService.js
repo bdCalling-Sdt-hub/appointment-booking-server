@@ -38,7 +38,10 @@ console.log(oneTimeCode);
         }
         let newUserDetails = { ...userDetails, oneTimeCode: oneTimeCode };
         if(!oneTimeCode)return
-         const user = await User.create(newUserDetails); // Remove the { userDetails } wrapper
+         const user = await User.create(newUserDetails);
+
+         
+        // Remove the { userDetails } wrapper
         // Set a timeout to update the oneTimeCode to null after 1 minute
         setTimeout(async () => {
             try {

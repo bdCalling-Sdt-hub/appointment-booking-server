@@ -8,7 +8,9 @@ const patientDetailsSchema = new mongoose.Schema({
     age: { type: String, required: false },
     description: { type: String, required: false },
     doctorId: { type: mongoose.Schema.ObjectId, ref: 'User', required: [ true, "Doctor Id is Required"] },
-})
+},
+{ timestamps: true }
+)
 
 
 
