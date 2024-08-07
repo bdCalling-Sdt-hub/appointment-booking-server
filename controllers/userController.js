@@ -175,6 +175,8 @@ const resendOtp = async (req, res) => {
       );
     }
     // Update user's oneTimeCode
+    console.log(oneTimeCode);
+    
     user.oneTimeCode = oneTimeCode;
     await user.save();
 

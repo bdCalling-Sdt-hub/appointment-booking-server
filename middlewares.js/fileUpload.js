@@ -119,7 +119,7 @@ console.log("req.body=========>", req.body);
 
   console.log(`Preparing to convert file at path: ${filePath} with extension: ${extName}`);
 
-  if (["jpg", "jpeg", "heif", "heic"].includes(extName)) {
+  if (["jpg", "jpeg", "heif", "heic","pdf"].includes(extName)) {
     
     const outputFilePath = path.join(userDir, 'user.png');
 
