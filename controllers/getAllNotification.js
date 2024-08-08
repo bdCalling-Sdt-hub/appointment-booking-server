@@ -14,6 +14,10 @@ const getAllNotification = async (req, res) => {
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+    console.log(page);
+    console.log(limit);
+    
+
 
 
     const getNotification = await NotificationModel.find({ recipientId: userId }).populate('recipientId').sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
@@ -39,7 +43,6 @@ const getAllNotification = async (req, res) => {
     } catch (error) {
         console.log("notification", error?.message);
         res.status(500).json(Response({ message: error?.message, status: "Failed", statusCode: 500 }));
-        
     }
 
 

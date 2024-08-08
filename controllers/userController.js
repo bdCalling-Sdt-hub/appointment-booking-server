@@ -454,17 +454,17 @@ const changePassword = async (req, res) => {
     if (!loggedInUser) {
       return res
         .status(400)
-        .json(Response({ message: "User not found" }));
+        .json(Response({ message: "User not found", status: "Failed", statusCode: 404 }));
     }
     if (!oldPassword) {
       return res
         .status(400)
-        .json(Response({ message: "Old password is required" }));
+        .json(Response({ message: "Old password is required", status: "Failed", statusCode: 400 }));
     }
     if (!newPassword) {
       return res
         .status(400)
-        .json(Response({ message: "New password is required" }));
+        .json(Response({ message: "New password is required", status: "Failed", statusCode: 400 }));
     }
 
     let isPasswordValid = await bcrypt.compare(
@@ -474,13 +474,13 @@ const changePassword = async (req, res) => {
     if (!isPasswordValid) {
       return res
         .status(400)
-        .json(Response({ message: "Password does not match" }));
+        .json(Response({ message: "Password does not match", status: "Failed", statusCode: 400 }));
     }
     loggedInUser.password = newPassword;
     await loggedInUser.save();
     res
       .status(200)
-      .json(Response({ message: "Password changed successfully" }));
+      .json(Response({ message: "Password changed successfully", status: "OK", statusCode: 200 }));
   } catch (error) {
     console.error(error);
     return res
@@ -887,25 +887,25 @@ const updateProfile = async (req, res) => {
 console.log("aaaaaaaaapppppppppppppppppppp",req.body);
 
   
-    if (!firstName) {
-      return res.status(404).json(
-        Response({
-          message: "First Name is required",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
-    }
+    // if (!firstName) {
+    //   return res.status(404).json(
+    //     Response({
+    //       message: "First Name is required",
+    //       status: "Failed",
+    //       statusCode: 404,
+    //     })
+    //   );
+    // }
 
-    if (!lastName) {
-      return res.status(404).json(
-        Response({
-          message: "Last Name is required",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
-    }
+    // if (!lastName) {
+    //   return res.status(404).json(
+    //     Response({
+    //       message: "Last Name is required",
+    //       status: "Failed",
+    //       statusCode: 404,
+    //     })
+    //   );
+    // }
 
     // if (!email) {
     //   return res.status(404).json(
@@ -927,35 +927,35 @@ console.log("aaaaaaaaapppppppppppppppppppp",req.body);
     //   );
     // }
 
-    if (!dateOfBirth) {
-      return res.status(404).json(
-        Response({
-          message: "Date of Birth is required",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
-    }
+    // if (!dateOfBirth) {
+    //   return res.status(404).json(
+    //     Response({
+    //       message: "Date of Birth is required",
+    //       status: "Failed",
+    //       statusCode: 404,
+    //     })
+    //   );
+    // }
 
-    if (!phone) {
-      return res.status(404).json(
-        Response({
-          message: "Phone is required",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
-    }
+    // if (!phone) {
+    //   return res.status(404).json(
+    //     Response({
+    //       message: "Phone is required",
+    //       status: "Failed",
+    //       statusCode: 404,
+    //     })
+    //   );
+    // }
 
-    if (!address) {
-      return res.status(404).json(
-        Response({
-          message: "Address is required",
-          status: "Failed",
-          statusCode: 404,
-        })
-      );
-    }
+    // if (!address) {
+    //   return res.status(404).json(
+    //     Response({
+    //       message: "Address is required",
+    //       status: "Failed",
+    //       statusCode: 404,
+    //     })
+    //   );
+    // }
     console.log("====>",req.file);
     user.firstName = firstName;
     user.lastName = lastName;
