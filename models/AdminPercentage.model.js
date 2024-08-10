@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // Define the location schema
 const percentageSchema = new mongoose.Schema(
   {
-    percentage: { type: Number, required: [true, "Percentage Amount is required"] },
+    percentageAmount: { type: Number, required: [true, "Percentage Amount is required"] },
   },
   { timestamps: true }
 );

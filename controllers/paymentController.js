@@ -1,7 +1,9 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Response = require("../helpers/response");
 const AdminPercentageModel = require("../models/AdminPercentage.model");
+const DoctorDetailsModel = require("../models/DoctorDetails.model");
 const doctorEarningModel = require("../models/doctorEarning.model");
+const NotificationModel = require("../models/Notification.model");
 const PatientDetailsModel = require("../models/PatientDetails.model");
 const PaymentModel = require("../models/Payment.model");
 // const AdminPercentageModel = require("../models/Percentage.model");
@@ -35,7 +37,7 @@ const paymentCreate = async (req, res) => {
     const customer = await stripe.customers.create({
       source: req.body.stripeToken,
     });
-    console.log("customer===>", customer);
+    // console.log("customer===>", customer);
 
     const charge = await stripe.charges.create({
       amount: req.body.amount * 100,
@@ -44,7 +46,7 @@ const paymentCreate = async (req, res) => {
       description: "Thank you For Your Payment for appointment",
     });
 
-    console.log("============================>", charge);
+    // console.log("============================>", charge);
 
     const { date, timeSlot, doctorId, package, patientDetailsId } = req.body;
     // console.log("==============>>>>>>>>>>>>>>>>>>",req.body);
@@ -105,7 +107,7 @@ const paymentCreate = async (req, res) => {
       );
     }
     const adminPercentage = await AdminPercentageModel.find();
-    if (!adminPercentage) {
+    if (adminPercentage.length === 0) {
       return res.status(404).json(
         Response({
           message: "Admin Percentage not found",
@@ -114,9 +116,13 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
+    console.log("================>>>>>>>>>", adminPercentage);
+
     console.log(adminPercentage?.percentage);
     const adminIncome =
-      (charge.amount / 100) * (adminPercentage[0].percentage / 100) || 0;
+      (charge.amount / 100) * (adminPercentage[0].percentageAmount / 100) || 0;
+
+    console.log(charge.status === "succeeded");
 
     // Check if payment was successful
     if (charge.status === "succeeded") {
@@ -147,46 +153,48 @@ const paymentCreate = async (req, res) => {
           })
         );
       }
+console.log("priceeeeeeeeeeeeeeeeeee",paymentData?.amount -
+  paymentData.amount * (getPercentages[0].percentageAmount / 100));
 
       await doctorEarningModel.create({
         patientId: userId,
-        price:
-          paymentData.amount -
-          paymentData.amount * (getPercentages[0].percentage / 100),
+        price: Number(
+          paymentData?.amount -
+            paymentData.amount * (getPercentages[0].percentageAmount / 100)
+        ),
+
         doctorId: doctorId,
       });
 
       const findDoctor = await DoctorDetailsModel.findOne({
         _id: doctorId,
-      })
+      });
       const notificationForUser = await NotificationModel.create({
-        message:`Payment done successfully for Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`, 
+        message: `Payment done successfully for Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`,
         recipientId: userId,
         role: "user",
         read: false,
-      })
+      });
 
       io.emit(`notification::${userId}`, notificationForUser);
 
       const notificationForDoctor = await NotificationModel.create({
-        message:`Payment done successfully for Patient ${patientDetails?.firstName} ${patientDetails?.lastName}`, 
+        message: `Payment done successfully for Patient ${patientDetails?.firstName} ${patientDetails?.lastName}`,
         recipientId: doctorId,
         role: "doctor",
         read: false,
-      })
+      });
 
       io.emit(`notification::${doctorId}`, notificationForDoctor);
 
       const notificationForAdmin = await NotificationModel.create({
-        message:`Payment done successfully for ${patientDetails?.firstName} ${patientDetails?.lastName} and Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`, 
-        recipientId: "admin",
+        message: `Payment done successfully for ${patientDetails?.firstName} ${patientDetails?.lastName} and Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`,
+        recipientId: doctorId,
         role: "admin",
         read: false,
-      })
+      });
 
       // io.emit(`notification::admin`, notificationForAdmin);
-
-
 
       return res.status(200).json(
         Response({
@@ -196,9 +204,6 @@ const paymentCreate = async (req, res) => {
           statusCode: 200,
         })
       );
-
-     
-
     } else {
       return res.status(400).json(
         Response({
@@ -209,7 +214,9 @@ const paymentCreate = async (req, res) => {
       );
     }
   } catch (error) {
+    console.log(error)
     res.status(500).json(
+   
       Response({
         message: `Internal server error ${error.message}`,
         status: "Failed",

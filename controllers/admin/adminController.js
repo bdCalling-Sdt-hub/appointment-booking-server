@@ -384,9 +384,22 @@ const createPercentageAmount = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
-    const { percentageAmount } = req.body;
+    let { percentageAmount } = req.body;
+    console.log("Received percentageAmount:", percentageAmount);
 
-    if (!percentageAmount) {
+    // Convert to number
+    // percentageAmount = Number(percentageAmount);
+
+    // Check for NaN
+    if (isNaN(percentageAmount)) {
+      return res.status(400).json({
+        message: "Percentage amount must be a valid number",
+        status: "Failed",
+        statusCode: 400,
+      });
+    }
+
+    if (percentageAmount === null || percentageAmount === undefined) {
       return res.status(400).json({
         message: "Percentage amount is required",
         status: "Failed",
@@ -411,9 +424,10 @@ const createPercentageAmount = async (req, res) => {
     }
 
     let percentage = await AdminPercentageModel.findOne();
-    console.log("==================>", percentage);
+    console.log("Existing percentage document:", percentage);
+    
     if (percentage) {
-      percentage.percentage = percentageAmount;
+      percentage.percentageAmount = percentageAmount;
       await percentage.save();
       return res.status(200).json({
         message: "Percentage amount updated successfully",
@@ -422,17 +436,20 @@ const createPercentageAmount = async (req, res) => {
         statusCode: 200,
       });
     } else {
-      percentage = new AdminPercentageModel({ amount: percentageAmount });
-      await percentage.save();
+      console.log("Creating new percentage document:", { percentageAmount });
+      
+      const newPercentage = await AdminPercentageModel.create({ percentageAmount : percentageAmount});
+      console.log("Created percentage document:=======>", newPercentage);
+      
       return res.status(201).json({
         message: "Percentage amount created successfully",
-        data: percentage,
+        data: newPercentage,
         status: "OK",
         statusCode: 201,
       });
     }
   } catch (error) {
-    console.error(error.message);
+    console.error("Error during percentage creation:", error.message);
     res.status(500).json({
       message: `Internal server error ${error.message}`,
       status: "Failed",
@@ -440,6 +457,8 @@ const createPercentageAmount = async (req, res) => {
     });
   }
 };
+
+
 
 const getPercentageAmount = async (req, res) => {
   try {

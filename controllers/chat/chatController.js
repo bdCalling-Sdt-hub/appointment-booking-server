@@ -1,5 +1,6 @@
 const Response = require("../../helpers/response");
 const ChatModel = require("../../models/Chat.model");
+const NotificationModel = require("../../models/Notification.model");
 const User = require("../../models/User");
 
 const createChat = async (req, res) => {
@@ -84,6 +85,8 @@ const createChat = async (req, res) => {
 const getAllChatForUser = async (req, res) => {
   try {
     const userId = req.userId;
+
+    
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -94,6 +97,8 @@ const getAllChatForUser = async (req, res) => {
         })
       );
     }
+    console.log("userId==============>",userId);
+    
     // const chats = await ChatModel.find({
     //   participants: { $in: [userId] },
     // }).populate("lastMessage participants appointmentId");
@@ -141,7 +146,9 @@ console.log("chats==============>",chats);
       );
     }
 
-    const incompleteAppointments = chats.filter(chat => chat.appointmentId.isCompleted === true);
+    const incompleteAppointments = chats.filter(chat => chat?.appointmentId?.isCompleted !== true);
+    console.log("incompleteAppointments", incompleteAppointments);
+    
 
     if (!incompleteAppointments) {
       return res.status(404).json(
