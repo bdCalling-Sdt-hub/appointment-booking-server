@@ -36,7 +36,9 @@ const { connectToDatabase } = require("./helpers/connection");
 const notificationRouter = require("./routes/notificationRouter");
 // const validateResponse = require('./middlewares.js/validator');
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+}));
 
 //DB connection
 connectToDatabase();
