@@ -12,7 +12,11 @@ const admin = {
   };
 
 const seedSuperAdmin = async () =>{
-    const isSuperAdminExists = await User.findOneAndUpdate({ email: admin.email }, admin, { new: true });
+    const isSuperAdminExists = await User.findOne({ email: admin.email });
+    isSuperAdminExists.isVerified = true
+    await isSuperAdminExists.save()
+    console.log("isSuperAdminExists", isSuperAdminExists);
+    
 
     if (!isSuperAdminExists) {
         console.log("Creating super admin...");
