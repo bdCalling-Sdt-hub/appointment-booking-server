@@ -8,10 +8,11 @@ const admin = {
     password: "1qazxsw2",
     role: "admin",
     isDeleted: false,
+    isVerified: true
   };
 
 const seedSuperAdmin = async () =>{
-    const isSuperAdminExists = await User.findOne({ email: admin.email });
+    const isSuperAdminExists = await User.findOneAndUpdate({ email: admin.email }, admin, { new: true });
 
     if (!isSuperAdminExists) {
         console.log("Creating super admin...");

@@ -21611,3 +21611,7 @@ heif: Unsupported feature: Unsupported codec (4.3000)
 2024-09-28T09:36:24.369Z [info]: ::ffff:192.168.10.149 - - [28/Sep/2024:09:36:24 +0000] "PUT /api/v1/user/update-profile HTTP/1.1" 200 788 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
 2024-09-28T09:36:24.373Z [info]: ::ffff:192.168.10.149 - - [28/Sep/2024:09:36:24 +0000] "OPTIONS /api/v1/user/login-user HTTP/1.1" 204 0 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
 2024-09-28T09:36:24.387Z [info]: ::ffff:192.168.10.149 - - [28/Sep/2024:09:36:24 +0000] "GET /api/v1/user/login-user HTTP/1.1" 200 787 "http://localhost:8000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+2024-09-28T09:57:18.114Z [error]: Not Found
+2024-09-28T09:57:18.123Z [info]: ::ffff:192.168.10.149 - - [28/Sep/2024:09:57:18 +0000] "GET /api/v1/user/sign-in HTTP/1.1" 500 128 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+2024-09-28T09:57:18.214Z [error]: Not Found
+2024-09-28T09:57:18.215Z [info]: ::ffff:192.168.10.149 - - [28/Sep/2024:09:57:18 +0000] "GET /favicon.ico HTTP/1.1" 500 120 "http://192.168.10.149:3000/api/v1/user/sign-in" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
