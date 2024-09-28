@@ -12,7 +12,7 @@ const admin = {
 
 const seedSuperAdmin = async () => {
     try {
-        const isSuperAdminExists = await User.findOne({ email: admin.email });
+        const isSuperAdminExists = await User.findOne({ email:admin.email});
         console.log("SuperAdmin search result:", isSuperAdminExists);
 
         if (isSuperAdminExists) {
