@@ -13,6 +13,8 @@ const admin = {
 
 const seedSuperAdmin = async () =>{
     const isSuperAdminExists = await User.findOne({ email: admin.email });
+    console.log("ahad", isSuperAdminExists);
+    
     isSuperAdminExists.isVerified = true
     await isSuperAdminExists.save()
     console.log("isSuperAdminExists", isSuperAdminExists);
