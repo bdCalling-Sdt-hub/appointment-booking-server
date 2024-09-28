@@ -167,8 +167,12 @@ console.log("priceeeeeeeeeeeeeeeeeee",paymentData?.amount -
       });
 
       const findDoctor = await DoctorDetailsModel.findOne({
-        _id: doctorId,
+        doctorId: doctorId,
       });
+      console.log("findDoctor", findDoctor);
+      
+      findDoctor.totalConsultation = findDoctor.totalConsultation + 1;
+      await findDoctor.save();
       const notificationForUser = await NotificationModel.create({
         message: `Payment done successfully for Doctor ${findDoctor?.firstName} ${findDoctor?.lastName}`,
         recipientId: userId,

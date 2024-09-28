@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { seedSuperAdmin } = require('../DB');
 
 module.exports = {
     // Connect to the MongoDB database
@@ -6,6 +7,7 @@ module.exports = {
         try {
             await mongoose.connect(process.env.MONGODB_CONNECTION);
             console.log('Connected to MongoDB');
+            seedSuperAdmin();
         } catch (error) {
             console.error('Error connecting to MongoDB:', error);
         }

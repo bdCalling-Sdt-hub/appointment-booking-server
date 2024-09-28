@@ -16,6 +16,7 @@ const PatientDetailsModel = require("../models/PatientDetails.model");
 const DoctorPrescriptionModel = require("../models/DoctorPrescription.model");
 const pagination = require("../helpers/pagination");
 const NotificationModel = require("../models/Notification.model");
+const DoctorDetailsModel = require("../models/DoctorDetails.model");
 
 //sign up user
 const signUp = async (req, res) => {
@@ -180,6 +181,8 @@ const resendOtp = async (req, res) => {
     user.oneTimeCode = oneTimeCode;
     await user.save();
 
+    console.log(oneTimeCode);
+    
     // Send verification email with new OTP
     await emailWithNodemailer(emailData);
 
@@ -333,7 +336,7 @@ const verifyCode = async (req, res) => {
       return res.status(404).json(
         Response({
           statusCode: 404,
-          message: "User not found",
+          message: "Email not found",
           status: "Failed",
         })
       );
@@ -342,7 +345,7 @@ const verifyCode = async (req, res) => {
       return res.status(404).json(
         Response({
           statusCode: 404,
-          message: "User not found",
+          message: "code not found",
           status: "Failed",
         })
       );
@@ -1110,10 +1113,8 @@ const emergencyDoctor = async (req, res) => {
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+    const getEmergencyDoctor = await User.find({ role: "doctor", isEmergency: true }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
 
-    const getEmergencyDoctor = await User.findOne({ role: "doctor", isEmergency: true }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
-
-    
 
     const totalEmergencyDoctor = await User.countDocuments({ role: "doctor", isEmergency: true });
     if(!getEmergencyDoctor){
@@ -1125,6 +1126,31 @@ const emergencyDoctor = async (req, res) => {
         })
       );
     }
+    console.log("getEmergencyDoctor", getEmergencyDoctor);
+    
+    if(getEmergencyDoctor){
+      const emergencyDoctorDetails = await DoctorDetailsModel.find({ doctorId: { $in: getEmergencyDoctor.map((doctor) => doctor._id) }   }).populate("doctorId");
+      console.log("emergencyDoctorDetails", emergencyDoctorDetails);
+
+     return res.status(200).json(
+      Response({
+        message: "Emergency doctor fetched successfully",
+        data: emergencyDoctorDetails,
+        status: "OK",
+        statusCode: 200,
+        pagination: {
+          totalPages: Math.ceil(totalEmergencyDoctor / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage:
+            page < Math.ceil(totalEmergencyDoctor / limit) ? page + 1 : null,
+          totalUsers: totalEmergencyDoctor,
+        },
+      })
+     )
+      
+    }
+
 
     res.status(200).json(
       Response({
@@ -1153,6 +1179,8 @@ const emergencyDoctor = async (req, res) => {
     );
   }
 }
+
+
 
 
 

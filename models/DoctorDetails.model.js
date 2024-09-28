@@ -9,6 +9,7 @@ const doctorDetailsSchema = new mongoose.Schema({
     doctorId: { type: mongoose.Schema.ObjectId, ref: 'User', required: [ true, "doctor is required"] },
     // doctorId: { type: String, required: [ true, "doctorId is required"] },
     clinicPrice: { type: String, required: [ true, "Clinic Price is required"] },
+    totalConsultation: { type: Number, default: 0, required: [ true, "Total Consultation is required"] },
     onlineConsultationPrice: { type: String, required: [ true, "Online Consultation is required"] },
     emergencyPrice: { type: String, required: [ true, "Emergency is required"] },
     schedule: { type: Array, required: [ true, "Schedule is required"] },

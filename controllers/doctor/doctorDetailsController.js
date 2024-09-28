@@ -294,40 +294,71 @@ const getDoctor = async (req, res) => {
     console.log("Today's date:", dayName);
     const specialist = req.query.specialist;
     const search = req.query.search;
-    if (!specialist) {
-      return res.status(400).json(
-        Response({
-          message: "Specialist is required",
-          status: "Failed",
-          statusCode: 400,
-        })
-      );
-    }
+    // if (!specialist) {
+    //   return res.status(400).json(
+    //     Response({
+    //       message: "Specialist is required",
+    //       status: "Failed",
+    //       statusCode: 400,
+    //     })
+    //   );
+    // }
 
     let filter = {};
     if (specialist) {
       filter["specialist"] = specialist;
+     
     }
     console.log(filter);
     const doctorDetails = await DoctorDetailsModel.find(filter)
-      .populate("doctorId")
+      .populate([
+        {
+          path: "doctorId",
+          match: { isEmergency: false },
+        },
+      ])
       .lean();
+
+      console.log("aiman====================>", doctorDetails);
+      
 
     // const details = await DoctorDetailsModel.find().populate("doctorId").lean();
     // console.log("=======>",details);
     console.log("aiman====================>", doctorDetails);
 
     // Filter based on search query
+    // const filteredDoctors = doctorDetails.filter((doctor) => {
+    //   const { firstName, lastName, email,isEmergency } = doctor?.doctorId;
+    //   const searchLower = search ? search.toLowerCase() : "";
+    //    return (
+    //    !isEmergency && doctor?.specialist.toLowerCase().includes(searchLower) ||
+    //     doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
+    //     doctor?.about.toLowerCase().includes(searchLower) ||
+    //     firstName?.toLowerCase().includes(searchLower) ||
+    //     lastName?.toLowerCase().includes(searchLower) ||
+    //     email?.toLowerCase().includes(searchLower)
+    //   );
+    // });
+
+
     const filteredDoctors = doctorDetails.filter((doctor) => {
-      const { firstName, lastName, email } = doctor?.doctorId;
       const searchLower = search ? search.toLowerCase() : "";
+    
+      // Check if doctorId exists and is not null
+      if (!doctor?.doctorId) {
+        return false; // Skip this doctor as it doesn't have a valid doctorId
+      }
+    
+      const { firstName, lastName, email, isEmergency } = doctor.doctorId;
+    
       return (
-        doctor?.specialist.toLowerCase().includes(searchLower) ||
-        doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
-        doctor?.about.toLowerCase().includes(searchLower) ||
-        firstName?.toLowerCase().includes(searchLower) ||
-        lastName?.toLowerCase().includes(searchLower) ||
-        email?.toLowerCase().includes(searchLower)
+        !isEmergency && 
+        (doctor?.specialist.toLowerCase().includes(searchLower) ||
+          doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
+          doctor?.about.toLowerCase().includes(searchLower) ||
+          firstName?.toLowerCase().includes(searchLower) ||
+          lastName?.toLowerCase().includes(searchLower) ||
+          email?.toLowerCase().includes(searchLower))
       );
     });
 

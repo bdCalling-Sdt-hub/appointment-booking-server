@@ -71,12 +71,12 @@ const socketIO = (io) => {
           chatId,
         };
 
-        console.log("======================>>>>>>>>>>>>>>>>>>>", messageBody);
+        // console.log("======================>>>>>>>>>>>>>>>>>>>", messageBody);
         // const participants = [senderId, receiverId];
         const existingChat = await ChatModel.findOne({
           _id: chatId,
         });
-        console.log("existingChat=====>", existingChat);
+        // console.log("existingChat=====>", existingChat);
         if (!existingChat) {
           if (typeof callback === "function") {
             callback({
@@ -184,5 +184,6 @@ const socketIO = (io) => {
     });
   });
 };
+
 
 module.exports = socketIO;
