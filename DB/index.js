@@ -4,7 +4,7 @@ const User = require("../models/User");
 const admin = {
     firstName: "MD",
     lastName: "ADMIN",
-    email: "admin@gmail.com",
+    email: "admin1@gmail.com",
     password: "1qazxsw2",
     role: "admin",
     isDeleted: false,
