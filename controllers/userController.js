@@ -22,8 +22,8 @@ const DoctorDetailsModel = require("../models/DoctorDetails.model");
 const signUp = async (req, res) => {
   try {
     const { firstName, lastName, email, password, role } = req.body;
-    console.log("============>", req.body);
-    console.log(email);
+    // console.log("============>", req.body);
+    // console.log(email);
     // const {image} = req.files;
     // Validate request body
     if (!firstName) {
@@ -97,7 +97,7 @@ const signUp = async (req, res) => {
 
     // Call service function to register user
     const userResponse = await userRegister(userDetails);
-    console.log(userResponse);
+    // console.log(userResponse);
 
    const notification = await NotificationModel.create({
       message: `Welcome, ${userResponse?.firstName + " " + userResponse?.lastName} Your account has been created successfully.`,
@@ -130,7 +130,7 @@ const resendOtp = async (req, res) => {
   try {
     // Extract email from request body
     const { email } = req.body;
-    console.log(email);
+    // console.log(email);
 
     // Validate email
     if (!email) {
@@ -139,7 +139,7 @@ const resendOtp = async (req, res) => {
 
     // Find user by email
     const user = await User.findOne({ email });
-    console.log(user, "suerr");
+    // console.log(user, "suerr");
 
     // Check if user exists
     if (!user) {
@@ -176,12 +176,12 @@ const resendOtp = async (req, res) => {
       );
     }
     // Update user's oneTimeCode
-    console.log(oneTimeCode);
+    // console.log(oneTimeCode);
     
     user.oneTimeCode = oneTimeCode;
     await user.save();
 
-    console.log(oneTimeCode);
+    // console.log(oneTimeCode);
     
     // Send verification email with new OTP
     await emailWithNodemailer(emailData);
@@ -213,11 +213,11 @@ const signIn = async (req, res, next) => {
   try {
     // Get email and password from req.body
     const { email, password } = req.body;
-    console.log("--------Email-SignIn-Controller", email);
+    // console.log("--------Email-SignIn-Controller", email);
 
     // Find the user by email
     const user = await User.findOne({ email });
-    console.log("-------------->>>>>", user);
+    // console.log("-------------->>>>>", user);
 
     if (!user) {
       return res.status(404).json(
@@ -252,7 +252,7 @@ const signIn = async (req, res, next) => {
 
     // Compare the provided password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log("---------------", isPasswordValid);
+    // console.log("---------------", isPasswordValid);
 
     if (!isPasswordValid) {
       res.status(401).json(
@@ -304,7 +304,7 @@ const forgotPassword = async (req, res) => {
         })
       );
     }
-    console.log("email", user);
+    // console.log("email", user);
     await forgotPasswordService(email, user);
     res.status(200).json(
       Response({
@@ -451,9 +451,9 @@ const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
     const userId = req.userId;
-    console.log(oldPassword, newPassword);
+    // console.log(oldPassword, newPassword);
     const loggedInUser = await User.findOne({ _id:userId });
-    console.log("loggedInUser", loggedInUser);
+    // console.log("loggedInUser", loggedInUser);
     if (!loggedInUser) {
       return res
         .status(400)
@@ -495,7 +495,7 @@ const changePassword = async (req, res) => {
 const fillUpProfile = async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log(userId);
+    // console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res
@@ -542,7 +542,7 @@ const fillUpProfile = async (req, res) => {
       await user.save();
     }
 
-    console.log("aiman========>",image);
+    // console.log("aiman========>",image);
     const { gender, dateOfBirth, phone, address } = req.body;
     user.gender = gender;
     user.dateOfBirth = dateOfBirth;
@@ -551,7 +551,7 @@ const fillUpProfile = async (req, res) => {
     user.image = image;
     user.isProfileCompleted = true;
     await user.save();
-    console.log(user);
+    // console.log(user);
     res.status(200).json(
       Response({
         message: "Profile updated successfully",
@@ -592,7 +592,7 @@ const postReview = async (req, res) => {
         })
       );
     }
-    console.log(user?.role);
+    // console.log(user?.role);
     if (user?.role !== "user") {
       return res.status(404).json(
         Response({
@@ -660,7 +660,7 @@ const postReview = async (req, res) => {
       })
     );
   } catch (error) {
-    console.log(error?.message);
+    // console.log(error?.message);
     res.status(500).json(
       Response({
         message: `Internal server error ${error.message}`,
@@ -674,7 +674,7 @@ const postReview = async (req, res) => {
 const patientDetails = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(req?.header);
+    // console.log(req?.header);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -775,9 +775,9 @@ const patientDetails = async (req, res) => {
 const allUser = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(userId);
+    // console.log(userId);
     const user = await User.findById(userId);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return res.status(404).json(
         Response({
@@ -800,7 +800,7 @@ const allUser = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const users = await User.find({}).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
     const totalDocument = await User.countDocuments();
-    console.log("===================>",users);
+    // console.log("===================>",users);
     res
       .status(200)
       .json(Response({ data: users, status: "OK", statusCode: 200,
@@ -874,7 +874,7 @@ const getLoginUser = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(userId);
+    // console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -887,7 +887,7 @@ const updateProfile = async (req, res) => {
     }
 
     const { firstName, lastName, gender, dateOfBirth,phone, address} = req.body;
-console.log("aaaaaaaaapppppppppppppppppppp",req.body);
+// console.log("aaaaaaaaapppppppppppppppppppp",req.body);
 
   
     // if (!firstName) {
@@ -959,7 +959,7 @@ console.log("aaaaaaaaapppppppppppppppppppp",req.body);
     //     })
     //   );
     // }
-    console.log("====>",req.file);
+    // console.log("ahsdsdsadsa====>",req.file);
     user.firstName = firstName;
     user.lastName = lastName;
     user.dateOfBirth = dateOfBirth;
@@ -967,6 +967,11 @@ console.log("aaaaaaaaapppppppppppppppppppp",req.body);
     user.address = address;
 
     let image = {};
+
+    // console.log("====>",req.file);
+
+    // if(!req.file) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
+    
  
     if (req.file && req.file) {
       // if (user?.image && user?.image?.publicFileURL) {
@@ -974,10 +979,13 @@ console.log("aaaaaaaaapppppppppppppppppppp",req.body);
       // }
       const imageFile = req.file;
       image = {
-        publicFileURL: `images/users/${userId}/user.png`,
-        path: `public/images/users/${userId}/${imageFile.filename}`,
+        publicFileURL: `images/users/${imageFile.filename}`,
+        path: `public/images/users/${imageFile.filename}`,
       };
     }
+
+    // console.log("ahad=============>",image);
+    
     user.image = image;
 
     const updatedUser = await user.save();
@@ -1100,7 +1108,7 @@ const getSinglePrescription =  async (req, res) => {
 const emergencyDoctor = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log("userId", userId);
+    // console.log("userId", userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -1126,11 +1134,11 @@ const emergencyDoctor = async (req, res) => {
         })
       );
     }
-    console.log("getEmergencyDoctor", getEmergencyDoctor);
+    // console.log("getEmergencyDoctor", getEmergencyDoctor);
     
     if(getEmergencyDoctor){
       const emergencyDoctorDetails = await DoctorDetailsModel.find({ doctorId: { $in: getEmergencyDoctor.map((doctor) => doctor._id) }   }).populate("doctorId");
-      console.log("emergencyDoctorDetails", emergencyDoctorDetails);
+      // console.log("emergencyDoctorDetails", emergencyDoctorDetails);
 
      return res.status(200).json(
       Response({

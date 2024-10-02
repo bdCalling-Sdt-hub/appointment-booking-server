@@ -1,6 +1,7 @@
 const multer = require("multer");
 const path = require("path");
 const createError = require("http-errors");
+const { log } = require("console");
 
 const UPLOAD_DIR = process.env.UPLOAD_FOLDER || "public/images/users";
 // const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) || 5242880; // 5 MB
@@ -26,6 +27,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
+  log("fileFilter", file);
   const extName = path.extname(file.originalname).toLowerCase(); // Convert to lower case for case-insensitive comparison
   const isAllowedFileType = ALLOWED_FILE_TYPES.includes(extName.substring(1));
   if (!isAllowedFileType) {

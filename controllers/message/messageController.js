@@ -7,6 +7,8 @@ const User = require("../../models/User");
 const createMessage = async (req, res) => {
   try {
     const senderId = req.userId;
+    console.log(senderId);
+    
     const user = await User.findById(senderId);
     if (!user) {
       return res.status(404).json(
@@ -51,8 +53,8 @@ const createMessage = async (req, res) => {
     console.log("=======>",req.file);
     if (messageType === "image" || messageType === "video" || messageType === "audio" || messageType === "application" && req.file) {
         image = {
-          publicFileURL: `/image/users/${req.file?.filename}`,
-          path:  `public/image/users/${req.file?.filename}`,
+          publicFileURL: `/images/users/${req.file?.filename}`,
+          path:  `public/images/users/${req.file?.filename}`,
         }
     }
 

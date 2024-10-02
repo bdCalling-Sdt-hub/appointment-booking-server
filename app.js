@@ -5,12 +5,10 @@ const cors = require("cors");
 var cookieParser = require("cookie-parser");
 require("dotenv").config();
 var morgan = require("morgan");
-
 const PORT = require("./utils/constant");
-
+const { default: logger } = require("./logger/logger");
 // Import the winston logger
 const winstonLogger = require("./utils/logger");
-
 // Create a stream object with a 'write' function that will be used by `morgan`
 const stream = {
   write: (message) => winstonLogger.info(message.trim()),
@@ -18,10 +16,8 @@ const stream = {
 
 // Initialize express app
 var app = express();
-
 // Setup morgan to use the stream with winston
 app.use(morgan("combined", { stream }));
-
 //import routes
 const userRouter = require("./routes/userRouter");
 const categoryRouter = require("./routes/categoryRouter");
@@ -34,19 +30,17 @@ const adminRouter = require("./routes/admin/adminRouter");
 const settingsRouter = require("./routes/settingsRouter");
 const { connectToDatabase } = require("./helpers/connection");
 const notificationRouter = require("./routes/notificationRouter");
+const socketIO = require("./utils/socketIO");
+const Response = require("./helpers/response");
 // const validateResponse = require('./middlewares.js/validator');
-
 app.use(cors({
   origin: "*",
 }));
-
 //DB connection
 connectToDatabase();
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
-
 // app.use(validateResponse);
 // app.use(logger('dev'));
 app.use(express.json());
@@ -85,7 +79,7 @@ app.use(function (req, res, next) {
 app.use((error, req, res, next) => {
   if (res.headersSent) {
     // If headers have already been sent, do nothing further
-    return next("Something went wrong"); // You can choose the message you want to send.
+    return next("Headers not sent"); // You can choose the message you want to send.
   }
   // console.log(error)
   console.log(req?.url);
@@ -131,6 +125,19 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+app.use((req, res, next) => {
+  logger.info(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
+
+app.all('*',(req, res) => (req, res) => {
+  res.status(404).json(Response({
+    status: 'fail',
+    statusCode: 404,
+    message: `Route Not Found for ${req.originalUrl}`,
+  }))
+})
+
 console.log("PORT", PORT);
 // Initialize server
 const server = app.listen(PORT || 3000, () => {
@@ -145,9 +152,9 @@ const io = socketIo(server, {
   },
 });
 
-const socketIO = require("./utils/socketIO");
-const Response = require("./helpers/response");
-const { log } = require("console");
+
+
+
 socketIO(io);
 
 global.io = io;

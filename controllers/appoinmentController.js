@@ -38,7 +38,7 @@ const getAppointment = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
 
         const currentDate = new Date().toISOString().split("T")[0];
-        console.log("currentDate===>", currentDate);
+        // console.log("currentDate===>", currentDate);
         const totalDocument = await PaymentModel.countDocuments({
           date: { $gt: currentDate },
           patientId: user._id,
@@ -77,7 +77,7 @@ const getAppointment = async (req, res) => {
               { _id: appointment._id },
               { $set: { status: "upcomming" } }
             );
-            console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
+            // console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
           }
         const result = appointments.filter(
           (appointment) => appointment.status === "upcomming"
@@ -142,7 +142,7 @@ const getAppointment = async (req, res) => {
           hour: "2-digit",
           minute: "2-digit",
         });
-        console.log("currentDate============>", currentDateString);
+        // console.log("currentDate============>", currentDateString);
         // console.log("currentDate===>",currentDate);
         const totalDocument = await PaymentModel.countDocuments({
           date: { $lte: currentDateString },
@@ -174,7 +174,7 @@ const getAppointment = async (req, res) => {
             { _id: appointment._id },
             { $set: { status: "active" } }
           );
-          console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
+          // console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
         }
 
         const result = appointments.filter(
@@ -276,7 +276,7 @@ const getAppointment = async (req, res) => {
               { _id: appointment._id },
               { $set: { status: "completed" } }
             );
-            console.log("=================>>>>>", appointment?.status);
+            // console.log("=================>>>>>", appointment?.status);
           }
           // Await the save operation to handle async properly
         }
@@ -321,7 +321,7 @@ const getAppointment = async (req, res) => {
         );
     }
   } catch (error) {
-    console.log(error?.message);
+    // console.log(error?.message);
     res
       .status(500)
       .json(
@@ -349,7 +349,7 @@ const getSingleAppointment = async (req, res) => {
     //     return res.status(404).json(Response({ message: "You are not authorized to perform this action", status: "Failed", statusCode: 403 }));
     // }
     const appointmentId = req.params.appointmentId;
-    console.log("appointmentId", appointmentId);
+    // console.log("appointmentId", appointmentId);
     if (!appointmentId) {
       return res
         .status(404)
@@ -361,7 +361,7 @@ const getSingleAppointment = async (req, res) => {
           })
         );
     }
-    console.log("appointmentId", appointmentId);
+    // console.log("appointmentId", appointmentId);
     const appointment = await PaymentModel.findById(appointmentId).populate(
       "patientDetailsId doctorId patientId"
     );
@@ -533,7 +533,7 @@ const getAppointmentForDoctor = async (req, res) => {
           hour: "2-digit",
           minute: "2-digit",
         });
-        console.log(currentDateString, currentTimeString);
+        // console.log(currentDateString, currentTimeString);
         const totalDocument = await PaymentModel.countDocuments({
           date: { $lte: currentDateString },
           doctorId: user._id,
@@ -564,7 +564,7 @@ const getAppointmentForDoctor = async (req, res) => {
             { _id: appointment._id },
             { $set: { status: "active" } }
           );
-          console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
+          // console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
         }
 
         const result = appointments.filter(
@@ -660,7 +660,7 @@ const getAppointmentForDoctor = async (req, res) => {
               { _id: appointment._id },
               { $set: { status: "completed" } }
             );
-            console.log("=================>>>>>", appointment?.status);
+            // console.log("=================>>>>>", appointment?.status);
           }
           // Await the save operation to handle async properly
         }

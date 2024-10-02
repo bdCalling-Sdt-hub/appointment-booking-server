@@ -6,7 +6,7 @@ const User = require('../models/User');
 const isValidUser = async (req, res, next) => {
     try {
         const { authorization } = req.headers;
-        console.log("authorization Data==>",authorization);
+        // console.log("authorization Data==>",authorization);
 
         if (!authorization) {
             return res.status(401).json(Response({ message: 'Token is required', status: 'Failed', statusCode: 401 }));
@@ -18,7 +18,7 @@ const isValidUser = async (req, res, next) => {
 
         const token = authorization.split(' ')[1];
 
-        console.log("token==>",token);
+        // console.log("token==>",token);
 
         let decodedData;
         try {

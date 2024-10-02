@@ -8,7 +8,7 @@ const signUpBoutique = async (req, res) => {
         const { name, email, password, address, rate, phone, city, state, description } = req.body;
       
       const {boutiqueImage}=req.files;
-      console.log(boutiqueImage,"image")
+    //   console.log(boutiqueImage,"image")
 
         // Validate request body
         if (!name) {

@@ -137,7 +137,7 @@ const deleteCategory = async (req, res) => {
     }
 
     const { categoryId } = req.body;
-    console.log("categoryId", categoryId);
+    // console.log("categoryId", categoryId);
     if (!categoryId) {
       return res
         .status(400)
@@ -217,7 +217,7 @@ const getSingleCategory = async (req, res) => {
     }
 
     const { categoryId } = req.params;
-    console.log(categoryId);
+    // console.log(categoryId);
     if (!categoryId) {
       return res
         .status(400)
@@ -296,7 +296,7 @@ const updateCategory = async (req, res) => {
     }
 
     const { categoryId } = req.params;
-    console.log(categoryId);
+    // console.log(categoryId);
     if (!categoryId) {
       return res
         .status(400)
@@ -310,7 +310,7 @@ const updateCategory = async (req, res) => {
     }
 
     const category = await CategoryModel.findById(categoryId);
-    console.log(category);
+    // console.log(category);
     if (!category) {
       return res
         .status(404)

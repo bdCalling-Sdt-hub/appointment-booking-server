@@ -116,13 +116,13 @@ const paymentCreate = async (req, res) => {
         })
       );
     }
-    console.log("================>>>>>>>>>", adminPercentage);
+    // console.log("================>>>>>>>>>", adminPercentage);
 
-    console.log(adminPercentage?.percentage);
+    // console.log(adminPercentage?.percentage);
     const adminIncome =
       (charge.amount / 100) * (adminPercentage[0].percentageAmount / 100) || 0;
 
-    console.log(charge.status === "succeeded");
+    // console.log(charge.status === "succeeded");
 
     // Check if payment was successful
     if (charge.status === "succeeded") {
@@ -142,7 +142,7 @@ const paymentCreate = async (req, res) => {
       const newPayment = await PaymentModel.create(paymentData);
 
       const getPercentages = await AdminPercentageModel.find();
-      console.log(getPercentages[0].percentage);
+      // console.log(getPercentages[0].percentage);
 
       if (!getPercentages) {
         return res.status(404).json(
@@ -153,8 +153,8 @@ const paymentCreate = async (req, res) => {
           })
         );
       }
-console.log("priceeeeeeeeeeeeeeeeeee",paymentData?.amount -
-  paymentData.amount * (getPercentages[0].percentageAmount / 100));
+// console.log("priceeeeeeeeeeeeeeeeeee",paymentData?.amount -
+//   paymentData.amount * (getPercentages[0].percentageAmount / 100));
 
       await doctorEarningModel.create({
         patientId: userId,
@@ -169,7 +169,7 @@ console.log("priceeeeeeeeeeeeeeeeeee",paymentData?.amount -
       const findDoctor = await DoctorDetailsModel.findOne({
         doctorId: doctorId,
       });
-      console.log("findDoctor", findDoctor);
+      // console.log("findDoctor", findDoctor);
       
       findDoctor.totalConsultation = findDoctor.totalConsultation + 1;
       await findDoctor.save();

@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 // Controller functions
 const createLocation = async (req, res) => {
-    console.log(req.body,"new location")
+    // console.log(req.body,"new location")
     // Get the token from the request headers
     const tokenWithBearer = req.headers.authorization;
     let token;
@@ -36,7 +36,7 @@ const createLocation = async (req, res) => {
           }
   
     const { latitude, longitude } = req.body;
-    console.log(latitude,longitude,"location")
+    // console.log(latitude,longitude,"location")
     const location = new Location({ userId:decoded._id, latitude, longitude });
     await location.save();
     res.status(201).json(location);
@@ -108,7 +108,7 @@ const getLocationById = async (req, res) => {
 };
 
 const updateLocation = async (req, res) => {
-    console.log(req.params.id)
+    // console.log(req.params.id)
 //   try {
 //     const { latitude, longitude } = req.body;
 //     console.log(latitude,longitude)

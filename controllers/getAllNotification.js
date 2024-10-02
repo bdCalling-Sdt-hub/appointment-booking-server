@@ -14,8 +14,8 @@ const getAllNotification = async (req, res) => {
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    console.log(page);
-    console.log(limit);
+    // console.log(page);
+    // console.log(limit);
     
 
 
