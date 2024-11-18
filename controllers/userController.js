@@ -167,7 +167,7 @@ const resendOtp = async (req, res) => {
   `,
     };
     if (user.oneTimeCode === null) {
-      res.status(400).json(
+     return res.status(400).json(
         Response({
           statusCode: 400,
           status: "Failed",
@@ -187,7 +187,7 @@ const resendOtp = async (req, res) => {
     await emailWithNodemailer(emailData);
 
     // Send success response
-    res.status(200).json(
+   return res.status(200).json(
       Response({
         statusCode: 200,
         status: "ok",
