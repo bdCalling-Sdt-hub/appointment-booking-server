@@ -1,11 +1,11 @@
 const multer = require("multer");
 const path = require("path");
 const createError = require("http-errors");
-const { log } = require("console");
+
 
 const UPLOAD_DIR = process.env.UPLOAD_FOLDER || "public/images/users";
-// const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) || 5242880; // 5 MB
-const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) || 20971520; // 20 MB
+const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) || 5242880; // 5 MB
+// const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) || 20971520; // 20 MB
 
 
 const ALLOWED_FILE_TYPES = [
