@@ -109,7 +109,7 @@ const signUp = async (req, res) => {
     io.emit(`notification::${userResponse?._id}`, notification);
 
 
-    res.status(200).json(
+  return res.status(200).json(
       Response({
         statusCode: 200,
         status: "sign up successfully",
@@ -230,7 +230,7 @@ const signIn = async (req, res, next) => {
     }
 
     if (user.isVerified === false) {
-      res.status(401).json(
+     return res.status(401).json(
         Response({
           statusCode: 401,
           message: "you are not veryfied",
@@ -255,7 +255,7 @@ const signIn = async (req, res, next) => {
     // console.log("---------------", isPasswordValid);
 
     if (!isPasswordValid) {
-      res.status(401).json(
+     return res.status(401).json(
         Response({
           statusCode: 401,
           message: "Invalid password",
@@ -268,7 +268,7 @@ const signIn = async (req, res, next) => {
     const accessToken = await userLogin({ email, password, user });
 
     //Success response
-    res.status(200).json(
+  return res.status(200).json(
       Response({
         statusCode: 200,
         message: "Authentication successful",
