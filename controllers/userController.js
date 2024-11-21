@@ -988,7 +988,12 @@ const updateProfile = async (req, res) => {
     
     user.image = image;
 
+    console.log(image);
+    
+
     const updatedUser = await user.save();
+    console.log("updatedUser", updatedUser);
+    
 
     res.status(200).json(
       Response({

@@ -8,6 +8,7 @@ const moment = require("moment");
 const withdrawalModel = require("../../models/withdraw.model");
 const PaymentModel = require("../../models/Payment.model");
 const NotificationModel = require("../../models/Notification.model");
+const pagination = require("../../helpers/pagination");
 
 function calculateAverageRating(reviews) {
   if (reviews.length === 0) return 0;
@@ -255,6 +256,179 @@ const createDoctorDetails = async (req, res) => {
   }
 };
 
+// const getDoctor = async (req, res) => {
+//   try {
+//     const userId = req.userId;
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json(
+//         Response({
+//           message: "User not found",
+//           status: "Failed",
+//           statusCode: 404,
+//         })
+//       );
+//     }
+
+//     if (user.role !== "user") {
+//       return res.status(403).json(
+//         Response({
+//           message: "You are not authorized to perform this action",
+//           status: "Failed",
+//           statusCode: 403,
+//         })
+//       );
+//     }
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 10;
+//     // Get today's date in UTC format
+//     const daysOfWeek = [
+//       "Sunday",
+//       "Monday",
+//       "Tuesday",
+//       "Wednesday",
+//       "Thursday",
+//       "Friday",
+//       "Saturday",
+//     ];
+//     const today = new Date().getDay(); // Returns index of the day (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
+//     const dayName = daysOfWeek[today];
+//     console.log("Today's date:", dayName);
+//     const specialist = req.query.specialist;
+//     const search = req.query.search;
+//     // if (!specialist) {
+//     //   return res.status(400).json(
+//     //     Response({
+//     //       message: "Specialist is required",
+//     //       status: "Failed",
+//     //       statusCode: 400,
+//     //     })
+//     //   );
+//     // }
+
+//     let filter = {};
+//     if (specialist) {
+//       filter["specialist"] = specialist;
+     
+//     }
+//     console.log(filter);
+//     const doctorDetails = await DoctorDetailsModel.find(filter)
+//       .populate([
+//         {
+//           path: "doctorId",
+//           match: { isEmergency: false },
+//         },
+//       ])
+//       .lean();
+
+//       console.log("aiman====================>", doctorDetails);
+      
+
+//     // const details = await DoctorDetailsModel.find().populate("doctorId").lean();
+//     // console.log("=======>",details);
+//     console.log("aiman====================>", doctorDetails);
+
+//     // Filter based on search query
+//     // const filteredDoctors = doctorDetails.filter((doctor) => {
+//     //   const { firstName, lastName, email,isEmergency } = doctor?.doctorId;
+//     //   const searchLower = search ? search.toLowerCase() : "";
+//     //    return (
+//     //    !isEmergency && doctor?.specialist.toLowerCase().includes(searchLower) ||
+//     //     doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
+//     //     doctor?.about.toLowerCase().includes(searchLower) ||
+//     //     firstName?.toLowerCase().includes(searchLower) ||
+//     //     lastName?.toLowerCase().includes(searchLower) ||
+//     //     email?.toLowerCase().includes(searchLower)
+//     //   );
+//     // });
+
+
+//     const filteredDoctors = doctorDetails.filter((doctor) => {
+//       const searchLower = search ? search.toLowerCase() : "";
+    
+//       // Check if doctorId exists and is not null
+//       if (!doctor?.doctorId) {
+//         return false; // Skip this doctor as it doesn't have a valid doctorId
+//       }
+    
+//       const { firstName, lastName, email, isEmergency } = doctor.doctorId;
+    
+//       return (
+//         !isEmergency && 
+//         (doctor?.specialist.toLowerCase().includes(searchLower) ||
+//           doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
+//           doctor?.about.toLowerCase().includes(searchLower) ||
+//           firstName?.toLowerCase().includes(searchLower) ||
+//           lastName?.toLowerCase().includes(searchLower) ||
+//           email?.toLowerCase().includes(searchLower))
+//       );
+//     });
+
+//     // Filter schedule to get only today's schedule
+//     filteredDoctors.forEach((doctor) => {
+//       doctor.schedule = doctor.schedule.filter(
+//         (slot) => slot.day.toLowerCase() === dayName.toLowerCase()
+//       );
+//     });
+
+//     // Extract today's schedule and generate time slots if needed
+//     filteredDoctors.forEach((doctor) => {
+//       if (doctor.schedule.length > 0) {
+//         const todaySchedule = doctor.schedule[0];
+//         const startTime = todaySchedule.startTime;
+//         const endTime = todaySchedule.endTime;
+//         const timeSlots = generateTimeSlots(startTime, endTime);
+//         doctor.timeSlots = timeSlots;
+//       } else {
+//         doctor.timeSlots = []; // No schedule found for today
+//       }
+//     });
+//     if (filteredDoctors.length === 0) {
+//       return res.status(404).json(
+//         Response({
+//           message: "Doctor not found",
+//           status: "Failed",
+//           statusCode: 404,
+//         })
+//       );
+//     }
+
+
+//     console.log("aiman==============================>", filteredDoctors);
+
+
+
+//     res.status(200).json(
+//       Response({
+//         message: "Doctor Details fetched successfully",
+//         data: filteredDoctors,
+//         status: "OK",
+//         statusCode: 200,
+//         pagination: {
+//           totalPages: Math.ceil(filteredDoctors.length / limit),
+//           currentPage: page,
+//           prevPage: page > 1 ? page - 1 : null,
+//           nextPage:
+//             page < Math.ceil(filteredDoctors.length / limit) ? page + 1 : null,
+//           totalUsers: filteredDoctors.length,
+//         },
+        
+//       })
+//     );
+//   } catch (error) {
+//     res.status(500).json(
+//       Response({
+//         message: `Internal server error ${error.message}`,
+//         status: "Failed",
+//         statusCode: 500,
+//       })
+//     );
+//   }
+// };
+
+
+
+
 const getDoctor = async (req, res) => {
   try {
     const userId = req.userId;
@@ -279,6 +453,9 @@ const getDoctor = async (req, res) => {
       );
     }
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
     // Get today's date in UTC format
     const daysOfWeek = [
       "Sunday",
@@ -292,24 +469,16 @@ const getDoctor = async (req, res) => {
     const today = new Date().getDay(); // Returns index of the day (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
     const dayName = daysOfWeek[today];
     console.log("Today's date:", dayName);
+
     const specialist = req.query.specialist;
     const search = req.query.search;
-    // if (!specialist) {
-    //   return res.status(400).json(
-    //     Response({
-    //       message: "Specialist is required",
-    //       status: "Failed",
-    //       statusCode: 400,
-    //     })
-    //   );
-    // }
 
     let filter = {};
     if (specialist) {
       filter["specialist"] = specialist;
-     
     }
     console.log(filter);
+
     const doctorDetails = await DoctorDetailsModel.find(filter)
       .populate([
         {
@@ -319,43 +488,23 @@ const getDoctor = async (req, res) => {
       ])
       .lean();
 
-      console.log("aiman====================>", doctorDetails);
-      
-
-    // const details = await DoctorDetailsModel.find().populate("doctorId").lean();
-    // console.log("=======>",details);
-    console.log("aiman====================>", doctorDetails);
-
-    // Filter based on search query
-    // const filteredDoctors = doctorDetails.filter((doctor) => {
-    //   const { firstName, lastName, email,isEmergency } = doctor?.doctorId;
-    //   const searchLower = search ? search.toLowerCase() : "";
-    //    return (
-    //    !isEmergency && doctor?.specialist.toLowerCase().includes(searchLower) ||
-    //     doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
-    //     doctor?.about.toLowerCase().includes(searchLower) ||
-    //     firstName?.toLowerCase().includes(searchLower) ||
-    //     lastName?.toLowerCase().includes(searchLower) ||
-    //     email?.toLowerCase().includes(searchLower)
-    //   );
-    // });
-
+    console.log("Doctor Details:", doctorDetails);
 
     const filteredDoctors = doctorDetails.filter((doctor) => {
       const searchLower = search ? search.toLowerCase() : "";
-    
+
       // Check if doctorId exists and is not null
       if (!doctor?.doctorId) {
         return false; // Skip this doctor as it doesn't have a valid doctorId
       }
-    
+
       const { firstName, lastName, email, isEmergency } = doctor.doctorId;
-    
+
       return (
-        !isEmergency && 
-        (doctor?.specialist.toLowerCase().includes(searchLower) ||
-          doctor?.clinicAddress.toLowerCase().includes(searchLower) ||
-          doctor?.about.toLowerCase().includes(searchLower) ||
+        !isEmergency &&
+        (doctor?.specialist?.toLowerCase().includes(searchLower) ||
+          doctor?.clinicAddress?.toLowerCase().includes(searchLower) ||
+          doctor?.about?.toLowerCase().includes(searchLower) ||
           firstName?.toLowerCase().includes(searchLower) ||
           lastName?.toLowerCase().includes(searchLower) ||
           email?.toLowerCase().includes(searchLower))
@@ -364,23 +513,34 @@ const getDoctor = async (req, res) => {
 
     // Filter schedule to get only today's schedule
     filteredDoctors.forEach((doctor) => {
-      doctor.schedule = doctor.schedule.filter(
-        (slot) => slot.day.toLowerCase() === dayName.toLowerCase()
-      );
+      if (doctor.schedule) {
+        doctor.schedule = doctor.schedule.filter(
+          (slot) => slot.day.toLowerCase() === dayName.toLowerCase()
+        );
+      } else {
+        doctor.schedule = [];
+      }
     });
 
     // Extract today's schedule and generate time slots if needed
     filteredDoctors.forEach((doctor) => {
-      if (doctor.schedule.length > 0) {
+      if (doctor.schedule && doctor.schedule.length > 0) {
         const todaySchedule = doctor.schedule[0];
         const startTime = todaySchedule.startTime;
         const endTime = todaySchedule.endTime;
-        const timeSlots = generateTimeSlots(startTime, endTime);
-        doctor.timeSlots = timeSlots;
+
+        // Check if startTime and endTime are defined
+        if (startTime && endTime) {
+          const timeSlots = generateTimeSlots(startTime, endTime);
+          doctor.timeSlots = timeSlots;
+        } else {
+          doctor.timeSlots = []; // No valid startTime or endTime
+        }
       } else {
         doctor.timeSlots = []; // No schedule found for today
       }
     });
+
     if (filteredDoctors.length === 0) {
       return res.status(404).json(
         Response({
@@ -391,17 +551,31 @@ const getDoctor = async (req, res) => {
       );
     }
 
+    // Implement Pagination
+    const totalDoctors = filteredDoctors.length;
+    const totalPages = Math.ceil(totalDoctors / limit);
 
-    console.log("aiman==============================>", filteredDoctors);
+    // Adjust page if it exceeds total pages
+    const currentPage = page > totalPages ? totalPages : page;
 
+    const startIndex = (currentPage - 1) * limit;
+    const endIndex = currentPage * limit;
 
+    const paginatedDoctors = filteredDoctors.slice(startIndex, endIndex);
 
     res.status(200).json(
       Response({
         message: "Doctor Details fetched successfully",
-        data: filteredDoctors,
+        data: paginatedDoctors,
         status: "OK",
         statusCode: 200,
+        pagination: {
+          totalPages: totalPages,
+          currentPage: currentPage,
+          prevPage: currentPage > 1 ? currentPage - 1 : null,
+          nextPage: currentPage < totalPages ? currentPage + 1 : null,
+          totalDoctors: totalDoctors,
+        },
       })
     );
   } catch (error) {
@@ -414,6 +588,8 @@ const getDoctor = async (req, res) => {
     );
   }
 };
+
+
 
 const singleDoctor = async (req, res) => {
   try {
