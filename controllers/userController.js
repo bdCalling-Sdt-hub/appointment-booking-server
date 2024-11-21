@@ -517,12 +517,15 @@ const fillUpProfile = async (req, res) => {
       // console.log("======>", imageFile);
       if(!imageFile) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
       // console.log("======>", imageFile);
+      // image = {
+      //   publicFileURL: `images/users/${userId}/user.png`,
+      //   path: `public/images/users/${userId}/${imageFile.filename}`,
+      // };
+
       image = {
-        publicFileURL: `images/users/${userId}/user.png`,
-        path: `public/images/users/${userId}/${imageFile.filename}`,
-      };
-    
-    }
+        publicFileURL: `images/users/${imageFile.filename}`,
+        path: `public/images/users/${imageFile.filename}`,
+      };}
 
     if (req.files && req.files.insurance) {
       // Delete old insurance if any
@@ -533,8 +536,8 @@ const fillUpProfile = async (req, res) => {
       const insuranceFile = req.files.insurance[0];
       if(!insuranceFile) return res.status(400).json(Response({ message: "Insurance file is required", status: "Failed", statusCode: 400 }));
       insurance = {
-        publicFileURL: `images/users/${userId}/${insuranceFile.filename}`,
-        path: `public/images/users/${userId}/${insuranceFile.filename}`,
+        publicFileURL: `images/users/${insuranceFile.filename}`,
+        path: `public/images/users/${insuranceFile.filename}`,
       };
 
       user.isProfileCompleted = true;
