@@ -32,6 +32,7 @@ const { connectToDatabase } = require("./helpers/connection");
 const notificationRouter = require("./routes/notificationRouter");
 const socketIO = require("./utils/socketIO");
 const Response = require("./helpers/response");
+const htmlRoute = require("./routes/htmlRoute");
 // const validateResponse = require('./middlewares.js/validator');
 app.use(cors({
   origin: "*",
@@ -58,6 +59,7 @@ app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/settings", settingsRouter);
 app.use("/api/v1/notification", notificationRouter);
+app.use("/api/v1/html", htmlRoute);
 // driver route
 // app.use('/api/v1/user', userRouter);
 

@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const xlsx = require('xlsx');
 const fs = require('fs');
 // const path = require('path');
 // const { upload } = require('../middlewares.js/fileUpload');
