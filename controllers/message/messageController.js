@@ -97,7 +97,8 @@ const createMessage = async (req, res) => {
     });
     const newChatEvent = `chat::${receiverId}`;
     io.emit(newChatEvent, chat);
-
+    console.log(messageCreate);
+    
     res.status(200).json(Response({
       data: messageCreate,
       status: "OK",
