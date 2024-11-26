@@ -51,17 +51,13 @@ const createChat = async (req, res) => {
     };
     const chat = await ChatModel.create(chatBody);
 
-
     const receiverDetails = await User.findById(receiverId);
 
-
-    const notificationForPatient = await NotificationModel.create(
-      {
-        message: `New Chat Created from ${receiverDetails?.firstName} ${receiverDetails?.lastName}`,
-        role: "user",
-        recipientId: receiverId,
-      }
-    );
+    const notificationForPatient = await NotificationModel.create({
+      message: `New Chat Created from ${receiverDetails?.firstName} ${receiverDetails?.lastName}`,
+      role: "user",
+      recipientId: receiverId,
+    });
     io.emit(`notification::${receiverId}`, notificationForPatient);
 
     res.status(200).json(
@@ -86,7 +82,6 @@ const getAllChatForUser = async (req, res) => {
   try {
     const userId = req.userId;
 
-    
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json(
@@ -97,44 +92,40 @@ const getAllChatForUser = async (req, res) => {
         })
       );
     }
-    console.log("userId==============>",userId);
-    
+    console.log("userId==============>", userId);
+
     // const chats = await ChatModel.find({
     //   participants: { $in: [userId] },
     // }).populate("lastMessage participants appointmentId");
 
     const chats = await ChatModel.find({
-      participants: { $in: [userId] }
+      participants: { $in: [userId] },
     })
-    .populate([
-      {
-        path: 'lastMessage',
-        // You can further populate fields within lastMessage if needed
-        // populate: { path: 'someNestedField' }
-      },
-      {
-        path: 'participants',
-        // You can further populate fields within participants if needed
-        // populate: { path: 'anotherNestedField' }
-      },
-      {
-        path: 'appointmentId',
-        // You can further populate fields within appointmentId if needed
-        populate: { path: 'patientDetailsId' }
-      },
-      // {
-      //   path: 'patientDetailsId',
-      //   // You can further populate fields within patientDetailsId if needed
-      //   // populate: { path: 'someOtherNestedField' }
-      // }
-    ])
-    .exec();
-    
+      .populate([
+        {
+          path: "lastMessage",
+          // You can further populate fields within lastMessage if needed
+          // populate: { path: 'someNestedField' }
+        },
+        {
+          path: "participants",
+          // You can further populate fields within participants if needed
+          // populate: { path: 'anotherNestedField' }
+        },
+        {
+          path: "appointmentId",
+          // You can further populate fields within appointmentId if needed
+          populate: { path: "patientDetailsId" },
+        },
+        // {
+        //   path: 'patientDetailsId',
+        //   // You can further populate fields within patientDetailsId if needed
+        //   // populate: { path: 'someOtherNestedField' }
+        // }
+      ])
+      .exec();
 
-
-
-
-console.log("chats==============>",chats);
+    console.log("chats==============>", chats);
 
     if (!chats) {
       return res.status(404).json(
@@ -146,9 +137,10 @@ console.log("chats==============>",chats);
       );
     }
 
-    const incompleteAppointments = chats.filter(chat => chat?.appointmentId?.isCompleted !== true);
+    const incompleteAppointments = chats.filter(
+      (chat) => chat?.appointmentId?.isCompleted !== true
+    );
     console.log("incompleteAppointments", incompleteAppointments);
-    
 
     if (!incompleteAppointments) {
       return res.status(404).json(
@@ -162,27 +154,34 @@ console.log("chats==============>",chats);
 
     console.log("incompleteAppointments", incompleteAppointments);
 
-    res
-      .status(200)
-      .json(
-        Response({
-          data: incompleteAppointments,
-          status: "OK",
-          statusCode: 200,
-          message: "Chats fetched successfully",
-        })
-      );
+    console.log(incompleteAppointments);
+    const sortedData = incompleteAppointments.sort((a, b) => {
+      const lastMessageA = a.lastMessage
+        ? new Date(a.lastMessage.updatedAt)
+        : new Date(0);
+      const lastMessageB = b.lastMessage
+        ? new Date(b.lastMessage.updatedAt)
+        : new Date(0);
+      return lastMessageB - lastMessageA; // Sort in descending order (most recent first)
+    });
+
+    res.status(200).json(
+      Response({
+        data: sortedData,
+        status: "OK",
+        statusCode: 200,
+        message: "Chats fetched successfully",
+      })
+    );
   } catch (error) {
     console.log(error?.message);
-    res
-      .status(500)
-      .json(
-        Response({
-          message: `Internal server error ${error?.message}`,
-          status: "Failed",
-          statusCode: 500,
-        })
-      );
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error?.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
   }
 };
 
