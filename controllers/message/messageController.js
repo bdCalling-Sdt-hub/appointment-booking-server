@@ -8,7 +8,7 @@ const createMessage = async (req, res) => {
   try {
     const senderId = req.userId;
     console.log(senderId);
-    
+
     const user = await User.findById(senderId);
     if (!user) {
       return res.status(404).json(
@@ -50,12 +50,17 @@ const createMessage = async (req, res) => {
       );
     }
     let image = {};
-    console.log("=======>",req.file);
-    if (messageType === "image" || messageType === "video" || messageType === "audio" || messageType === "application" && req.file) {
-        image = {
-          publicFileURL: `/images/users/${req.file?.filename}`,
-          path:  `public/images/users/${req.file?.filename}`,
-        }
+    console.log("=======>", req.file);
+    if (
+      messageType === "image" ||
+      messageType === "video" ||
+      messageType === "audio" ||
+      (messageType === "application" && req.file)
+    ) {
+      image = {
+        publicFileURL: `/images/users/${req.file?.filename}`,
+        path: `public/images/users/${req.file?.filename}`,
+      };
     }
 
     const messageBody = {
@@ -67,6 +72,7 @@ const createMessage = async (req, res) => {
       receiverId,
       file: image,
     };
+    console.log(image);
 
     const participants = [senderId, receiverId];
 
@@ -98,20 +104,24 @@ const createMessage = async (req, res) => {
     const newChatEvent = `chat::${receiverId}`;
     io.emit(newChatEvent, chat);
     console.log(messageCreate);
-    
-    res.status(200).json(Response({
-      data: messageCreate,
-      status: "OK",
-      statusCode: 200,
-      message: "Message created successfully",
-    }));
+
+    res.status(200).json(
+      Response({
+        data: messageCreate,
+        status: "OK",
+        statusCode: 200,
+        message: "Message created successfully",
+      })
+    );
   } catch (error) {
     console.log(error?.message);
-    res.status(500).json(Response({
-      message: `Internal server error ${error.message}`,
-      status: "Failed",
-      statusCode: 500,
-    }));
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
   }
 };
 
@@ -123,40 +133,47 @@ const getMessageByChatId = async (req, res) => {
     const limit = parseInt(req.query.pageSize) || 10;
 
     if (!chatId) {
-      return res.status(400).json(Response({
-        message: "Chat Id is required",
-        status: "Failed",
-        statusCode: 400,
-      }));
+      return res.status(400).json(
+        Response({
+          message: "Chat Id is required",
+          status: "Failed",
+          statusCode: 400,
+        })
+      );
     }
 
     const totalItems = await MessageModel.countDocuments({ chatId });
 
-    const messages = await MessageModel.find({ chatId }).populate(
-      "senderId receiverId"
-    ).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const messages = await MessageModel.find({ chatId })
+      .populate("senderId receiverId")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
     console.log(messages);
-    res.status(200).json(Response({
-      data: messages,
-      status: "OK",
-      statusCode: 200,
-      message: "Messages fetched successfully",
-      pagination: {
-        totalPages: Math.ceil(totalItems / limit),
-        currentPage: page,
-        prevPage: page > 1 ? page - 1 : null,
-        nextPage: page < Math.ceil(totalItems / limit) ? page + 1 : null,
-        totalUsers: totalItems,
-      },
-    }
-  ));
+    res.status(200).json(
+      Response({
+        data: messages,
+        status: "OK",
+        statusCode: 200,
+        message: "Messages fetched successfully",
+        pagination: {
+          totalPages: Math.ceil(totalItems / limit),
+          currentPage: page,
+          prevPage: page > 1 ? page - 1 : null,
+          nextPage: page < Math.ceil(totalItems / limit) ? page + 1 : null,
+          totalUsers: totalItems,
+        },
+      })
+    );
   } catch (error) {
     console.log(error?.message);
-    res.status(500).json(Response({
-      message: `Internal server error ${error.message}`,
-      status: "Failed",
-      statusCode: 500,
-    }));
+    res.status(500).json(
+      Response({
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+        statusCode: 500,
+      })
+    );
   }
 };
 
@@ -195,7 +212,5 @@ const deleteMessage = async (req, res) => {
     });
   }
 };
-
-
 
 module.exports = { createMessage, getMessageByChatId, deleteMessage };
