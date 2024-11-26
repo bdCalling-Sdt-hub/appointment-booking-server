@@ -7,7 +7,7 @@ const User = require("../../models/User");
 const createMessage = async (req, res) => {
   try {
     const senderId = req.userId;
-    console.log(senderId);
+    console.log("ahadddddddddddddddddddddd", senderId);
 
     const user = await User.findById(senderId);
     if (!user) {
@@ -20,6 +20,8 @@ const createMessage = async (req, res) => {
       );
     }
     const { messageType, message, receiverId } = req.body;
+
+    console.log(messageType, message, receiverId);
 
     if (!receiverId) {
       return res.status(400).json(
@@ -72,7 +74,7 @@ const createMessage = async (req, res) => {
       receiverId,
       file: image,
     };
-    console.log("aimannnnnnnn",image);
+    console.log("aimannnnnnnn", image);
 
     const participants = [senderId, receiverId];
 
