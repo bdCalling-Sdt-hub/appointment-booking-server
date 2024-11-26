@@ -50,7 +50,7 @@ const createMessage = async (req, res) => {
       );
     }
     let image = {};
-    console.log("=======>", req.file);
+    console.log("=======>", req.file, messageType);
     if (
       messageType === "image" ||
       messageType === "video" ||
@@ -72,7 +72,7 @@ const createMessage = async (req, res) => {
       receiverId,
       file: image,
     };
-    console.log(image);
+    console.log("aimannnnnnnn",image);
 
     const participants = [senderId, receiverId];
 
