@@ -99,17 +99,18 @@ const signUp = async (req, res) => {
     const userResponse = await userRegister(userDetails);
     // console.log(userResponse);
 
-   const notification = await NotificationModel.create({
-      message: `Welcome, ${userResponse?.firstName + " " + userResponse?.lastName} Your account has been created successfully.`,
+    const notification = await NotificationModel.create({
+      message: `Welcome, ${
+        userResponse?.firstName + " " + userResponse?.lastName
+      } Your account has been created successfully.`,
       recipientId: userResponse?._id,
       role: userResponse?.role,
       read: false,
-    })
+    });
 
     io.emit(`notification::${userResponse?._id}`, notification);
 
-
-  return res.status(200).json(
+    return res.status(200).json(
       Response({
         statusCode: 200,
         status: "sign up successfully",
@@ -118,7 +119,6 @@ const signUp = async (req, res) => {
         role: userResponse?.role,
       })
     );
-
   } catch (error) {
     console.error("Error in signUp controller:", error);
     res.status(500).json({ error: "Server error" });
@@ -167,7 +167,7 @@ const resendOtp = async (req, res) => {
   `,
     };
     if (user.oneTimeCode === null) {
-     return res.status(400).json(
+      return res.status(400).json(
         Response({
           statusCode: 400,
           status: "Failed",
@@ -177,17 +177,17 @@ const resendOtp = async (req, res) => {
     }
     // Update user's oneTimeCode
     // console.log(oneTimeCode);
-    
+
     user.oneTimeCode = oneTimeCode;
     await user.save();
 
     // console.log(oneTimeCode);
-    
+
     // Send verification email with new OTP
     await emailWithNodemailer(emailData);
 
     // Send success response
-   return res.status(200).json(
+    return res.status(200).json(
       Response({
         statusCode: 200,
         status: "ok",
@@ -205,8 +205,6 @@ const resendOtp = async (req, res) => {
     ); // { error: 'Failed to resend OTP' }
   }
 };
-
-
 
 //Sign in user
 const signIn = async (req, res, next) => {
@@ -230,7 +228,7 @@ const signIn = async (req, res, next) => {
     }
 
     if (user.isVerified === false) {
-     return res.status(401).json(
+      return res.status(401).json(
         Response({
           statusCode: 401,
           message: "you are not veryfied",
@@ -255,7 +253,7 @@ const signIn = async (req, res, next) => {
     // console.log("---------------", isPasswordValid);
 
     if (!isPasswordValid) {
-     return res.status(401).json(
+      return res.status(401).json(
         Response({
           statusCode: 401,
           message: "Invalid password",
@@ -268,7 +266,7 @@ const signIn = async (req, res, next) => {
     const accessToken = await userLogin({ email, password, user });
 
     //Success response
-  return res.status(200).json(
+    return res.status(200).json(
       Response({
         statusCode: 200,
         message: "Authentication successful",
@@ -452,22 +450,40 @@ const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const userId = req.userId;
     // console.log(oldPassword, newPassword);
-    const loggedInUser = await User.findOne({ _id:userId });
+    const loggedInUser = await User.findOne({ _id: userId });
     // console.log("loggedInUser", loggedInUser);
     if (!loggedInUser) {
       return res
         .status(400)
-        .json(Response({ message: "User not found", status: "Failed", statusCode: 404 }));
+        .json(
+          Response({
+            message: "User not found",
+            status: "Failed",
+            statusCode: 404,
+          })
+        );
     }
     if (!oldPassword) {
       return res
         .status(400)
-        .json(Response({ message: "Old password is required", status: "Failed", statusCode: 400 }));
+        .json(
+          Response({
+            message: "Old password is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
     }
     if (!newPassword) {
       return res
         .status(400)
-        .json(Response({ message: "New password is required", status: "Failed", statusCode: 400 }));
+        .json(
+          Response({
+            message: "New password is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
     }
 
     let isPasswordValid = await bcrypt.compare(
@@ -477,13 +493,25 @@ const changePassword = async (req, res) => {
     if (!isPasswordValid) {
       return res
         .status(400)
-        .json(Response({ message: "Password does not match", status: "Failed", statusCode: 400 }));
+        .json(
+          Response({
+            message: "Password does not match",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
     }
     loggedInUser.password = newPassword;
     await loggedInUser.save();
     res
       .status(200)
-      .json(Response({ message: "Password changed successfully", status: "OK", statusCode: 200 }));
+      .json(
+        Response({
+          message: "Password changed successfully",
+          status: "OK",
+          statusCode: 200,
+        })
+      );
   } catch (error) {
     console.error(error);
     return res
@@ -495,7 +523,7 @@ const changePassword = async (req, res) => {
 const fillUpProfile = async (req, res) => {
   try {
     const { userId } = req.body;
-    // console.log(userId);
+    console.log("profile-fill-up----------------->", req.body, req.files);
     const user = await User.findById(userId);
     if (!user) {
       return res
@@ -506,7 +534,16 @@ const fillUpProfile = async (req, res) => {
     let image = {};
     let insurance = {};
     // console.log("======>==========>", req.files.image);
-    if(!req.files) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
+    if (!req.files)
+      return res
+        .status(400)
+        .json(
+          Response({
+            message: "Image file is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
 
     if (req.files && req.files.image) {
       if (user?.image && user?.image?.publicFileURL) {
@@ -515,7 +552,16 @@ const fillUpProfile = async (req, res) => {
       }
       const imageFile = req.files.image[0];
       // console.log("======>", imageFile);
-      if(!imageFile) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
+      if (!imageFile)
+        return res
+          .status(400)
+          .json(
+            Response({
+              message: "Image file is required",
+              status: "Failed",
+              statusCode: 400,
+            })
+          );
       // console.log("======>", imageFile);
       // image = {
       //   publicFileURL: `images/users/${userId}/user.png`,
@@ -525,7 +571,8 @@ const fillUpProfile = async (req, res) => {
       image = {
         publicFileURL: `images/users/${imageFile.filename}`,
         path: `public/images/users/${imageFile.filename}`,
-      };}
+      };
+    }
 
     if (req.files && req.files.insurance) {
       // Delete old insurance if any
@@ -534,7 +581,16 @@ const fillUpProfile = async (req, res) => {
       }
       // Add new insurance
       const insuranceFile = req.files.insurance[0];
-      if(!insuranceFile) return res.status(400).json(Response({ message: "Insurance file is required", status: "Failed", statusCode: 400 }));
+      if (!insuranceFile)
+        return res
+          .status(400)
+          .json(
+            Response({
+              message: "Insurance file is required",
+              status: "Failed",
+              statusCode: 400,
+            })
+          );
       insurance = {
         publicFileURL: `images/users/${insuranceFile.filename}`,
         path: `public/images/users/${insuranceFile.filename}`,
@@ -569,7 +625,6 @@ const fillUpProfile = async (req, res) => {
       recipientId: user?._id,
     });
     io.emit(`notification::${user?._id}`, notification);
-  
   } catch (error) {
     console.error(error?.message);
     res.status(500).json(
@@ -649,10 +704,9 @@ const postReview = async (req, res) => {
       message: `${user?.filename} ${user?.lastName} has given a review on your profile`,
       role: user?.role,
       recipientId: doctorId,
-    })
+    });
 
     io.emit(`notification::${doctorId}`, notification);
-
 
     res.status(200).json(
       Response({
@@ -790,7 +844,7 @@ const allUser = async (req, res) => {
         })
       );
     }
-    if(user?.role !== "admin"){
+    if (user?.role !== "admin") {
       return res.status(404).json(
         Response({
           message: "You are not authorized to perform this action",
@@ -801,22 +855,26 @@ const allUser = async (req, res) => {
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const users = await User.find({}).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const users = await User.find({})
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
     const totalDocument = await User.countDocuments();
     // console.log("===================>",users);
-    res
-      .status(200)
-      .json(Response({ data: users, status: "OK", statusCode: 200,
+    res.status(200).json(
+      Response({
+        data: users,
+        status: "OK",
+        statusCode: 200,
         pagination: {
           totalPages: Math.ceil(totalDocument / limit),
           currentPage: page,
           prevPage: page > 1 ? page - 1 : null,
-          nextPage:
-            page < Math.ceil(totalDocument / limit) ? page + 1 : null,
+          nextPage: page < Math.ceil(totalDocument / limit) ? page + 1 : null,
           totalUsers: totalDocument,
         },
-      }
-       ));
+      })
+    );
   } catch (error) {
     res.status(500).json(
       Response({
@@ -873,7 +931,6 @@ const getLoginUser = async (req, res) => {
   }
 };
 
-
 const updateProfile = async (req, res) => {
   try {
     const userId = req.userId;
@@ -889,10 +946,10 @@ const updateProfile = async (req, res) => {
       );
     }
 
-    const { firstName, lastName, gender, dateOfBirth,phone, address} = req.body;
-// console.log("aaaaaaaaapppppppppppppppppppp",req.body);
+    const { firstName, lastName, gender, dateOfBirth, phone, address } =
+      req.body;
+    // console.log("aaaaaaaaapppppppppppppppppppp",req.body);
 
-  
     // if (!firstName) {
     //   return res.status(404).json(
     //     Response({
@@ -974,8 +1031,7 @@ const updateProfile = async (req, res) => {
     // console.log("====>",req.file);
 
     // if(!req.file) return res.status(400).json(Response({ message: "Image file is required", status: "Failed", statusCode: 400 }));
-    
- 
+
     if (req.file && req.file) {
       // if (user?.image && user?.image?.publicFileURL) {
       //   deleteImage(user?.image?.publicFileURL);
@@ -988,15 +1044,13 @@ const updateProfile = async (req, res) => {
     }
 
     // console.log("ahad=============>",image);
-    
+
     user.image = image;
 
     console.log(image);
-    
 
     const updatedUser = await user.save();
     console.log("updatedUser", updatedUser);
-    
 
     res.status(200).json(
       Response({
@@ -1018,8 +1072,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-
-const getPrescriptions =  async (req, res) => {
+const getPrescriptions = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
@@ -1038,11 +1091,14 @@ const getPrescriptions =  async (req, res) => {
 
     const doctorPrescription = await DoctorPrescriptionModel.find({
       patientId: userId,
-    }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).populate("patientDetailsId doctorId patientId");
+    })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate("patientDetailsId doctorId patientId");
     const totalPrescriptions = await DoctorPrescriptionModel.countDocuments({
       patientId: userId,
     });
-    
 
     res.status(200).json(
       Response({
@@ -1070,10 +1126,9 @@ const getPrescriptions =  async (req, res) => {
       })
     );
   }
-}
+};
 
-
-const getSinglePrescription =  async (req, res) => {
+const getSinglePrescription = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
@@ -1086,10 +1141,10 @@ const getSinglePrescription =  async (req, res) => {
         })
       );
     }
-  
-    
-    const doctorPrescription = await DoctorPrescriptionModel.findById(req.params.id).populate("patientDetailsId doctorId patientId")
-   
+
+    const doctorPrescription = await DoctorPrescriptionModel.findById(
+      req.params.id
+    ).populate("patientDetailsId doctorId patientId");
 
     res.status(200).json(
       Response({
@@ -1097,7 +1152,6 @@ const getSinglePrescription =  async (req, res) => {
         data: doctorPrescription,
         status: "OK",
         statusCode: 200,
-       
       })
     );
   } catch (error) {
@@ -1110,8 +1164,7 @@ const getSinglePrescription =  async (req, res) => {
       })
     );
   }
-}
-
+};
 
 const emergencyDoctor = async (req, res) => {
   try {
@@ -1129,11 +1182,19 @@ const emergencyDoctor = async (req, res) => {
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const getEmergencyDoctor = await User.find({ role: "doctor", isEmergency: true }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+    const getEmergencyDoctor = await User.find({
+      role: "doctor",
+      isEmergency: true,
+    })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-
-    const totalEmergencyDoctor = await User.countDocuments({ role: "doctor", isEmergency: true });
-    if(!getEmergencyDoctor){
+    const totalEmergencyDoctor = await User.countDocuments({
+      role: "doctor",
+      isEmergency: true,
+    });
+    if (!getEmergencyDoctor) {
       return res.status(404).json(
         Response({
           message: "Emergency doctor not found",
@@ -1143,30 +1204,30 @@ const emergencyDoctor = async (req, res) => {
       );
     }
     // console.log("getEmergencyDoctor", getEmergencyDoctor);
-    
-    if(getEmergencyDoctor){
-      const emergencyDoctorDetails = await DoctorDetailsModel.find({ doctorId: { $in: getEmergencyDoctor.map((doctor) => doctor._id) }   }).populate("doctorId");
+
+    if (getEmergencyDoctor) {
+      const emergencyDoctorDetails = await DoctorDetailsModel.find({
+        doctorId: { $in: getEmergencyDoctor.map((doctor) => doctor._id) },
+      }).populate("doctorId");
       // console.log("emergencyDoctorDetails", emergencyDoctorDetails);
 
-     return res.status(200).json(
-      Response({
-        message: "Emergency doctor fetched successfully",
-        data: emergencyDoctorDetails,
-        status: "OK",
-        statusCode: 200,
-        pagination: {
-          totalPages: Math.ceil(totalEmergencyDoctor / limit),
-          currentPage: page,
-          prevPage: page > 1 ? page - 1 : null,
-          nextPage:
-            page < Math.ceil(totalEmergencyDoctor / limit) ? page + 1 : null,
-          totalUsers: totalEmergencyDoctor,
-        },
-      })
-     )
-      
+      return res.status(200).json(
+        Response({
+          message: "Emergency doctor fetched successfully",
+          data: emergencyDoctorDetails,
+          status: "OK",
+          statusCode: 200,
+          pagination: {
+            totalPages: Math.ceil(totalEmergencyDoctor / limit),
+            currentPage: page,
+            prevPage: page > 1 ? page - 1 : null,
+            nextPage:
+              page < Math.ceil(totalEmergencyDoctor / limit) ? page + 1 : null,
+            totalUsers: totalEmergencyDoctor,
+          },
+        })
+      );
     }
-
 
     res.status(200).json(
       Response({
@@ -1194,11 +1255,7 @@ const emergencyDoctor = async (req, res) => {
       })
     );
   }
-}
-
-
-
-
+};
 
 module.exports = {
   signUp,
@@ -1216,5 +1273,5 @@ module.exports = {
   updateProfile,
   getPrescriptions,
   getSinglePrescription,
-  emergencyDoctor
+  emergencyDoctor,
 };
