@@ -98,7 +98,7 @@ const createMessage = async (req, res) => {
     const messageCreate = new MessageModel(messageBody);
     await messageCreate.save(); // Save the document to convert it into a Mongoose document
 
-    await messageCreate.populate("senderId receiverId").execPopulate();
+    await messageCreate.populate("senderId receiverId");
 
     const messageEvent = `lastMessage::${chatId}`;
     io.emit(messageEvent, messageCreate);
