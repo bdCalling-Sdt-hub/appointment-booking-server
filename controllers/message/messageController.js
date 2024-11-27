@@ -80,7 +80,7 @@ const createMessage = async (req, res) => {
 
     const existingChat = await ChatModel.findOne({
       participants: { $all: participants },
-    });
+    }).populate("senderId receiverId");
 
     let chatId;
 
@@ -95,7 +95,9 @@ const createMessage = async (req, res) => {
     }
     messageBody.chatId = chatId;
 
-    const messageCreate = await MessageModel.create(messageBody);
+    const messageCreate = (await MessageModel.create(messageBody)).populate(
+      "senderId receiverId"
+    );
 
     const messageEvent = `lastMessage::${chatId}`;
     io.emit(messageEvent, messageCreate);
