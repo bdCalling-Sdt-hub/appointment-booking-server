@@ -546,6 +546,7 @@ const getAppointmentForDoctor = async (req, res) => {
         const totalDocument = await PaymentModel.countDocuments({
           date: { $lte: currentDateString },
           doctorId: user._id,
+          isCompleted: false,
         });
         const appointments = await PaymentModel.find({
           date: { $lte: currentDateString },
@@ -567,12 +568,15 @@ const getAppointmentForDoctor = async (req, res) => {
           );
         }
         for (let appointment of appointments) {
+
+          if(!appointment.isCompleted){
           appointment.status = "active";
           // await appointment.save();
           await PaymentModel.updateOne(
             { _id: appointment._id },
             { $set: { status: "active" } }
           );
+        }
           // console.log("=================>>>>>", appointment?.status); // Await the save operation to handle async properly
         }
 
@@ -645,6 +649,7 @@ const getAppointmentForDoctor = async (req, res) => {
         const totalDocument = await PaymentModel.countDocuments({
           date: { $gte: currentDate },
           doctorId: user._id,
+          isCompleted: true,
         });
         const appointments = await PaymentModel.find({
           date: { $lte: currentDate },
