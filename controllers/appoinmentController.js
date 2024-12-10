@@ -253,6 +253,8 @@ const getAppointment = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
 
         const currentDate = new Date().toISOString().split("T")[0];
+        console.log("currentDate=======>", currentDate);
+        
         const totalDocument = await PaymentModel.countDocuments({
           date: { $gte: currentDate },
           patientId: user._id,

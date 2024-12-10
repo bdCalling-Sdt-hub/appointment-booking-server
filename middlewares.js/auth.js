@@ -36,6 +36,8 @@ const isValidUser = async (req, res, next) => {
         }
 
         const user = await User.findById(decodedData._id);
+        console.log("user==>",user);
+        
 
         if (!user) {
             return next(createError(401, 'Unauthorized'));
