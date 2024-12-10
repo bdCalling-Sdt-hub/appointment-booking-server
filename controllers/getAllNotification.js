@@ -10,7 +10,7 @@ const getAllNotification = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json(Response({ message: 'User not found', status: "Failed", statusCode: 404 }));
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
