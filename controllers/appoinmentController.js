@@ -260,6 +260,7 @@ const getAppointment = async (req, res) => {
         const appointments = await PaymentModel.find({
           date: { $lte: currentDate },
           patientId: user._id,
+          isCompleted: true,
         })
           .sort({ createdAt: -1 })
           .populate("patientDetailsId doctorId patientId")
