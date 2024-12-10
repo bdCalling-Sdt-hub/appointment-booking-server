@@ -256,6 +256,7 @@ const getAppointment = async (req, res) => {
         const totalDocument = await PaymentModel.countDocuments({
           date: { $gte: currentDate },
           patientId: user._id,
+          isCompleted: true,
         });
         const appointments = await PaymentModel.find({
           date: { $lte: currentDate },
