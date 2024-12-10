@@ -252,7 +252,7 @@ const getAppointment = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
-        const currentDate = new Date().toDateString().split("T")[0];
+        const currentDate = new Date().toISOString().split("T")[0];
         const totalDocument = await PaymentModel.countDocuments({
           date: { $gte: currentDate },
           patientId: user._id,
@@ -268,6 +268,8 @@ const getAppointment = async (req, res) => {
           .skip((page - 1) * limit)
           .limit(limit);
 
+          console.log();
+          
         if (!appointments || appointments.length === 0) {
           return res.status(404).json(
             Response({
