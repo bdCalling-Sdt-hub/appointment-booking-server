@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //import controllers
-const { signUp, verifyCode, signIn, resendOtp, forgotPassword, changePassword, setPassword, updateProfile, fillUpProfile, postReview, patientDetails, allUser, getLoginUser, getPrescriptions, getSinglePrescription, emergencyDoctor } = require('../controllers/userController');
+const { signUp, verifyCode, signIn, resendOtp, forgotPassword, changePassword, setPassword, updateProfile, fillUpProfile, postReview, patientDetails, allUser, getLoginUser, getPrescriptions, getSinglePrescription, emergencyDoctor, deleteUser } = require('../controllers/userController');
 // const {upload,convertImageWithId} = require('../middlewares.js/fileUpload');
 const {upload,convertImageWithId} = require('../middlewares.js/fileUpload');
 const { isValidUser} = require('../middlewares.js/auth');
@@ -30,12 +30,14 @@ router.post('/change-password', isValidUser, changePassword);
 router.post('/fill-Up-update', uploadNormal.fields([{ name: 'image', maxCount: 1 }, { name: 'insurance', maxCount: 1 }]), fillUpProfile);
 router.post('/post-review', isValidUser, postReview);
 router.post('/patient-details-for-doctor', isValidUser, patientDetails);
+router.post('/delete-user',isValidUser,deleteUser)
 router.get('/login-user', isValidUser, getLoginUser);
 // router.patch('/update-profile', isValidUser, upload.single('image'), updateProfile);
 router.put('/update-profile', isValidUser, uploadNormal.single('image'),updateProfile);
 router.get('/get-user-prescription', isValidUser, getPrescriptions);
 router.get('/get-single-user-prescription/:id', isValidUser, getSinglePrescription);
 router.get('/get-emergency-doctor', isValidUser, emergencyDoctor);
+
 
 
 // router.post('/changePasswordUsingOldPassword',changePasswordUsingOldPassword)

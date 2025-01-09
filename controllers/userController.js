@@ -22,6 +22,14 @@ const DoctorDetailsModel = require("../models/DoctorDetails.model");
 const signUp = async (req, res) => {
   try {
     const { firstName, lastName, email, password, role } = req.body;
+    console.log(
+      "--------Email-SignUp-Controller",
+      email,
+      role,
+      firstName,
+      lastName,
+      password
+    );
     // console.log("============>", req.body);
     // console.log(email);
     // const {image} = req.files;
@@ -86,6 +94,82 @@ const signUp = async (req, res) => {
         })
       );
     }
+    // console.log(user);
+
+    // console.log(user?.isDeleted);
+
+
+
+    if (user && user?.isDeleted) {
+      const oneTimeCode =
+        Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+      // Prepare email for activate user
+      const emailData = {
+        email,
+        subject: "Account Activation Email",
+        html: `
+        <body style="background-color: #f3f4f6; padding: 1rem; font-family: Arial, sans-serif;">
+          <div style="max-width: 24rem; margin: 0 auto; background-color: #fff; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <h1 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Welcome to Doctor Appointment Booking App</h1>
+            <h1>Hello, ${firstName} ${lastName}</h1>
+            <p style="color: #4b5563; margin-bottom: 1rem;">Thank you for joining Shooting App. Your account is almost ready!</p>
+            <div style="background-color: #e5e7eb; padding: 1rem; border-radius: 0.25rem; text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">${oneTimeCode}</div>
+            <p style="color: #4b5563; margin-bottom: 1rem;">Enter this code to verify your account.</p>
+            <p style="color: red; font-size: 0.8rem; margin-top: 1rem;">This code expires in <span id="timer">3:00</span> minutes.</p>
+          </div>
+      </body>
+      `,
+      };
+
+      const updateUser = await User.findOneAndUpdate(
+        { email },
+        {
+          $set: {
+            isDeleted: false,
+            isVerified: false,
+            firstName,
+            lastName,
+            password,
+            role,
+            oneTimeCode,
+          },
+        },
+        { new: true }
+      );
+      emailWithNodemailer(emailData);
+
+      setTimeout(async () => {
+        try {
+          updateUser.oneTimeCode = null;
+          await updateUser.save();
+          console.log("oneTimeCode reset to null after 3 minutes");
+        } catch (error) {
+          console.error("Error updating oneTimeCode:", error);
+        }
+      }, 180000);
+
+      const notification = await NotificationModel.create({
+        message: `Welcome, ${
+          updateUser?.firstName + " " + updateUser?.lastName
+        } Your account has been created successfully.`,
+        recipientId: updateUser?._id,
+        role: updateUser?.role,
+        read: false,
+      });
+      io.emit(`notification::${updateUser?._id}`, notification);
+
+      return res.status(200).json(
+        Response({
+          statusCode: 200,
+          status: "sign up successfully",
+          message: "A verification email is sent to your email",
+          data: { userId: updateUser?._id },
+          role: updateUser?.role,
+        })
+      );
+    }
+
+    // console.log(user.isDeleted);
 
     let userDetails = {
       firstName,
@@ -227,6 +311,18 @@ const signIn = async (req, res, next) => {
       );
     }
 
+    // Check if the user is verified
+
+    if (user.isDeleted) {
+      return res.status(401).json(
+        Response({
+          statusCode: 401,
+          message: "Please create a new account",
+          status: "Failed",
+        })
+      );
+    }
+
     if (user.isVerified === false) {
       return res.status(401).json(
         Response({
@@ -278,6 +374,60 @@ const signIn = async (req, res, next) => {
     );
   } catch (error) {
     next(
+      Response({
+        statusCode: 500,
+        message: `Internal server error ${error.message}`,
+        status: "Failed",
+      })
+    );
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { password } = req.body;
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json(
+        Response({
+          statusCode: 404,
+          message: "User not found",
+          status: "Failed",
+        })
+      );
+    }
+    if (!password) {
+      return res.status(400).json(
+        Response({
+          statusCode: 400,
+          message: "Password is required",
+          status: "Failed",
+        })
+      );
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json(
+        Response({
+          statusCode: 400,
+          message: "Password does not match",
+          status: "Failed",
+        })
+      );
+    }
+    user.isDeleted = true;
+    await user.save();
+    res.status(200).json(
+      Response({
+        statusCode: 200,
+        message: "User deleted successfully",
+        status: "OK",
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(
       Response({
         statusCode: 500,
         message: `Internal server error ${error.message}`,
@@ -453,37 +603,31 @@ const changePassword = async (req, res) => {
     const loggedInUser = await User.findOne({ _id: userId });
     // console.log("loggedInUser", loggedInUser);
     if (!loggedInUser) {
-      return res
-        .status(400)
-        .json(
-          Response({
-            message: "User not found",
-            status: "Failed",
-            statusCode: 404,
-          })
-        );
+      return res.status(400).json(
+        Response({
+          message: "User not found",
+          status: "Failed",
+          statusCode: 404,
+        })
+      );
     }
     if (!oldPassword) {
-      return res
-        .status(400)
-        .json(
-          Response({
-            message: "Old password is required",
-            status: "Failed",
-            statusCode: 400,
-          })
-        );
+      return res.status(400).json(
+        Response({
+          message: "Old password is required",
+          status: "Failed",
+          statusCode: 400,
+        })
+      );
     }
     if (!newPassword) {
-      return res
-        .status(400)
-        .json(
-          Response({
-            message: "New password is required",
-            status: "Failed",
-            statusCode: 400,
-          })
-        );
+      return res.status(400).json(
+        Response({
+          message: "New password is required",
+          status: "Failed",
+          statusCode: 400,
+        })
+      );
     }
 
     let isPasswordValid = await bcrypt.compare(
@@ -491,27 +635,23 @@ const changePassword = async (req, res) => {
       loggedInUser.password
     );
     if (!isPasswordValid) {
-      return res
-        .status(400)
-        .json(
-          Response({
-            message: "Password does not match",
-            status: "Failed",
-            statusCode: 400,
-          })
-        );
+      return res.status(400).json(
+        Response({
+          message: "Password does not match",
+          status: "Failed",
+          statusCode: 400,
+        })
+      );
     }
     loggedInUser.password = newPassword;
     await loggedInUser.save();
-    res
-      .status(200)
-      .json(
-        Response({
-          message: "Password changed successfully",
-          status: "OK",
-          statusCode: 200,
-        })
-      );
+    res.status(200).json(
+      Response({
+        message: "Password changed successfully",
+        status: "OK",
+        statusCode: 200,
+      })
+    );
   } catch (error) {
     console.error(error);
     return res
@@ -535,15 +675,13 @@ const fillUpProfile = async (req, res) => {
     let insurance = {};
     // console.log("======>==========>", req.files.image);
     if (!req.files)
-      return res
-        .status(400)
-        .json(
-          Response({
-            message: "Image file is required",
-            status: "Failed",
-            statusCode: 400,
-          })
-        );
+      return res.status(400).json(
+        Response({
+          message: "Image file is required",
+          status: "Failed",
+          statusCode: 400,
+        })
+      );
 
     if (req.files && req.files.image) {
       if (user?.image && user?.image?.publicFileURL) {
@@ -553,15 +691,13 @@ const fillUpProfile = async (req, res) => {
       const imageFile = req.files.image[0];
       // console.log("======>", imageFile);
       if (!imageFile)
-        return res
-          .status(400)
-          .json(
-            Response({
-              message: "Image file is required",
-              status: "Failed",
-              statusCode: 400,
-            })
-          );
+        return res.status(400).json(
+          Response({
+            message: "Image file is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
       // console.log("======>", imageFile);
       // image = {
       //   publicFileURL: `images/users/${userId}/user.png`,
@@ -582,15 +718,13 @@ const fillUpProfile = async (req, res) => {
       // Add new insurance
       const insuranceFile = req.files.insurance[0];
       if (!insuranceFile)
-        return res
-          .status(400)
-          .json(
-            Response({
-              message: "Insurance file is required",
-              status: "Failed",
-              statusCode: 400,
-            })
-          );
+        return res.status(400).json(
+          Response({
+            message: "Insurance file is required",
+            status: "Failed",
+            statusCode: 400,
+          })
+        );
       insurance = {
         publicFileURL: `images/users/${insuranceFile.filename}`,
         path: `public/images/users/${insuranceFile.filename}`,
@@ -1274,4 +1408,5 @@ module.exports = {
   getPrescriptions,
   getSinglePrescription,
   emergencyDoctor,
+  deleteUser,
 };

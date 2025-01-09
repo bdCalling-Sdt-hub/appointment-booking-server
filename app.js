@@ -60,6 +60,7 @@ app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/settings", settingsRouter);
 app.use("/api/v1/notification", notificationRouter);
 app.use("/api/v1/html", htmlRoute);
+
 // driver route
 // app.use('/api/v1/user', userRouter);
 
